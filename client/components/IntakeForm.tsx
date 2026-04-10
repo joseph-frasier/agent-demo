@@ -6,7 +6,7 @@ import { IntakeData } from "@/lib/types";
 const DEFAULT_DATA: IntakeData = {
   businessName: "Lone Star Pet Grooming",
   ownerName: "Maria Santos",
-  email: "maria@demo.frasierdigital.com",
+  email: "maria@demo.irongrove.dev",
   phone: "(281) 555-0142",
   industry: "Pet services",
   services: "Dog grooming, cat grooming, nail trimming, flea treatment",
@@ -208,7 +208,7 @@ export default function IntakeForm({
                 onClick={() => togglePage(page)}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all ${
                   active
-                    ? "bg-frasier-green border-frasier-green text-white"
+                    ? "bg-brand-green border-brand-green text-white"
                     : "bg-white/5 border-white/10 text-white/60 hover:border-white/30"
                 }`}
               >
@@ -247,7 +247,7 @@ export default function IntakeForm({
       {/* Submit */}
       <button
         type="submit"
-        className="w-full py-3 rounded-xl bg-frasier-green text-white font-semibold text-sm tracking-wide hover:opacity-90 active:opacity-80 transition-opacity"
+        className="w-full py-3 rounded-xl bg-brand-green text-white font-semibold text-sm tracking-wide hover:opacity-90 active:opacity-80 transition-opacity"
       >
         Submit Intake
       </button>

@@ -13,10 +13,10 @@ export default function PayloadCard({ data }: { data: IntakeData }) {
   ];
 
   return (
-    <div className="bg-frasier-card border border-frasier-border rounded-xl p-6 animate-fade-in-up flex flex-col gap-5">
+    <div className="bg-brand-card border border-brand-border rounded-xl p-6 animate-fade-in-up flex flex-col gap-5">
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-frasier-green font-bold text-lg">✓</span>
+        <span className="text-brand-green font-bold text-lg">✓</span>
         <h2 className="text-white font-semibold text-lg">Parsed Intake Payload</h2>
       </div>
 
@@ -66,7 +66,7 @@ export default function PayloadCard({ data }: { data: IntakeData }) {
 
       {/* Validation */}
       <div className="flex items-center gap-2 pt-2 border-t border-white/5">
-        <span className="text-frasier-green text-sm font-semibold">✓ Validation passed</span>
+        <span className="text-brand-green text-sm font-semibold">✓ Validation passed</span>
       </div>
     </div>
   );

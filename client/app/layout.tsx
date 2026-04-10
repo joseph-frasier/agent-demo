@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Frasier Digital — Agent Pipeline Demo",
+  title: "Irongrove — Agent Pipeline Demo",
   description: "AI-automated pipeline from intake to live website",
 };
 
@@ -25,7 +25,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-frasier-dark text-white min-h-screen font-sans antialiased">
+      <body className="bg-brand-dark text-white min-h-screen font-sans antialiased">
         {children}
       </body>
     </html>

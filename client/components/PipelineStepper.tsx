@@ -46,7 +46,7 @@ export function PipelineStepper({
             key={key}
             className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 ${
               status === "active"
-                ? "bg-frasier-card border border-frasier-border"
+                ? "bg-brand-card border border-brand-border"
                 : status === "complete"
                   ? "opacity-70"
                   : "opacity-40"

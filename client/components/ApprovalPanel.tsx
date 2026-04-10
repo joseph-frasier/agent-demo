@@ -24,10 +24,10 @@ function CollapsibleSection({
   children,
 }: CollapsibleSectionProps) {
   return (
-    <div className="border border-frasier-border rounded-lg overflow-hidden">
+    <div className="border border-brand-border rounded-lg overflow-hidden">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between px-4 py-3 bg-frasier-card hover:bg-white/5 transition-colors duration-200 text-left"
+        className="w-full flex items-center justify-between px-4 py-3 bg-brand-card hover:bg-white/5 transition-colors duration-200 text-left"
       >
         <span className="text-sm font-semibold text-white/90">{title}</span>
         <span className="text-white/50 text-xs font-mono">
@@ -35,7 +35,7 @@ function CollapsibleSection({
         </span>
       </button>
       {isOpen && (
-        <div className="px-4 pb-4 pt-3 bg-frasier-card border-t border-frasier-border">
+        <div className="px-4 pb-4 pt-3 bg-brand-card border-t border-brand-border">
           {children}
         </div>
       )}
@@ -65,7 +65,7 @@ export function ApprovalPanel({
       .slice(0, 20) + ".com";
 
   return (
-    <div className="bg-frasier-card border border-frasier-border rounded-xl p-6 animate-fade-in-up space-y-6">
+    <div className="bg-brand-card border border-brand-border rounded-xl p-6 animate-fade-in-up space-y-6">
       {/* Header */}
       <div>
         <h2 className="text-xl font-bold text-white">
@@ -259,7 +259,7 @@ export function ApprovalPanel({
         </button>
         <button
           onClick={() => {}}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-transparent border border-frasier-border hover:bg-white/5 text-white/70 hover:text-white text-sm font-medium rounded-lg transition-colors duration-200"
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-transparent border border-brand-border hover:bg-white/5 text-white/70 hover:text-white text-sm font-medium rounded-lg transition-colors duration-200"
         >
           <span>✎</span>
           <span>Request Revisions</span>

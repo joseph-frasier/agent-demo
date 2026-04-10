@@ -17,7 +17,7 @@ const SERVER = "http://localhost:3001";
 const DEMO_INTAKE = {
   businessName: "Lone Star Pet Grooming",
   ownerName: "Maria Santos",
-  email: "maria@demo.frasierdigital.com",
+  email: "maria@demo.irongrove.dev",
   phone: "(281) 555-0142",
   industry: "Pet services",
   services: "Dog grooming, cat grooming, nail trimming, flea treatment",

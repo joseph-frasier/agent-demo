@@ -192,19 +192,19 @@ export default function HomePage() {
   // ── Render ───────────────────────────────────────────────────────────────────
 
   return (
-    <div className="flex min-h-screen bg-frasier-bg text-white">
+    <div className="flex min-h-screen bg-brand-dark text-white">
       {/* ── Left Sidebar ── */}
-      <aside className="w-72 shrink-0 border-r border-frasier-border flex flex-col gap-8 p-6">
+      <aside className="w-72 shrink-0 border-r border-brand-border flex flex-col gap-8 p-6">
         <div>
           <h1 className="text-lg font-bold tracking-widest uppercase text-white">
-            Frasier Digital
+            Irongrove
           </h1>
           <p className="text-sm text-white/50 mt-1">Agent Pipeline Demo</p>
         </div>
 
         <PipelineStepper currentPhase={phase} />
 
-        <div className="mt-auto pt-4 border-t border-frasier-border">
+        <div className="mt-auto pt-4 border-t border-brand-border">
           <div className="flex items-center justify-between">
             <span className="text-xs text-white/50 uppercase tracking-widest">
               Master Live/Cached
@@ -318,7 +318,7 @@ export default function HomePage() {
 
             {/* Claude Project card */}
             {phaseAtLeast("processing_agents") && (
-              <div className="rounded-xl border border-frasier-border bg-frasier-card p-5">
+              <div className="rounded-xl border border-brand-border bg-brand-card p-5">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-semibold text-white">Claude Project</h3>
@@ -335,7 +335,7 @@ export default function HomePage() {
                   {!agents.project && (
                     <button
                       onClick={handleCreateProject}
-                      className="rounded-lg bg-frasier-green px-4 py-2 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
+                      className="rounded-lg bg-brand-green px-4 py-2 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
                     >
                       Create for real
                     </button>

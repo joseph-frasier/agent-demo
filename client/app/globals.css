@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-frasier-green: #2D5F2D;
-  --color-frasier-cream: #F5E6D3;
-  --color-frasier-dark: #1a1a2e;
-  --color-frasier-card: #16213e;
-  --color-frasier-border: #0f3460;
+  --color-brand-green: #2D5F2D;
+  --color-brand-cream: #F5E6D3;
+  --color-brand-dark: #1a1a2e;
+  --color-brand-card: #16213e;
+  --color-brand-border: #0f3460;
   --font-sans: "Inter", system-ui, sans-serif;
 }
 
@@ -34,5 +34,5 @@
 }
 
 .input {
-  @apply w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-frasier-green focus:ring-1 focus:ring-frasier-green transition-all;
+  @apply w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition-all;
 }

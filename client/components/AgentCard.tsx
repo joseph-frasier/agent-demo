@@ -52,7 +52,7 @@ export default function AgentCard({ title, status, children, note }: AgentCardPr
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="rounded-xl border border-frasier-border bg-frasier-card overflow-hidden">
+    <div className="rounded-xl border border-brand-border bg-brand-card overflow-hidden">
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
@@ -69,7 +69,7 @@ export default function AgentCard({ title, status, children, note }: AgentCardPr
       </button>
 
       {open && (
-        <div className="border-t border-frasier-border px-5 py-4">{children}</div>
+        <div className="border-t border-brand-border px-5 py-4">{children}</div>
       )}
     </div>
   );

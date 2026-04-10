@@ -9,7 +9,7 @@ export const fallbackEnriched: EnrichedData = {
   client: {
     name: "Maria Santos",
     businessName: "Lone Star Pet Grooming",
-    email: "maria@demo.frasierdigital.com",
+    email: "maria@demo.irongrove.dev",
     phone: "(281) 555-0142",
     industry: "Pet Grooming Services",
     industryCategory: "Pet Services & Care",
@@ -95,7 +95,7 @@ export const fallbackAgents: AgentsResult = {
     createdAt: new Date().toISOString(),
     contact: {
       name: "Maria Santos",
-      email: "maria@demo.frasierdigital.com",
+      email: "maria@demo.irongrove.dev",
       phone: "(281) 555-0142",
       businessName: "Lone Star Pet Grooming",
     },
@@ -159,7 +159,7 @@ export const fallbackAgents: AgentsResult = {
         name: "Contact",
         sections: [
           { type: "hero", heading: "Get in Touch", content: "Ready to book a grooming appointment or have questions about our services? We'd love to hear from you. Walk-ins are welcome for nail trims!" },
-          { type: "contact", heading: "Visit Us", content: "Phone: (281) 555-0142. Email: maria@demo.frasierdigital.com. Location: Tomball, TX 77375. Hours: Monday-Friday 8am-6pm, Saturday 9am-4pm, Sunday Closed." },
+          { type: "contact", heading: "Visit Us", content: "Phone: (281) 555-0142. Email: maria@demo.irongrove.dev. Location: Tomball, TX 77375. Hours: Monday-Friday 8am-6pm, Saturday 9am-4pm, Sunday Closed." },
         ],
         metaTitle: "Contact | Lone Star Pet Grooming Tomball TX",
         metaDescription: "Contact Lone Star Pet Grooming in Tomball, TX. Book an appointment or walk in for nail trims. (281) 555-0142.",

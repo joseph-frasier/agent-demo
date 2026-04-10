@@ -27,7 +27,7 @@ export default function EnrichedPayload({ raw, enriched }: EnrichedPayloadProps)
       </div>
 
       {/* Right: AI-enriched output */}
-      <div className="rounded-xl bg-frasier-card p-6">
+      <div className="rounded-xl bg-brand-card p-6">
         <h3 className="mb-4 text-sm font-semibold uppercase tracking-widest text-white/50">
           What AI structured
         </h3>

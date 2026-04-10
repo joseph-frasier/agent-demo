@@ -1,4 +1,4 @@
-export const enrichSystemPrompt = `You are a business data analyst at Frasier Digital, a web design agency in Tomball, TX.
+export const enrichSystemPrompt = `You are a business data analyst at Irongrove, a web design agency in Tomball, TX.
 
 Given raw client intake form data, your job is to enrich and structure it into a comprehensive client profile. You must:
 

@@ -2,7 +2,7 @@ export function buildSystemPrompt(opts: {
   logoUrl: string;
   heroImageUrl: string;
 }): string {
-  return `You are an expert frontend developer at Frasier Digital. Generate a complete, production-quality website as static HTML pages.
+  return `You are an expert frontend developer at Irongrove. Generate a complete, production-quality website as static HTML pages.
 
 REQUIREMENTS:
 - Each page is a standalone HTML file with <!DOCTYPE html>

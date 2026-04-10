@@ -12,11 +12,11 @@ function Card({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-frasier-card border border-frasier-border rounded-xl p-6 flex flex-col gap-4">
+    <div className="bg-brand-card border border-brand-border rounded-xl p-6 flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h3 className="text-white font-semibold text-base">{title}</h3>
         {status && (
-          <span className="text-frasier-green text-xs font-semibold uppercase tracking-widest">
+          <span className="text-brand-green text-xs font-semibold uppercase tracking-widest">
             {status}
           </span>
         )}
@@ -83,7 +83,7 @@ export default function DeploymentCards({
           <Row label="Framework" value="Next.js 14 (App Router)" />
           <Row
             label="Source Repo"
-            value={`github.com/frasier-digital/${enriched.client.businessName
+            value={`github.com/irongrove/${enriched.client.businessName
               .toLowerCase()
               .replace(/\s+/g, "-")}`}
           />
@@ -102,7 +102,7 @@ export default function DeploymentCards({
           ].map((v) => (
             <span
               key={v}
-              className="font-mono text-frasier-green text-xs bg-black/30 px-2 py-1 rounded"
+              className="font-mono text-brand-green text-xs bg-black/30 px-2 py-1 rounded"
             >
               {v}
             </span>
@@ -121,7 +121,7 @@ export default function DeploymentCards({
             value={
               <span className="flex items-center gap-2">
                 {domain}
-                <span className="text-frasier-green text-xs font-semibold">
+                <span className="text-brand-green text-xs font-semibold">
                   ✓ Available
                 </span>
               </span>
@@ -196,7 +196,7 @@ export default function DeploymentCards({
                 },
               ].map((rec) => (
                 <tr key={`${rec.type}-${rec.name}-${rec.value}`}>
-                  <td className="py-1.5 pr-4 font-mono text-frasier-green text-xs">
+                  <td className="py-1.5 pr-4 font-mono text-brand-green text-xs">
                     {rec.type}
                   </td>
                   <td className="py-1.5 pr-4 font-mono text-xs">{rec.name}</td>
@@ -218,8 +218,8 @@ export default function DeploymentCards({
       </Card>
 
       {/* ── Pipeline Complete ── */}
-      <div className="bg-frasier-card border border-frasier-green rounded-xl p-8 flex flex-col items-center gap-4 text-center">
-        <span className="text-frasier-green text-3xl font-bold">✓</span>
+      <div className="bg-brand-card border border-brand-green rounded-xl p-8 flex flex-col items-center gap-4 text-center">
+        <span className="text-brand-green text-3xl font-bold">✓</span>
         <h3 className="text-white font-bold text-xl">Pipeline Complete</h3>
         <div className="flex flex-col gap-1">
           <p className="text-white/70 text-sm">
@@ -235,8 +235,8 @@ export default function DeploymentCards({
           "From intake to a deployed, SEO-optimized website with domain and DNS
           — fully automated, fully integrated."
         </p>
-        <p className="text-frasier-green font-semibold text-sm">
-          This is what Frasier Digital builds for you.
+        <p className="text-brand-green font-semibold text-sm">
+          This is what Irongrove builds for you.
         </p>
       </div>
     </div>

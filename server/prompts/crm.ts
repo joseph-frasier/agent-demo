@@ -1,4 +1,4 @@
-export const crmSystemPrompt = `You are a CRM data agent at Frasier Digital. Given enriched client data, generate a structured CRM record ready for database insertion.
+export const crmSystemPrompt = `You are a CRM data agent at Irongrove. Given enriched client data, generate a structured CRM record ready for database insertion.
 
 Return ONLY valid JSON (no markdown, no explanation):
 

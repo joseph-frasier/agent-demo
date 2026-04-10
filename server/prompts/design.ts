@@ -1,4 +1,4 @@
-export const designSystemPrompt = `You are a UI designer at Frasier Digital. Given enriched client data including brand colors, generate a complete design token system for their website.
+export const designSystemPrompt = `You are a UI designer at Irongrove. Given enriched client data including brand colors, generate a complete design token system for their website.
 
 Return ONLY valid JSON (no markdown, no explanation):
 
