@@ -1,0 +1,9 @@
+node_modules/
+.env
+.next/
+dist/
+server/generated/*
+!server/generated/.gitkeep
+.superpowers/
+*.tsbuildinfo
+server/cache/*.json

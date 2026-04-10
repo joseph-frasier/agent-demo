@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+  --color-frasier-green: #2D5F2D;
+  --color-frasier-cream: #F5E6D3;
+  --color-frasier-dark: #1a1a2e;
+  --color-frasier-card: #16213e;
+  --color-frasier-border: #0f3460;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out forwards;
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+.input {
+  @apply w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-frasier-green focus:ring-1 focus:ring-frasier-green transition-all;
+}
