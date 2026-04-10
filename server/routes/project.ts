@@ -30,13 +30,15 @@ projectRouter.post("/", async (req, res) => {
 
     if (mode === "live") {
       try {
-        const project = await client.beta.projects.create({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const beta = client.beta as any;
+        const project = await beta.projects.create({
           name: projectPayload.name,
           description: projectPayload.description,
         });
 
         for (const doc of projectPayload.knowledgeDocs) {
-          await client.beta.projects.docs.create(project.id, {
+          await beta.projects.docs.create(project.id, {
             name: doc.name,
             content: doc.content,
           });
