@@ -12,13 +12,13 @@ export function PhaseToggle({
       onClick={onToggle}
       className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
         isLive
-          ? "bg-green-500/20 text-green-400 border border-green-500/30"
-          : "bg-amber-500/20 text-amber-400 border border-amber-500/30"
+          ? "bg-brand-blue/15 text-brand-blue border border-brand-blue/30"
+          : "bg-white/5 text-white/50 border border-white/15"
       }`}
     >
       <span
         className={`w-1.5 h-1.5 rounded-full ${
-          isLive ? "bg-green-400" : "bg-amber-400"
+          isLive ? "bg-brand-blue animate-pulse-dot" : "bg-white/40"
         }`}
       />
       {isLive ? "Live" : "Cached"}

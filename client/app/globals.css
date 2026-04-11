@@ -1,11 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-green: #2D5F2D;
-  --color-brand-cream: #F5E6D3;
-  --color-brand-dark: #1a1a2e;
-  --color-brand-card: #16213e;
-  --color-brand-border: #0f3460;
+  --color-brand-dark: #051227;
+  --color-brand-card: #132B54;
+  --color-brand-border: #1E3A66;
+  --color-brand-accent: #F29B22;
+  --color-brand-blue: #60B2F0;
+  --color-brand-error: #F43F5E;
+  --color-brand-offwhite: #F5F7FA;
   --font-sans: "Inter", system-ui, sans-serif;
 }
 
@@ -34,5 +36,5 @@
 }
 
 .input {
-  @apply w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition-all;
+  @apply w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all;
 }

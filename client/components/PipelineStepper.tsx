@@ -55,9 +55,9 @@ export function PipelineStepper({
             <span
               className={`flex items-center justify-center w-7 h-7 rounded-full text-xs font-semibold ${
                 status === "complete"
-                  ? "bg-green-500/20 text-green-400"
+                  ? "bg-brand-accent/15 text-brand-accent"
                   : status === "active"
-                    ? "bg-blue-500/20 text-blue-400 animate-pulse-dot"
+                    ? "bg-brand-blue/15 text-brand-blue animate-pulse-dot"
                     : "bg-white/10 text-white/50"
               }`}
             >

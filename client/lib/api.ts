@@ -1,12 +1,15 @@
 import type {
   IntakeData,
   EnrichedData,
-  AgentsResult,
+  CrmRecord,
+  CreativeBrief,
+  DesignTokens,
+  AssetManifest,
   GeneratedSite,
   ProjectResult,
 } from "./types";
 
-const API_BASE = "/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:3001";
 
 async function post<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
@@ -25,8 +28,28 @@ export function fetchEnrich(intake: IntakeData): Promise<EnrichedData> {
   return post("/enrich", intake);
 }
 
-export function fetchAgents(enriched: EnrichedData): Promise<AgentsResult> {
-  return post("/agents", enriched);
+export function fetchAgentCrm(
+  enriched: EnrichedData
+): Promise<{ crm: CrmRecord }> {
+  return post("/agents/crm", enriched);
+}
+
+export function fetchAgentCreative(
+  enriched: EnrichedData
+): Promise<{ creative: CreativeBrief }> {
+  return post("/agents/creative", enriched);
+}
+
+export function fetchAgentDesign(
+  enriched: EnrichedData
+): Promise<{ design: DesignTokens }> {
+  return post("/agents/design", enriched);
+}
+
+export function fetchAgentAssets(
+  enriched: EnrichedData
+): Promise<{ assets: AssetManifest }> {
+  return post("/agents/assets", enriched);
 }
 
 export function fetchBuild(data: {

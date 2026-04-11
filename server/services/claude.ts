@@ -7,12 +7,14 @@ export async function callClaude<T>(opts: {
   user: string;
   maxTokens?: number;
 }): Promise<T> {
-  const message = await client.messages.create({
-    model: "claude-sonnet-4-5-20250929",
-    max_tokens: opts.maxTokens ?? 4096,
-    system: opts.system,
-    messages: [{ role: "user", content: opts.user }],
-  });
+  const message = await client.messages
+    .stream({
+      model: "claude-sonnet-4-5-20250929",
+      max_tokens: opts.maxTokens ?? 4096,
+      system: opts.system,
+      messages: [{ role: "user", content: opts.user }],
+    })
+    .finalMessage();
 
   const textBlock = message.content.find((b) => b.type === "text");
   if (!textBlock || textBlock.type !== "text") {

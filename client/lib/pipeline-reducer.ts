@@ -43,6 +43,23 @@ export function pipelineReducer(
         },
       };
 
+    case "SET_AGENT_RESULT": {
+      const nextAgents = {
+        ...state.agents,
+        [action.payload.agent]: action.payload.data,
+      };
+      const allDone =
+        nextAgents.crm &&
+        nextAgents.creative &&
+        nextAgents.design &&
+        nextAgents.assets;
+      return {
+        ...state,
+        agents: nextAgents,
+        phase: allDone ? "agents_complete" : state.phase,
+      };
+    }
+
     case "SET_PROJECT":
       return {
         ...state,

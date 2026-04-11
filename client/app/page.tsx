@@ -2,7 +2,15 @@
 
 import { useReducer, useRef } from "react";
 import { pipelineReducer, initialState, isLive } from "@/lib/pipeline-reducer";
-import { fetchEnrich, fetchAgents, fetchBuild, fetchProject } from "@/lib/api";
+import {
+  fetchEnrich,
+  fetchAgentCrm,
+  fetchAgentCreative,
+  fetchAgentDesign,
+  fetchAgentAssets,
+  fetchBuild,
+  fetchProject,
+} from "@/lib/api";
 import {
   fallbackEnriched,
   fallbackAgents,
@@ -77,9 +85,9 @@ function PhaseSection({
         <span
           className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold shrink-0 ${
             status === "complete"
-              ? "bg-green-500/20 text-green-400"
+              ? "bg-brand-accent/15 text-brand-accent"
               : status === "active"
-                ? "bg-blue-500/20 text-blue-400"
+                ? "bg-brand-blue/15 text-brand-blue"
                 : "bg-white/10 text-white/40"
           }`}
         >
@@ -118,17 +126,56 @@ export default function HomePage() {
         : fallbackEnriched;
       dispatch({ type: "SET_ENRICHED", payload: enriched });
 
-      // Phase 2b: Agents
+      // Phase 2b: Agents — fan out four calls, dispatch each as it settles
       dispatch({ type: "SET_PHASE", payload: "processing_agents" });
-      const agents = isLive(state, "agents")
-        ? await fetchAgents(enriched)
-        : fallbackAgents;
-      dispatch({ type: "SET_AGENTS", payload: agents });
+
+      if (isLive(state, "agents")) {
+        const crmP = fetchAgentCrm(enriched).then((r) =>
+          dispatch({ type: "SET_AGENT_RESULT", payload: { agent: "crm", data: r.crm } })
+        );
+        const creativeP = fetchAgentCreative(enriched).then((r) =>
+          dispatch({
+            type: "SET_AGENT_RESULT",
+            payload: { agent: "creative", data: r.creative },
+          })
+        );
+        const designP = fetchAgentDesign(enriched).then((r) =>
+          dispatch({
+            type: "SET_AGENT_RESULT",
+            payload: { agent: "design", data: r.design },
+          })
+        );
+        const assetsP = fetchAgentAssets(enriched).then((r) =>
+          dispatch({
+            type: "SET_AGENT_RESULT",
+            payload: { agent: "assets", data: r.assets },
+          })
+        );
+        await Promise.all([crmP, creativeP, designP, assetsP]);
+      } else {
+        dispatch({
+          type: "SET_AGENT_RESULT",
+          payload: { agent: "crm", data: fallbackAgents.crm },
+        });
+        dispatch({
+          type: "SET_AGENT_RESULT",
+          payload: { agent: "creative", data: fallbackAgents.creative },
+        });
+        dispatch({
+          type: "SET_AGENT_RESULT",
+          payload: { agent: "design", data: fallbackAgents.design },
+        });
+        dispatch({
+          type: "SET_AGENT_RESULT",
+          payload: { agent: "assets", data: fallbackAgents.assets },
+        });
+      }
     } catch (err) {
       dispatch({
         type: "SET_ERROR",
         payload: err instanceof Error ? err.message : "An error occurred",
       });
+      dispatch({ type: "SET_PHASE", payload: "intake" });
     }
   }
 
@@ -156,6 +203,7 @@ export default function HomePage() {
         type: "SET_ERROR",
         payload: err instanceof Error ? err.message : "Build failed",
       });
+      dispatch({ type: "SET_PHASE", payload: "agents_complete" });
     }
   }
 
@@ -194,12 +242,16 @@ export default function HomePage() {
   return (
     <div className="flex min-h-screen bg-brand-dark text-white">
       {/* ── Left Sidebar ── */}
-      <aside className="w-72 shrink-0 border-r border-brand-border flex flex-col gap-8 p-6">
-        <div>
-          <h1 className="text-lg font-bold tracking-widest uppercase text-white">
-            Irongrove
-          </h1>
-          <p className="text-sm text-white/50 mt-1">Agent Pipeline Demo</p>
+      <aside className="w-72 shrink-0 border-r border-brand-border flex flex-col gap-8 p-6 sticky top-0 h-screen self-start">
+        <div className="flex flex-col items-center gap-2">
+          <img
+            src="/irongrove-logo.png"
+            alt="Irongrove"
+            className="h-20 w-auto"
+          />
+          <p className="text-xs text-white/60 uppercase tracking-widest">
+            Agent Pipeline Demo
+          </p>
         </div>
 
         <PipelineStepper currentPhase={phase} />
@@ -221,11 +273,11 @@ export default function HomePage() {
       <main className="flex-1 p-8 max-w-4xl">
         {/* Error banner */}
         {error && (
-          <div className="mb-6 flex items-center justify-between rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3">
-            <span className="text-sm text-red-400">{error}</span>
+          <div className="mb-6 flex items-center justify-between rounded-xl border border-brand-error/30 bg-brand-error/10 px-4 py-3">
+            <span className="text-sm text-brand-error">{error}</span>
             <button
               onClick={() => dispatch({ type: "RESET" })}
-              className="ml-4 rounded-lg border border-red-500/30 px-3 py-1 text-xs font-medium text-red-400 hover:bg-red-500/20 transition-colors"
+              className="ml-4 rounded-lg border border-brand-error/30 px-3 py-1 text-xs font-medium text-brand-error hover:bg-brand-error/20 transition-colors"
             >
               Reset
             </button>
@@ -335,13 +387,13 @@ export default function HomePage() {
                   {!agents.project && (
                     <button
                       onClick={handleCreateProject}
-                      className="rounded-lg bg-brand-green px-4 py-2 text-sm font-semibold text-white hover:opacity-90 transition-opacity"
+                      className="rounded-lg bg-brand-accent px-4 py-2 text-sm font-semibold text-brand-dark hover:opacity-90 transition-opacity"
                     >
                       Create for real
                     </button>
                   )}
                   {agents.project && (
-                    <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs font-semibold text-green-400">
+                    <span className="rounded-full bg-brand-accent/15 px-3 py-1 text-xs font-semibold text-brand-accent">
                       Created
                     </span>
                   )}

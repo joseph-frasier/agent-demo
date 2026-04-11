@@ -205,6 +205,14 @@ export type PipelineAction =
   | { type: "SUBMIT_INTAKE"; payload: IntakeData }
   | { type: "SET_ENRICHED"; payload: EnrichedData }
   | { type: "SET_AGENTS"; payload: AgentsResult }
+  | {
+      type: "SET_AGENT_RESULT";
+      payload:
+        | { agent: "crm"; data: CrmRecord }
+        | { agent: "creative"; data: CreativeBrief }
+        | { agent: "design"; data: DesignTokens }
+        | { agent: "assets"; data: AssetManifest };
+    }
   | { type: "SET_PROJECT"; payload: ProjectResult }
   | { type: "APPROVE" }
   | { type: "SET_BUILD"; payload: GeneratedSite }

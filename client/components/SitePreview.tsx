@@ -15,7 +15,7 @@ export default function SitePreview({ site }: { site: GeneratedSite }) {
       {/* Toolbar */}
       <div className="bg-brand-card border border-brand-border rounded-xl p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-brand-green inline-block" />
+          <span className="w-2.5 h-2.5 rounded-full bg-brand-blue animate-pulse-dot inline-block" />
           <span className="text-white font-semibold text-sm">Preview: Generated Website</span>
         </div>
         {!isFallback && currentPage && (
@@ -23,7 +23,7 @@ export default function SitePreview({ site }: { site: GeneratedSite }) {
             href={iframeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-brand-green text-sm hover:underline"
+            className="text-brand-blue text-sm hover:underline"
           >
             Open in new tab ↗
           </a>
@@ -39,7 +39,7 @@ export default function SitePreview({ site }: { site: GeneratedSite }) {
               onClick={() => setActivePage(index)}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
                 index === activePage
-                  ? "bg-brand-green text-black border-brand-green"
+                  ? "bg-brand-accent text-brand-dark border-brand-accent"
                   : "bg-brand-card border-brand-border text-white/70 hover:text-white"
               }`}
             >

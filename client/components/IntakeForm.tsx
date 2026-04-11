@@ -208,7 +208,7 @@ export default function IntakeForm({
                 onClick={() => togglePage(page)}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all ${
                   active
-                    ? "bg-brand-green border-brand-green text-white"
+                    ? "bg-brand-blue/15 border-brand-blue text-brand-blue"
                     : "bg-white/5 border-white/10 text-white/60 hover:border-white/30"
                 }`}
               >
@@ -247,7 +247,7 @@ export default function IntakeForm({
       {/* Submit */}
       <button
         type="submit"
-        className="w-full py-3 rounded-xl bg-brand-green text-white font-semibold text-sm tracking-wide hover:opacity-90 active:opacity-80 transition-opacity"
+        className="w-full py-3 rounded-xl bg-brand-accent text-brand-dark font-semibold text-sm tracking-wide hover:opacity-90 active:opacity-80 transition-opacity"
       >
         Submit Intake
       </button>

@@ -190,7 +190,7 @@ export function ApprovalPanel({
               <span className="font-mono text-white font-semibold">
                 {derivedDomain}
               </span>
-              <span className="text-green-400 text-xs font-semibold">
+              <span className="text-brand-accent text-xs font-semibold">
                 ✓ Available
               </span>
             </div>
@@ -252,7 +252,7 @@ export function ApprovalPanel({
       <div className="flex gap-3 pt-2">
         <button
           onClick={onApprove}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-green-600 hover:bg-green-500 text-white text-sm font-semibold rounded-lg transition-colors duration-200"
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-accent hover:opacity-90 text-brand-dark text-sm font-semibold rounded-lg transition-opacity duration-200"
         >
           <span>✓</span>
           <span>Approve &amp; Build</span>

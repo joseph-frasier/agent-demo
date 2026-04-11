@@ -11,15 +11,15 @@ type Status = "pending" | "processing" | "complete";
 function StatusBadge({ status }: { status: Status }) {
   if (status === "complete") {
     return (
-      <span className="flex items-center gap-1 rounded-full bg-green-500/20 px-2 py-0.5 text-xs font-medium text-green-400">
+      <span className="flex items-center gap-1 rounded-full bg-brand-accent/15 px-2 py-0.5 text-xs font-medium text-brand-accent">
         <span>✓</span> Complete
       </span>
     );
   }
   if (status === "processing") {
     return (
-      <span className="flex items-center gap-1 rounded-full bg-yellow-500/20 px-2 py-0.5 text-xs font-medium text-yellow-400">
-        <span>◉</span> Processing...
+      <span className="flex items-center gap-1 rounded-full bg-brand-blue/15 px-2 py-0.5 text-xs font-medium text-brand-blue">
+        <span className="animate-pulse-dot">◉</span> Processing...
       </span>
     );
   }
