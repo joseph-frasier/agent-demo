@@ -60,10 +60,34 @@ export function fetchBuild(data: {
   return post("/build", data);
 }
 
-export function fetchProject(data: {
+export async function fetchProjectKit(data: {
   enriched: EnrichedData;
   creative: unknown;
-  mode: "live" | "display";
+  design: unknown;
 }): Promise<ProjectResult> {
-  return post("/project", data);
+  const res = await fetch(`${API_BASE}/project`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: res.statusText }));
+    throw new Error(err.error || err.message || "Project kit download failed");
+  }
+
+  const blob = await res.blob();
+  const disposition = res.headers.get("content-disposition") ?? "";
+  const match = disposition.match(/filename="([^"]+)"/);
+  const filename = match?.[1] ?? "claude-project-kit.zip";
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  return { filename, downloadedAt: new Date().toISOString() };
 }

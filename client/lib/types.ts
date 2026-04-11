@@ -137,10 +137,8 @@ export type AssetManifest = {
 };
 
 export type ProjectResult = {
-  projectId: string;
-  name: string;
-  docsCount: number;
-  mode: "live" | "display";
+  filename: string;
+  downloadedAt: string;
 };
 
 export type AgentsResult = {

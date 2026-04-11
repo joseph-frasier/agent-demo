@@ -215,10 +215,8 @@ export const fallbackAgents: AgentsResult = {
 };
 
 export const fallbackProject: ProjectResult = {
-  projectId: "proj_01JXYZ789ABC",
-  name: "Lone Star Pet Grooming — Website Build",
-  docsCount: 3,
-  mode: "display",
+  filename: "lone-star-pet-grooming-claude-project-kit.zip",
+  downloadedAt: "2026-04-11T10:30:00.000Z",
 };
 
 export const fallbackBuild: GeneratedSite = {

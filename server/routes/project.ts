@@ -1,78 +1,337 @@
 import { Router } from "express";
-import Anthropic from "@anthropic-ai/sdk";
+import archiver from "archiver";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const projectRouter = Router();
 
-const client = new Anthropic();
-
 projectRouter.post("/", async (req, res) => {
   try {
-    const { enriched, creative, mode } = req.body;
+    const { enriched, creative, design } = req.body ?? {};
+    if (!enriched || !creative) {
+      res
+        .status(400)
+        .json({ error: "Missing required fields: enriched, creative" });
+      return;
+    }
 
-    const projectPayload = {
-      name: `${enriched.client.businessName} — Website Build`,
-      description: `Web design project for ${enriched.client.businessName}. ${enriched.brand.tagline}`,
-      knowledgeDocs: [
-        {
-          name: "Client Intake Data",
-          content: JSON.stringify(enriched, null, 2),
-        },
-        {
-          name: "Creative Brief",
-          content: JSON.stringify(creative, null, 2),
-        },
-        {
-          name: "Brand Guidelines",
-          content: `Brand: ${enriched.client.businessName}\nTagline: ${enriched.brand.tagline}\nTone: ${enriched.brand.tone.join(", ")}\nVoice: ${enriched.brand.voiceGuidelines}\nPrimary Color: ${enriched.brand.colors.primary.hex} (${enriched.brand.colors.primary.name})\nSecondary Color: ${enriched.brand.colors.secondary.hex} (${enriched.brand.colors.secondary.name})`,
-        },
-      ],
-    };
+    const businessName = enriched.client?.businessName ?? "project";
+    const slug =
+      businessName
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "") || "project";
+    const filename = `${slug}-claude-project-kit.zip`;
 
-    if (mode === "live") {
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const beta = client.beta as any;
-        const project = await beta.projects.create({
-          name: projectPayload.name,
-          description: projectPayload.description,
-        });
+    res.setHeader("Content-Type", "application/zip");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${filename}"`
+    );
 
-        for (const doc of projectPayload.knowledgeDocs) {
-          await beta.projects.docs.create(project.id, {
-            name: doc.name,
-            content: doc.content,
-          });
-        }
-
-        res.json({
-          projectId: project.id,
-          name: project.name,
-          docsCount: projectPayload.knowledgeDocs.length,
-          mode: "live",
-        });
-      } catch (apiError) {
-        console.error("Projects API error, falling back to display:", apiError);
-        res.json({
-          projectId: `proj_${Date.now().toString(36)}`,
-          name: projectPayload.name,
-          docsCount: projectPayload.knowledgeDocs.length,
-          mode: "display",
-          fallbackReason: "Projects API unavailable",
-        });
+    const archive = archiver("zip", { zlib: { level: 9 } });
+    archive.on("warning", (err) => {
+      if (err.code !== "ENOENT") throw err;
+    });
+    archive.on("error", (err) => {
+      console.error("Archive error:", err);
+      if (!res.headersSent) {
+        res.status(500).json({ error: "Archive generation failed" });
+      } else {
+        res.end();
       }
-    } else {
-      res.json({
-        projectId: `proj_${Date.now().toString(36)}`,
-        name: projectPayload.name,
-        docsCount: projectPayload.knowledgeDocs.length,
-        mode: "display",
+    });
+    archive.pipe(res);
+
+    archive.append(buildReadme(enriched, filename), { name: "README.md" });
+    archive.append(buildSystemPrompt(enriched, creative), {
+      name: "system-prompt.md",
+    });
+    archive.append(buildClientBrief(enriched), {
+      name: "knowledge/client-brief.md",
+    });
+    archive.append(buildCreativeBrief(creative), {
+      name: "knowledge/creative-brief.md",
+    });
+    if (design) {
+      archive.append(buildDesignSystem(design), {
+        name: "knowledge/design-system.md",
       });
     }
+
+    const publicDir = path.join(__dirname, "..", "..", "client", "public");
+    const logoPath = path.join(publicDir, "demo-logo.svg");
+    const heroPath = path.join(publicDir, "demo-hero.jpg");
+    if (fs.existsSync(logoPath)) {
+      archive.file(logoPath, { name: "assets/logo.svg" });
+    }
+    if (fs.existsSync(heroPath)) {
+      archive.file(heroPath, { name: "assets/hero.jpg" });
+    }
+
+    await archive.finalize();
   } catch (error) {
-    console.error("Project error:", error);
-    res.status(500).json({
-      error: "Project creation failed",
-      message: error instanceof Error ? error.message : "Unknown error",
-    });
+    console.error("Project kit error:", error);
+    if (!res.headersSent) {
+      res.status(500).json({
+        error: "Project kit generation failed",
+        message: error instanceof Error ? error.message : "Unknown error",
+      });
+    } else {
+      res.end();
+    }
   }
 });
+
+// ── Markdown builders ────────────────────────────────────────────────────────
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function buildReadme(enriched: any, filename: string): string {
+  const name = enriched.client.businessName;
+  return `# ${name} — Claude Project Kit
+
+Everything you need to set up a Claude Project for ${name}. This kit was
+generated by the Irongrove agent pipeline from the intake data.
+
+## Setup Instructions
+
+1. Go to https://claude.ai/projects
+2. Click **Create Project**
+3. Name it: **${name} — Website Build**
+4. Description: ${enriched.brand.tagline}
+5. Open the **Project instructions** panel and paste the contents of \`system-prompt.md\`
+6. In the **Project knowledge** section, upload the files from the \`knowledge/\` folder:
+   - \`client-brief.md\` — business details, services, SEO strategy
+   - \`creative-brief.md\` — brand voice, page copy, content themes
+   - \`design-system.md\` — colors, typography, layout tokens
+7. Optional: upload the files in \`assets/\` as additional project knowledge
+
+Once set up, any conversation inside the project will have full context about
+the brand, voice, design system, and target audience — so Claude can help you
+write copy, spec new pages, iterate on the design, or draft marketing
+collateral that stays on-brand.
+
+## Contents
+
+\`\`\`
+${filename}
+├── README.md                   (this file)
+├── system-prompt.md            (paste into Project instructions)
+├── knowledge/
+│   ├── client-brief.md
+│   ├── creative-brief.md
+│   └── design-system.md
+└── assets/
+    ├── logo.svg
+    └── hero.jpg
+\`\`\`
+`;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function buildSystemPrompt(enriched: any, creative: any): string {
+  const name = enriched.client.businessName;
+  const tone = Array.isArray(enriched.brand.tone)
+    ? enriched.brand.tone.join(", ")
+    : String(enriched.brand.tone);
+  const guidelines = (creative.brandVoice?.languageGuidelines ?? [])
+    .map((g: string) => `- ${g}`)
+    .join("\n");
+
+  return `# Project Instructions
+
+You are Claude, assisting the team at Irongrove with ongoing work on the
+${name} website and marketing collateral.
+
+## About the business
+
+${name} is a ${enriched.client.industry} business based in ${enriched.client.location}.
+
+**Tagline:** ${enriched.brand.tagline}
+
+## Brand voice
+
+${creative.brandVoice?.personality ?? ""}
+
+**Tone keywords:** ${tone}
+
+**Language guidelines:**
+${guidelines}
+
+## Your role
+
+When helping with this project:
+
+- Match the brand voice above precisely — stay on-brand in tone, word choice, and rhythm.
+- Reference the knowledge documents (client brief, creative brief, design system) for any factual details about the business, services, or design tokens.
+- When writing copy, default to the tone established in the creative brief. Don't invent new personas.
+- When making design suggestions, respect the color palette and typography in the design system.
+- Flag any request that would contradict the established brand guidelines — and suggest an on-brand alternative.
+
+Your goal is to be a trusted ongoing partner for this client's digital presence.
+`;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function buildClientBrief(e: any): string {
+  const services = (e.services ?? [])
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .map(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (s: any) =>
+        `### ${s.name}\n\n${s.description}\n\n**Keywords:** ${(s.keywords ?? []).join(", ")}`
+    )
+    .join("\n\n");
+
+  const usps = (e.businessDetails?.uniqueSellingPoints ?? [])
+    .map((u: string) => `- ${u}`)
+    .join("\n");
+
+  return `# Client Brief — ${e.client.businessName}
+
+## Contact
+
+- **Owner:** ${e.client.name}
+- **Business:** ${e.client.businessName}
+- **Industry:** ${e.client.industry}${e.client.industryCategory ? ` (${e.client.industryCategory})` : ""}
+- **Location:** ${e.client.location}
+- **Email:** ${e.client.email}
+- **Phone:** ${e.client.phone}
+
+## Brand
+
+- **Tagline:** ${e.brand.tagline}
+- **Tone:** ${Array.isArray(e.brand.tone) ? e.brand.tone.join(", ") : e.brand.tone}
+- **Voice guidelines:** ${e.brand.voiceGuidelines}
+- **Primary color:** ${e.brand.colors.primary.hex} (${e.brand.colors.primary.name})
+- **Secondary color:** ${e.brand.colors.secondary.hex} (${e.brand.colors.secondary.name})
+
+## Services
+
+${services}
+
+## SEO Strategy
+
+- **Meta description:** ${e.seo?.metaDescription ?? ""}
+- **Primary keywords:** ${(e.seo?.primaryKeywords ?? []).join(", ")}
+- **Secondary keywords:** ${(e.seo?.secondaryKeywords ?? []).join(", ")}
+
+## Business Details
+
+- **Years in business:** ${e.businessDetails?.yearsInBusiness ?? ""}
+- **Service area:** ${e.businessDetails?.serviceArea ?? ""}
+
+**Unique selling points:**
+${usps}
+`;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function buildCreativeBrief(c: any): string {
+  const guidelines = (c.brandVoice?.languageGuidelines ?? [])
+    .map((g: string) => `- ${g}`)
+    .join("\n");
+
+  const pages = (c.pages ?? [])
+    .map(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (p: any) => {
+        const sections = (p.sections ?? [])
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .map(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (s: any) => `#### ${s.heading} (${s.type})\n\n${s.content}`
+          )
+          .join("\n\n");
+        return `### ${p.name}
+
+**Meta title:** ${p.metaTitle}
+**Meta description:** ${p.metaDescription}
+
+${sections}`;
+      }
+    )
+    .join("\n\n");
+
+  const themes = (c.seoStrategy?.contentThemes ?? [])
+    .map((t: string) => `- ${t}`)
+    .join("\n");
+
+  return `# Creative Brief
+
+## Brand Voice
+
+**Tone:** ${c.brandVoice?.tone ?? ""}
+
+**Personality:** ${c.brandVoice?.personality ?? ""}
+
+**Language Guidelines:**
+${guidelines}
+
+## Hero Section
+
+- **Headline:** ${c.heroSection?.headline ?? ""}
+- **Subheadline:** ${c.heroSection?.subheadline ?? ""}
+- **CTA:** ${c.heroSection?.ctaText ?? ""}
+
+## Page Outlines
+
+${pages}
+
+## SEO Strategy
+
+**Primary keywords:** ${(c.seoStrategy?.primaryKeywords ?? []).join(", ")}
+
+**Content themes:**
+${themes}
+
+## Color Rationale
+
+${c.colorRationale ?? ""}
+`;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function buildDesignSystem(d: any): string {
+  const colors = (d.colors ?? [])
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .map(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (c: any) => `- **${c.name}** \`${c.hex}\` — ${c.role}: ${c.usage}`
+    )
+    .join("\n");
+
+  const sections = (d.layout?.sections ?? [])
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .map(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (s: any) =>
+        `- **${s.name}** (${s.type}${s.columns ? `, ${s.columns} columns` : ""})`
+    )
+    .join("\n");
+
+  return `# Design System
+
+## Colors
+
+${colors}
+
+## Typography
+
+- **Heading font:** ${d.typography?.headingFont ?? ""} (weight ${d.typography?.headingWeight ?? ""})
+- **Body font:** ${d.typography?.bodyFont ?? ""} (weight ${d.typography?.bodyWeight ?? ""})
+
+## Layout
+
+- **Max width:** ${d.layout?.maxWidth ?? ""}
+- **Section padding:** ${d.spacing?.sectionPadding ?? ""}
+- **Component gap:** ${d.spacing?.componentGap ?? ""}
+
+### Sections
+
+${sections}
+`;
+}
