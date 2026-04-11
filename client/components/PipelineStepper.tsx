@@ -1,11 +1,13 @@
+"use client";
+
 import type { PhaseStatus } from "@/lib/types";
 
 const PHASES = [
-  { key: "intake", label: "Client Intake", phase: 1 },
-  { key: "enriching", label: "Agent Processing", phase: 2 },
-  { key: "approval", label: "Lead Approval", phase: 3 },
-  { key: "building", label: "Website Build", phase: 4 },
-  { key: "deployment_ready", label: "Deployment Ready", phase: 5 },
+  { key: "intake", label: "Client Intake", phase: 1, targetId: "section-intake" },
+  { key: "enriching", label: "Agent Processing", phase: 2, targetId: "section-agents" },
+  { key: "approval", label: "Lead Approval", phase: 3, targetId: "section-approval" },
+  { key: "building", label: "Website Build", phase: 4, targetId: "section-build" },
+  { key: "deployment_ready", label: "Deployment Ready", phase: 5, targetId: "section-deployment" },
 ] as const;
 
 const PHASE_ORDER: Record<string, number> = {
@@ -24,6 +26,12 @@ function getStatus(
   phaseKey: string,
   currentPhase: PhaseStatus
 ): "complete" | "active" | "pending" {
+  // Terminal state: once we reach deployment_ready the whole pipeline is done,
+  // so show it as complete rather than perpetually "active".
+  if (currentPhase === "deployment_ready" && phaseKey === "deployment_ready") {
+    return "complete";
+  }
+
   const currentIdx = PHASE_ORDER[currentPhase] ?? 0;
   const phaseIdx = PHASE_ORDER[phaseKey] ?? 0;
 
@@ -37,20 +45,29 @@ export function PipelineStepper({
 }: {
   currentPhase: PhaseStatus;
 }) {
+  const handleClick = (targetId: string) => {
+    const el = document.getElementById(targetId);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <nav className="flex flex-col gap-1">
-      {PHASES.map(({ key, label, phase }) => {
+      {PHASES.map(({ key, label, phase, targetId }) => {
         const status = getStatus(key, currentPhase);
+        const clickable = status !== "pending";
         return (
-          <div
+          <button
             key={key}
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 ${
+            type="button"
+            onClick={() => clickable && handleClick(targetId)}
+            disabled={!clickable}
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 text-left w-full ${
               status === "active"
                 ? "bg-brand-card border border-brand-border"
                 : status === "complete"
                   ? "opacity-70"
                   : "opacity-40"
-            }`}
+            } ${clickable ? "enabled:hover:bg-white/5" : ""} disabled:cursor-default`}
           >
             <span
               className={`flex items-center justify-center w-7 h-7 rounded-full text-xs font-semibold ${
@@ -64,7 +81,7 @@ export function PipelineStepper({
               {status === "complete" ? "✓" : phase}
             </span>
             <span className="text-sm font-medium">{label}</span>
-          </div>
+          </button>
         );
       })}
     </nav>

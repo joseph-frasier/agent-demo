@@ -67,7 +67,11 @@ export default function DeploymentCards({
   startTime: number;
 }) {
   const domain = toDomain(enriched.client.businessName);
-  const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+  const elapsedSeconds = (Date.now() - startTime) / 1000;
+  const elapsed =
+    elapsedSeconds < 60
+      ? `${elapsedSeconds.toFixed(1)}s`
+      : `${Math.floor(elapsedSeconds / 60)}m ${Math.round(elapsedSeconds % 60)}s`;
 
   return (
     <div className="flex flex-col gap-6 animate-fade-in-up">
@@ -224,7 +228,7 @@ export default function DeploymentCards({
         <div className="flex flex-col gap-1">
           <p className="text-white/70 text-sm">
             Total time elapsed:{" "}
-            <span className="text-white font-semibold">{elapsed}s</span>
+            <span className="text-white font-semibold">{elapsed}</span>
           </p>
           <p className="text-white/50 text-sm">
             Traditional timeline:{" "}

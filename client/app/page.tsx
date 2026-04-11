@@ -9,7 +9,7 @@ import {
   fetchAgentDesign,
   fetchAgentAssets,
   fetchBuild,
-  fetchProject,
+  fetchProjectKit,
 } from "@/lib/api";
 import {
   fallbackEnriched,
@@ -51,6 +51,7 @@ const PHASE_ORDER: Record<PhaseStatus, number> = {
 // ── PhaseSection internal component ───────────────────────────────────────────
 
 interface PhaseSectionProps {
+  id: string;
   title: string;
   phaseNumber: number;
   currentPhase: PhaseStatus;
@@ -60,6 +61,7 @@ interface PhaseSectionProps {
 }
 
 function PhaseSection({
+  id,
   title,
   phaseNumber,
   currentPhase,
@@ -80,7 +82,7 @@ function PhaseSection({
   }
 
   return (
-    <section className="mb-12">
+    <section id={id} className="mb-12 scroll-mt-8">
       <div className="flex items-center gap-3 mb-6">
         <span
           className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold shrink-0 ${
@@ -212,17 +214,18 @@ export default function HomePage() {
 
     try {
       const project = isLive(state, "project")
-        ? await fetchProject({
+        ? await fetchProjectKit({
             enriched: state.enriched,
             creative: state.agents.creative,
-            mode: "live",
+            design: state.agents.design,
           })
         : fallbackProject;
       dispatch({ type: "SET_PROJECT", payload: project });
     } catch (err) {
       dispatch({
         type: "SET_ERROR",
-        payload: err instanceof Error ? err.message : "Project creation failed",
+        payload:
+          err instanceof Error ? err.message : "Project kit download failed",
       });
     }
   }
@@ -286,6 +289,7 @@ export default function HomePage() {
 
         {/* ── Phase 1: Client Intake ── */}
         <PhaseSection
+          id="section-intake"
           title="Client Intake"
           phaseNumber={1}
           currentPhase={phase}
@@ -309,6 +313,7 @@ export default function HomePage() {
         {/* ── Phase 2: Enrichment + Agents ── */}
         {phaseAtLeast("enriching") && (
           <PhaseSection
+            id="section-agents"
             title="AI Enrichment & Agent Processing"
             phaseNumber={2}
             currentPhase={phase}
@@ -368,44 +373,76 @@ export default function HomePage() {
               </div>
             )}
 
-            {/* Claude Project card */}
-            {phaseAtLeast("processing_agents") && (
+            {/* Claude Project card — only after creative agent finishes since the kit needs its output */}
+            {agents.creative && (
               <div className="rounded-xl border border-brand-border bg-brand-card p-5">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-semibold text-white">Claude Project</h3>
+                <div className="flex items-center justify-between gap-4">
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-white">Claude Project Kit</h3>
                     {agents.project ? (
-                      <p className="mt-1 text-xs text-white/50 font-mono">
-                        {agents.project.projectId}
+                      <p className="mt-1 text-xs text-white/50 font-mono truncate">
+                        {agents.project.filename}
                       </p>
                     ) : (
                       <p className="mt-1 text-xs text-white/50">
-                        Create a Claude project to house all generated docs
+                        Download a ready-to-import bundle for claude.ai Projects
                       </p>
                     )}
                   </div>
                   {!agents.project && (
                     <button
                       onClick={handleCreateProject}
-                      className="rounded-lg bg-brand-accent px-4 py-2 text-sm font-semibold text-brand-dark hover:opacity-90 transition-opacity"
+                      className="shrink-0 rounded-lg bg-brand-accent px-4 py-2 text-sm font-semibold text-brand-dark hover:opacity-90 transition-opacity cursor-pointer"
                     >
-                      Create for real
+                      Download Kit
                     </button>
                   )}
                   {agents.project && (
-                    <span className="rounded-full bg-brand-accent/15 px-3 py-1 text-xs font-semibold text-brand-accent">
-                      Created
-                    </span>
+                    <div className="flex shrink-0 items-center gap-2">
+                      <span className="rounded-full bg-brand-accent/15 px-3 py-1 text-xs font-semibold text-brand-accent">
+                        Downloaded ✓
+                      </span>
+                      <button
+                        onClick={handleCreateProject}
+                        className="rounded-lg border border-brand-border px-3 py-1 text-xs font-medium text-white/70 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
+                      >
+                        Re-download
+                      </button>
+                    </div>
                   )}
                 </div>
+                {agents.project && (
+                  <div className="mt-4 pt-4 border-t border-brand-border">
+                    <p className="text-xs text-white/60 mb-2 font-semibold uppercase tracking-widest">
+                      Next Steps
+                    </p>
+                    <ol className="text-xs text-white/70 space-y-1 list-decimal list-inside">
+                      <li>
+                        Open{" "}
+                        <a
+                          href="https://claude.ai/projects"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-brand-blue hover:underline"
+                        >
+                          claude.ai/projects
+                        </a>{" "}
+                        and create a new project
+                      </li>
+                      <li>Paste <code className="font-mono text-brand-blue">system-prompt.md</code> into Project instructions</li>
+                      <li>Upload files from <code className="font-mono text-brand-blue">knowledge/</code> as project knowledge</li>
+                    </ol>
+                  </div>
+                )}
               </div>
             )}
           </PhaseSection>
         )}
 
         {/* ── Phase 3: Approval ── */}
-        {phase === "agents_complete" && enriched && agents.crm && agents.creative && agents.design && (
+        {phaseAtLeast("agents_complete") && enriched && agents.crm && agents.creative && agents.design && (
           <PhaseSection
+            id="section-approval"
             title="Lead Approval"
             phaseNumber={3}
             currentPhase={phase}
@@ -421,13 +458,15 @@ export default function HomePage() {
               }}
               project={agents.project}
               onApprove={handleApprove}
+              approved={PHASE_ORDER[phase] > PHASE_ORDER["agents_complete"]}
             />
           </PhaseSection>
         )}
 
         {/* ── Phase 4: Website Build ── */}
-        {phaseAtLeast("building") && phase !== "agents_complete" && (
+        {phaseAtLeast("building") && (
           <PhaseSection
+            id="section-build"
             title="Website Build"
             phaseNumber={4}
             currentPhase={phase}
@@ -454,6 +493,7 @@ export default function HomePage() {
         {/* ── Phase 5: Deployment ── */}
         {phase === "deployment_ready" && enriched && (
           <PhaseSection
+            id="section-deployment"
             title="Deployment Ready"
             phaseNumber={5}
             currentPhase={phase}

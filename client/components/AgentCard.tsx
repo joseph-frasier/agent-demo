@@ -50,13 +50,15 @@ interface AgentCardProps {
 
 export default function AgentCard({ title, status, children, note }: AgentCardProps) {
   const [open, setOpen] = useState(false);
+  const expandable = status === "complete";
 
   return (
     <div className="rounded-xl border border-brand-border bg-brand-card overflow-hidden">
       <button
         type="button"
-        onClick={() => setOpen((prev) => !prev)}
-        className="flex w-full items-center justify-between px-5 py-4 text-left"
+        onClick={() => expandable && setOpen((prev) => !prev)}
+        disabled={!expandable}
+        className="flex w-full items-center justify-between px-5 py-4 text-left transition-colors duration-200 enabled:hover:bg-white/5"
       >
         <div className="flex items-center gap-3">
           <span className="font-medium text-white">{title}</span>
@@ -64,11 +66,13 @@ export default function AgentCard({ title, status, children, note }: AgentCardPr
         </div>
         <div className="flex items-center gap-3">
           <StatusBadge status={status} />
-          <span className="text-white/40 text-sm">{open ? "▲" : "▼"}</span>
+          {expandable && (
+            <span className="text-white/40 text-sm">{open ? "▲" : "▼"}</span>
+          )}
         </div>
       </button>
 
-      {open && (
+      {open && expandable && (
         <div className="border-t border-brand-border px-5 py-4">{children}</div>
       )}
     </div>

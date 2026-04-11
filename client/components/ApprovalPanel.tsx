@@ -8,6 +8,7 @@ interface ApprovalPanelProps {
   agents: AgentsResult;
   project: ProjectResult | null;
   onApprove: () => void;
+  approved?: boolean;
 }
 
 interface CollapsibleSectionProps {
@@ -48,6 +49,7 @@ export function ApprovalPanel({
   agents,
   project,
   onApprove,
+  approved = false,
 }: ApprovalPanelProps) {
   const [openSection, setOpenSection] = useState<string | null>("brief");
 
@@ -212,37 +214,31 @@ export function ApprovalPanel({
         {/* Claude Project (conditional) */}
         {project && (
           <CollapsibleSection
-            title="Claude Project"
+            title="Claude Project Kit"
             isOpen={openSection === "claude"}
             onToggle={() => toggle("claude")}
           >
             <div className="space-y-2 text-sm">
               <div>
                 <p className="text-xs text-white/40 uppercase tracking-wider mb-1">
-                  Project ID
+                  Downloaded file
                 </p>
-                <p className="font-mono text-white/80 text-xs">
-                  {project.projectId}
+                <p className="font-mono text-white/80 text-xs break-all">
+                  {project.filename}
                 </p>
               </div>
-              <div className="flex gap-6">
-                <div>
-                  <p className="text-xs text-white/40 uppercase tracking-wider mb-0.5">
-                    Docs
-                  </p>
-                  <p className="text-white/80 font-semibold">
-                    {project.docsCount}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-white/40 uppercase tracking-wider mb-0.5">
-                    Mode
-                  </p>
-                  <p className="text-white/80 font-semibold capitalize">
-                    {project.mode}
-                  </p>
-                </div>
-              </div>
+              <p className="text-xs text-white/50">
+                Import into{" "}
+                <a
+                  href="https://claude.ai/projects"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand-blue hover:underline"
+                >
+                  claude.ai/projects
+                </a>
+                .
+              </p>
             </div>
           </CollapsibleSection>
         )}
@@ -252,14 +248,16 @@ export function ApprovalPanel({
       <div className="flex gap-3 pt-2">
         <button
           onClick={onApprove}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-accent hover:opacity-90 text-brand-dark text-sm font-semibold rounded-lg transition-opacity duration-200"
+          disabled={approved}
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-accent hover:opacity-90 text-brand-dark text-sm font-semibold rounded-lg transition-opacity duration-200 disabled:opacity-60 disabled:cursor-default disabled:hover:opacity-60"
         >
           <span>✓</span>
-          <span>Approve &amp; Build</span>
+          <span>{approved ? "Approved" : "Approve & Build"}</span>
         </button>
         <button
           onClick={() => {}}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-transparent border border-brand-border hover:bg-white/5 text-white/70 hover:text-white text-sm font-medium rounded-lg transition-colors duration-200"
+          disabled={approved}
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-transparent border border-brand-border hover:bg-white/5 text-white/70 hover:text-white text-sm font-medium rounded-lg transition-colors duration-200 disabled:opacity-40 disabled:cursor-default disabled:hover:bg-transparent disabled:hover:text-white/70"
         >
           <span>✎</span>
           <span>Request Revisions</span>
