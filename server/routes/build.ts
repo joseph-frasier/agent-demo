@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { callClaude } from "../services/claude.js";
+import { callClaudeText } from "../services/claude.js";
 import { buildSystemPrompt } from "../prompts/build.js";
 import fs from "fs/promises";
 import path from "path";
@@ -7,6 +7,37 @@ import { fileURLToPath } from "url";
 import crypto from "crypto";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+type Page = { name: string; filename: string; html: string };
+
+function parsePageBlocks(text: string): Page[] {
+  const pages: Page[] = [];
+  const blockRegex = /<<<PAGE>>>([\s\S]*?)<<<ENDPAGE>>>/g;
+  let match: RegExpExecArray | null;
+
+  while ((match = blockRegex.exec(text)) !== null) {
+    const block = match[1];
+    const nameMatch = block.match(/^\s*NAME:\s*(.+?)\s*$/m);
+    const filenameMatch = block.match(/^\s*FILENAME:\s*(.+?)\s*$/m);
+    const htmlMarkerIdx = block.search(/^\s*HTML:\s*$/m);
+
+    if (!nameMatch || !filenameMatch || htmlMarkerIdx === -1) continue;
+
+    // HTML body starts on the line after "HTML:"
+    const afterMarker = block.slice(htmlMarkerIdx);
+    const htmlStart = afterMarker.indexOf("\n");
+    if (htmlStart === -1) continue;
+    const html = afterMarker.slice(htmlStart + 1).trim();
+
+    pages.push({
+      name: nameMatch[1].trim(),
+      filename: filenameMatch[1].trim(),
+      html,
+    });
+  }
+
+  return pages;
+}
 
 export const buildRouter = Router();
 
@@ -20,9 +51,7 @@ buildRouter.post("/", async (req, res) => {
       heroImageUrl: "/generated/demo-hero.jpg",
     });
 
-    const result = await callClaude<{
-      pages: Array<{ name: string; filename: string; html: string }>;
-    }>({
+    const rawText = await callClaudeText({
       system: prompt,
       user: `Generate the website using this data:
 
@@ -34,8 +63,18 @@ ${JSON.stringify(creative, null, 2)}
 
 DESIGN TOKENS:
 ${JSON.stringify(design, null, 2)}`,
-      maxTokens: 16384,
+      maxTokens: 32768,
     });
+
+    const pages = parsePageBlocks(rawText);
+    if (pages.length === 0) {
+      const preview = rawText.slice(0, 300).replace(/\n/g, "\\n");
+      throw new Error(
+        `No <<<PAGE>>> blocks found in build response. Preview: ${preview}...`
+      );
+    }
+
+    const result = { pages };
 
     // Write generated HTML files to disk
     const sessionDir = path.join(__dirname, "..", "generated", sessionId);

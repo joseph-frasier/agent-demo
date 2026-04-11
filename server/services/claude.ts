@@ -2,11 +2,13 @@ import Anthropic from "@anthropic-ai/sdk";
 
 const client = new Anthropic();
 
-export async function callClaude<T>(opts: {
+interface ClaudeOpts {
   system: string;
   user: string;
   maxTokens?: number;
-}): Promise<T> {
+}
+
+export async function callClaudeText(opts: ClaudeOpts): Promise<string> {
   const message = await client.messages
     .stream({
       model: "claude-sonnet-4-5-20250929",
@@ -16,17 +18,35 @@ export async function callClaude<T>(opts: {
     })
     .finalMessage();
 
+  if (message.stop_reason === "max_tokens") {
+    throw new Error(
+      `Claude response truncated at max_tokens (${opts.maxTokens ?? 4096}). Increase maxTokens or reduce the requested output size.`
+    );
+  }
+
   const textBlock = message.content.find((b) => b.type === "text");
   if (!textBlock || textBlock.type !== "text") {
     throw new Error("No text response from Claude");
   }
 
-  // Extract JSON from the response — handle markdown code fences
-  let jsonStr = textBlock.text.trim();
-  const fenceMatch = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/);
-  if (fenceMatch) {
-    jsonStr = fenceMatch[1].trim();
-  }
+  return textBlock.text;
+}
 
-  return JSON.parse(jsonStr) as T;
+export async function callClaude<T>(opts: ClaudeOpts): Promise<T> {
+  const text = await callClaudeText(opts);
+
+  // Extract JSON — strip leading/trailing markdown fences independently so
+  // we tolerate either a properly-closed fenced block or bare JSON.
+  let jsonStr = text.trim();
+  jsonStr = jsonStr.replace(/^```(?:json)?\s*\n?/, "");
+  jsonStr = jsonStr.replace(/\n?```\s*$/, "");
+
+  try {
+    return JSON.parse(jsonStr) as T;
+  } catch (err) {
+    const preview = jsonStr.slice(0, 200).replace(/\n/g, "\\n");
+    throw new Error(
+      `Failed to parse Claude response as JSON: ${err instanceof Error ? err.message : String(err)}. Preview: ${preview}...`
+    );
+  }
 }
