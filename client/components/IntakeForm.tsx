@@ -2,25 +2,9 @@
 
 import { useState } from "react";
 import { IntakeData } from "@/lib/types";
+import { DEMO_COMPANIES } from "@/lib/demo-companies";
 
-const DEFAULT_DATA: IntakeData = {
-  businessName: "Lone Star Pet Grooming",
-  ownerName: "Maria Santos",
-  email: "maria@demo.irongrove.dev",
-  phone: "(281) 555-0142",
-  industry: "Pet services",
-  services: "Dog grooming, cat grooming, nail trimming, flea treatment",
-  brandColors: { primary: "#2D5F2D", secondary: "#F5E6D3" },
-  tagline: "Where every pet leaves happy",
-  tone: "Friendly, warm, trustworthy",
-  pagesNeeded: ["Home", "Services", "About", "Contact"],
-  desiredDomain: "lonestarpetgrooming.com",
-  budgetTier: "Standard ($1,500)",
-  logoUrl: "/demo-logo.svg",
-  heroImageUrl: "/demo-hero.jpg",
-};
-
-const ALL_PAGES = ["Home", "Services", "About", "Contact", "Blog", "Gallery"];
+const INCLUDED_PAGES = ["Home", "Services", "About", "Contact"] as const;
 const BUDGET_TIERS = ["Starter ($750)", "Standard ($1,500)", "Premium ($3,000)"];
 
 function Field({
@@ -43,19 +27,10 @@ export default function IntakeForm({
 }: {
   onSubmit: (data: IntakeData) => void;
 }) {
-  const [data, setData] = useState<IntakeData>(DEFAULT_DATA);
+  const [data, setData] = useState<IntakeData>(DEMO_COMPANIES[0]);
 
   function set<K extends keyof IntakeData>(key: K, value: IntakeData[K]) {
     setData((prev) => ({ ...prev, [key]: value }));
-  }
-
-  function togglePage(page: string) {
-    setData((prev) => ({
-      ...prev,
-      pagesNeeded: prev.pagesNeeded.includes(page)
-        ? prev.pagesNeeded.filter((p) => p !== page)
-        : [...prev.pagesNeeded, page],
-    }));
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -64,7 +39,58 @@ export default function IntakeForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6 max-w-4xl">
+      {/* Demo client picker */}
+      <div>
+        <label className="text-xs font-semibold text-white/50 uppercase tracking-widest mb-3 block">
+          Choose a Demo Client
+        </label>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5">
+          {DEMO_COMPANIES.map((company) => {
+            const isSelected = company.businessName === data.businessName;
+            return (
+              <button
+                key={company.businessName}
+                type="button"
+                onClick={() => setData(company)}
+                className={`relative flex flex-col items-start gap-1.5 rounded-lg border px-3 py-2.5 text-left transition-all ${
+                  isSelected
+                    ? "border-brand-accent bg-brand-accent/10"
+                    : "border-brand-border bg-brand-card/40 hover:border-white/20 hover:bg-brand-card/70"
+                }`}
+              >
+                <div className="flex items-center gap-1.5">
+                  <span
+                    className="w-3 h-3 rounded-full ring-1 ring-white/10"
+                    style={{ backgroundColor: company.brandColors.primary }}
+                  />
+                  <span
+                    className="w-3 h-3 rounded-full ring-1 ring-white/10"
+                    style={{ backgroundColor: company.brandColors.secondary }}
+                  />
+                </div>
+                <h3
+                  className={`text-xs font-semibold leading-tight line-clamp-2 ${
+                    isSelected ? "text-brand-accent" : "text-white"
+                  }`}
+                >
+                  {company.businessName}
+                </h3>
+                <p className="text-[10px] text-white/50 line-clamp-1">
+                  {company.industry}
+                </p>
+                {isSelected && (
+                  <span className="absolute top-1.5 right-1.5 text-brand-accent text-xs">
+                    ✓
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="border-t border-brand-border" />
       {/* Basic Info */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Field label="Business Name">
@@ -196,27 +222,22 @@ export default function IntakeForm({
         </Field>
       </div>
 
-      {/* Pages Needed */}
-      <Field label="Pages Needed">
+      {/* Pages Included — read-only, the pipeline always generates these four */}
+      <Field label="Pages Included">
         <div className="flex flex-wrap gap-2">
-          {ALL_PAGES.map((page) => {
-            const active = data.pagesNeeded.includes(page);
-            return (
-              <button
-                key={page}
-                type="button"
-                onClick={() => togglePage(page)}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all ${
-                  active
-                    ? "bg-brand-blue/15 border-brand-blue text-brand-blue"
-                    : "bg-white/5 border-white/10 text-white/60 hover:border-white/30"
-                }`}
-              >
-                {page}
-              </button>
-            );
-          })}
+          {INCLUDED_PAGES.map((page) => (
+            <div
+              key={page}
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium bg-brand-accent/10 border border-brand-accent/30 text-brand-accent/90"
+            >
+              <span className="text-xs">✓</span>
+              <span>{page}</span>
+            </div>
+          ))}
         </div>
+        <p className="mt-2 text-xs text-white/40">
+          Every site generated by Irongrove includes these four core pages.
+        </p>
       </Field>
 
       {/* Domain */}
@@ -228,21 +249,64 @@ export default function IntakeForm({
         />
       </Field>
 
-      {/* Assets — pre-staged placeholders */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Field label="Logo">
-          <div className="input flex items-center gap-3 text-white/50 cursor-default select-none">
-            <span className="text-lg">🖼</span>
-            <span className="text-sm">{data.logoUrl} (pre-staged)</span>
+      {/* Design Style */}
+      <Field label="Design Style">
+        <div className="flex gap-2">
+          {(
+            [
+              {
+                value: "standard",
+                label: "Clean & Professional",
+                desc: "Straightforward, appropriate to the brand",
+              },
+              {
+                value: "bold",
+                label: "Bold & Expressive",
+                desc: "Dramatic layouts, gradients, more motion",
+              },
+            ] as const
+          ).map(({ value, label, desc }) => {
+            const active = data.designStyle === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                onClick={() => set("designStyle", value)}
+                className={`flex-1 flex flex-col items-start gap-0.5 rounded-lg border px-3 py-2.5 text-left transition-all ${
+                  active
+                    ? "border-brand-accent bg-brand-accent/10"
+                    : "border-brand-border bg-brand-card/40 hover:border-white/20"
+                }`}
+              >
+                <span
+                  className={`text-sm font-semibold ${
+                    active ? "text-brand-accent" : "text-white"
+                  }`}
+                >
+                  {label}
+                </span>
+                <span className="text-[10px] text-white/50">{desc}</span>
+              </button>
+            );
+          })}
+        </div>
+      </Field>
+
+      {/* Logo — read-only, shows the selected company's logo */}
+      <Field label="Logo">
+        <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/5 border border-white/10 cursor-default select-none max-w-sm">
+          <div className="w-24 h-12 rounded-md overflow-hidden bg-white/5 flex items-center justify-center shrink-0">
+            <img
+              src={data.logoUrl}
+              alt={`${data.businessName} logo`}
+              className="w-full h-full object-contain"
+            />
           </div>
-        </Field>
-        <Field label="Hero Image">
-          <div className="input flex items-center gap-3 text-white/50 cursor-default select-none">
-            <span className="text-lg">🖼</span>
-            <span className="text-sm">{data.heroImageUrl} (pre-staged)</span>
-          </div>
-        </Field>
-      </div>
+          <span className="text-white/70 truncate flex-1 font-mono text-xs">
+            {data.logoUrl.split("/").pop()}
+          </span>
+        </div>
+      </Field>
 
       {/* Submit */}
       <button

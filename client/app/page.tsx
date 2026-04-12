@@ -1,6 +1,7 @@
 "use client";
 
 import { useReducer, useRef } from "react";
+import { motion } from "framer-motion";
 import { pipelineReducer, initialState, isLive } from "@/lib/pipeline-reducer";
 import {
   fetchEnrich,
@@ -8,7 +9,7 @@ import {
   fetchAgentCreative,
   fetchAgentDesign,
   fetchAgentAssets,
-  fetchBuild,
+  fetchBuildStream,
   fetchProjectKit,
 } from "@/lib/api";
 import {
@@ -82,7 +83,13 @@ function PhaseSection({
   }
 
   return (
-    <section id={id} className="mb-12 scroll-mt-8">
+    <motion.section
+      id={id}
+      initial={{ opacity: 0, y: 28 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      className="mb-12 scroll-mt-8"
+    >
       <div className="flex items-center gap-3 mb-6">
         <span
           className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold shrink-0 ${
@@ -99,7 +106,7 @@ function PhaseSection({
         {liveToggle && <div className="ml-auto">{liveToggle}</div>}
       </div>
       {children}
-    </section>
+    </motion.section>
   );
 }
 
@@ -188,13 +195,38 @@ export default function HomePage() {
     dispatch({ type: "APPROVE" });
 
     try {
-      const site = isLive(state, "build")
-        ? await fetchBuild({
+      let site;
+      if (isLive(state, "build")) {
+        site = await fetchBuildStream(
+          {
             enriched: state.enriched,
             creative: state.agents.creative,
             design: state.agents.design,
-          })
-        : fallbackBuild;
+            logoUrl: state.intake?.logoUrl,
+            designStyle: state.intake?.designStyle,
+          },
+          {
+            onPageComplete: ({ name }) => {
+              dispatch({
+                type: "BUILD_PAGE_COMPLETE",
+                payload: { name },
+              });
+            },
+          }
+        );
+      } else {
+        // Cached path: fake the per-page progress so the sub-cluster still
+        // animates through its states. Each page "completes" 250ms apart.
+        site = fallbackBuild;
+        const fakeNames = ["Home", "Services", "About", "Contact"];
+        for (let i = 0; i < fakeNames.length; i++) {
+          await new Promise((r) => setTimeout(r, 250));
+          dispatch({
+            type: "BUILD_PAGE_COMPLETE",
+            payload: { name: fakeNames[i] },
+          });
+        }
+      }
       dispatch({ type: "SET_BUILD", payload: site });
 
       setTimeout(() => {
@@ -257,7 +289,11 @@ export default function HomePage() {
           </p>
         </div>
 
-        <PipelineStepper currentPhase={phase} />
+        <PipelineStepper
+          currentPhase={phase}
+          agents={agents}
+          buildProgress={state.buildProgress}
+        />
 
         <div className="mt-auto pt-4 border-t border-brand-border">
           <div className="flex items-center justify-between">
@@ -273,7 +309,7 @@ export default function HomePage() {
       </aside>
 
       {/* ── Main Content ── */}
-      <main className="flex-1 p-8 max-w-4xl">
+      <main className="flex-1 min-w-0 p-8">
         {/* Error banner */}
         {error && (
           <div className="mb-6 flex items-center justify-between rounded-xl border border-brand-error/30 bg-brand-error/10 px-4 py-3">

@@ -61,7 +61,9 @@ export default function PayloadCard({ data }: { data: IntakeData }) {
       {/* Assets */}
       <div className="flex flex-col gap-1">
         <span className="text-white/50 text-xs uppercase tracking-widest">Assets</span>
-        <p className="text-white/70 text-sm">logo.svg (24KB) · hero.jpg (1.2MB)</p>
+        <p className="text-white/70 text-sm font-mono text-xs">
+          {data.logoUrl.split("/").pop()}
+        </p>
       </div>
 
       {/* Validation */}
