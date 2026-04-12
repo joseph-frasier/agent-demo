@@ -15,6 +15,7 @@ export type IntakeData = {
   budgetTier: string;
   logoUrl: string;
   heroImageUrl: string;
+  designStyle: "standard" | "bold";
 };
 
 // === Enrichment (Phase 2, Stage 1) ===
@@ -192,6 +193,9 @@ export type PipelineState = {
     assets: AssetManifest | null;
   };
   build: GeneratedSite | null;
+  buildProgress: {
+    pagesCompleted: string[];
+  };
   error: string | null;
   settings: {
     masterLive: boolean;
@@ -213,6 +217,7 @@ export type PipelineAction =
     }
   | { type: "SET_PROJECT"; payload: ProjectResult }
   | { type: "APPROVE" }
+  | { type: "BUILD_PAGE_COMPLETE"; payload: { name: string } }
   | { type: "SET_BUILD"; payload: GeneratedSite }
   | { type: "SET_DEPLOYMENT_READY" }
   | { type: "SET_ERROR"; payload: string }

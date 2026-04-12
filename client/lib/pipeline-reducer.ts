@@ -12,6 +12,9 @@ export const initialState: PipelineState = {
     assets: null,
   },
   build: null,
+  buildProgress: {
+    pagesCompleted: [],
+  },
   error: null,
   settings: {
     masterLive: true,
@@ -67,7 +70,27 @@ export function pipelineReducer(
       };
 
     case "APPROVE":
-      return { ...state, phase: "building", error: null };
+      return {
+        ...state,
+        phase: "building",
+        error: null,
+        buildProgress: { pagesCompleted: [] },
+      };
+
+    case "BUILD_PAGE_COMPLETE": {
+      if (state.buildProgress.pagesCompleted.includes(action.payload.name)) {
+        return state;
+      }
+      return {
+        ...state,
+        buildProgress: {
+          pagesCompleted: [
+            ...state.buildProgress.pagesCompleted,
+            action.payload.name,
+          ],
+        },
+      };
+    }
 
     case "SET_BUILD":
       return { ...state, phase: "build_complete", build: action.payload };
