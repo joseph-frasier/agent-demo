@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { callClaudeText } from "../services/claude.js";
+import { Router, type Response } from "express";
+import { streamClaudeText } from "../services/claude.js";
 import { fetchUnsplashImages, type UnsplashImage } from "../services/unsplash.js";
 import { buildSystemPrompt } from "../prompts/build.js";
 import fs from "fs/promises";
@@ -34,7 +34,6 @@ function parsePageBlocks(text: string): Page[] {
 
     if (!nameMatch || !filenameMatch || htmlMarkerIdx === -1) continue;
 
-    // HTML body starts on the line after "HTML:"
     const afterMarker = block.slice(htmlMarkerIdx);
     const htmlStart = afterMarker.indexOf("\n");
     if (htmlStart === -1) continue;
@@ -50,15 +49,42 @@ function parsePageBlocks(text: string): Page[] {
   return pages;
 }
 
+// ── SSE helpers ───────────────────────────────────────────────────────────────
+
+function sseSend(res: Response, event: string, data: object) {
+  res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
+}
+
+// Walks the accumulated stream buffer for newly-closed <<<PAGE>>>...<<<ENDPAGE>>>
+// blocks. Returns the names of all pages that have closed so far so the caller
+// can diff against what it's already announced.
+function findClosedPageNames(buffer: string): string[] {
+  const names: string[] = [];
+  const blockRegex = /<<<PAGE>>>([\s\S]*?)<<<ENDPAGE>>>/g;
+  let match: RegExpExecArray | null;
+  while ((match = blockRegex.exec(buffer)) !== null) {
+    const nameMatch = match[1].match(/^\s*NAME:\s*(.+?)\s*$/m);
+    if (nameMatch) names.push(nameMatch[1].trim());
+  }
+  return names;
+}
+
 export const buildRouter = Router();
 
 buildRouter.post("/", async (req, res) => {
+  // Set up Server-Sent Events response
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache, no-transform");
+  res.setHeader("Connection", "keep-alive");
+  res.setHeader("X-Accel-Buffering", "no");
+  res.flushHeaders();
+
   try {
     const { enriched, creative, design } = req.body;
     const sessionId = crypto.randomUUID().slice(0, 8);
 
-    // Fetch topical stock photos from Unsplash before building. Falls back
-    // to empty list on any failure — build should never die because of it.
+    sseSend(res, "status", { message: "Fetching reference images..." });
+
     let images: UnsplashImage[] = [];
     try {
       const query = enriched?.client?.industry || "business";
@@ -71,6 +97,8 @@ buildRouter.post("/", async (req, res) => {
         }`
       );
     }
+
+    sseSend(res, "status", { message: "Generating website..." });
 
     const prompt = buildSystemPrompt({
       logoUrl: "/generated/demo-logo.svg",
@@ -90,7 +118,40 @@ ${images
 Attribution requirement: the HTML footer on every page must include a small credit line listing the photographers used, linking to their Unsplash profile URLs.`
         : `\n\n(No stock images available — use only the provided hero URL.)`;
 
-    const rawText = await callClaudeText({
+    // Stream the build response, watching for <<<ENDPAGE>>> markers as they
+    // arrive so we can announce per-page progress to the client in real time.
+    const announcedPageNames = new Set<string>();
+    let pageIndex = 0;
+
+    const designStyle = req.body.designStyle ?? "standard";
+    const designStyleSection =
+      designStyle === "bold"
+        ? `\n\nDESIGN STYLE: BOLD & EXPRESSIVE — GO ALL IN
+Push HARD on visual drama for this site. This is NOT a safe, conservative build. Treat this like a high-budget startup launch page.
+
+GRADIENTS ARE MANDATORY in bold mode — use them generously:
+- Hero: dramatic gradient mesh or multi-stop gradient as the primary background, not just a photo with overlay. Think radial gradients in brand colors, layered with noise or grain.
+- Section transitions: use full-bleed gradient dividers or gradient-to-solid fades between sections instead of plain color changes.
+- CTA buttons: gradient backgrounds with a subtle shimmer or hover shift.
+- Card backgrounds: glass-morphism with backdrop-blur and gradient tinted borders.
+- At least 3-4 distinct gradient moments across the whole site — hero, a mid-page feature section, a testimonial/social-proof band, and the CTA footer.
+
+ALSO MANDATORY in bold mode:
+- Dark hero sections with neon-ish accent glows (box-shadow or text-shadow in brand accent color)
+- Dramatic type scale: clamp(3.5rem, 8vw, 7rem) for hero headlines, with varied weights (100 or 900, not just 400/700)
+- Asymmetric layouts with intentional overlap — elements that break out of their grid cells
+- Staggered scroll-reveal animations with CSS @keyframes + animation-delay
+- At least 2 surprising hover states (underline sweep, color wash, scale + subtle rotate, gradient shift)
+- Editorial layout devices: oversized section numbers (01, 02, 03), pull quotes at display scale, diagonal or skewed accent elements
+- Glassmorphism or frosted-glass panels where appropriate (backdrop-blur + bg-white/5 + subtle border)
+- Make this look like a funded startup's marketing site that won a design award, not a template
+
+Still follow the contrast and legibility rules — bold doesn't mean unreadable. Gradient backgrounds with text on top MUST have enough contrast (dark gradient base → white text, or light gradient base → dark text).`
+        : `\n\nDESIGN STYLE: CLEAN & PROFESSIONAL
+Build a polished, appropriate site. Follow the brand treatment matrix closely.
+Add personality per the checklist, but keep the overall feel grounded and trustworthy.`;
+
+    const rawText = await streamClaudeText({
       system: prompt,
       user: `Generate the website using this data:
 
@@ -101,8 +162,20 @@ CREATIVE BRIEF:
 ${JSON.stringify(creative, null, 2)}
 
 DESIGN TOKENS:
-${JSON.stringify(design, null, 2)}${imagesSection}`,
-      maxTokens: 32768,
+${JSON.stringify(design, null, 2)}${imagesSection}${designStyleSection}`,
+      maxTokens: 64000,
+      onChunk: (_delta, accumulated) => {
+        const closed = findClosedPageNames(accumulated);
+        for (const name of closed) {
+          if (!announcedPageNames.has(name)) {
+            announcedPageNames.add(name);
+            sseSend(res, "page_complete", {
+              name,
+              index: pageIndex++,
+            });
+          }
+        }
+      },
     });
 
     const pages = parsePageBlocks(rawText);
@@ -113,17 +186,17 @@ ${JSON.stringify(design, null, 2)}${imagesSection}`,
       );
     }
 
-    const result = { pages };
-
     // Write generated HTML files to disk
     const sessionDir = path.join(__dirname, "..", "generated", sessionId);
     await fs.mkdir(sessionDir, { recursive: true });
 
-    // Copy demo assets into the session directory
     const publicDir = path.join(__dirname, "..", "..", "client", "public");
     try {
+      const logoRelPath = req.body.logoUrl
+        ? req.body.logoUrl.replace(/^\//, "")
+        : "demo-logo.svg";
       await fs.copyFile(
-        path.join(publicDir, "demo-logo.svg"),
+        path.join(publicDir, logoRelPath),
         path.join(sessionDir, "demo-logo.svg")
       );
       await fs.copyFile(
@@ -134,38 +207,38 @@ ${JSON.stringify(design, null, 2)}${imagesSection}`,
       // Assets may not exist yet — non-fatal
     }
 
-    // Generate a per-session favicon from the primary brand color + business initial
     const businessName = enriched?.client?.businessName ?? "?";
     const primaryColor = enriched?.brand?.colors?.primary?.hex ?? "#0B1E3F";
     const favicon = buildFaviconSvg(businessName.trim().charAt(0), primaryColor);
     await fs.writeFile(path.join(sessionDir, "favicon.svg"), favicon);
 
-    for (const page of result.pages) {
-      // Fix asset paths to be relative
+    for (const page of pages) {
       const fixedHtml = page.html
         .replace(/\/generated\/demo-logo\.svg/g, "demo-logo.svg")
         .replace(/\/generated\/demo-hero\.jpg/g, "demo-hero.jpg");
       await fs.writeFile(path.join(sessionDir, page.filename), fixedHtml);
     }
 
-    res.json({
+    sseSend(res, "complete", {
       sessionId,
-      pages: result.pages.map((p) => ({
+      pages: pages.map((p) => ({
         name: p.name,
         filename: p.filename,
       })),
       metadata: {
         framework: "Static HTML + Tailwind CSS CDN",
         styling: "Tailwind CSS",
-        pageCount: result.pages.length,
+        pageCount: pages.length,
         generatedAt: new Date().toISOString(),
       },
     });
+    res.end();
   } catch (error) {
     console.error("Build error:", error);
-    res.status(500).json({
+    sseSend(res, "error", {
       error: "Website build failed",
       message: error instanceof Error ? error.message : "Unknown error",
     });
+    res.end();
   }
 });

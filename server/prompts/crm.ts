@@ -7,7 +7,7 @@ Return ONLY valid JSON (no markdown, no explanation):
   "projectId": "proj_XXXX (generate a realistic 4-digit ID)",
   "status": "intake_complete",
   "pipeline": "Website · [budget tier]",
-  "dealValue": "$X,XXX",
+  "dealValue": "extract the dollar amount from the budgetTier field in the client data (e.g. 'Standard ($1,500)' → '$1,500')",
   "createdAt": "ISO 8601 timestamp (use current date/time)",
   "contact": {
     "name": "full name",

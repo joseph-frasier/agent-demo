@@ -32,6 +32,41 @@ export async function callClaudeText(opts: ClaudeOpts): Promise<string> {
   return textBlock.text;
 }
 
+interface StreamClaudeOpts extends ClaudeOpts {
+  onChunk: (textDelta: string, accumulated: string) => void;
+}
+
+export async function streamClaudeText(opts: StreamClaudeOpts): Promise<string> {
+  let accumulated = "";
+
+  const stream = client.messages.stream({
+    model: "claude-sonnet-4-5-20250929",
+    max_tokens: opts.maxTokens ?? 4096,
+    system: opts.system,
+    messages: [{ role: "user", content: opts.user }],
+  });
+
+  stream.on("text", (textDelta: string) => {
+    accumulated += textDelta;
+    opts.onChunk(textDelta, accumulated);
+  });
+
+  const message = await stream.finalMessage();
+
+  if (message.stop_reason === "max_tokens") {
+    throw new Error(
+      `Claude response truncated at max_tokens (${opts.maxTokens ?? 4096}). Increase maxTokens or reduce the requested output size.`
+    );
+  }
+
+  const textBlock = message.content.find((b) => b.type === "text");
+  if (!textBlock || textBlock.type !== "text") {
+    throw new Error("No text response from Claude");
+  }
+
+  return textBlock.text;
+}
+
 export async function callClaude<T>(opts: ClaudeOpts): Promise<T> {
   const text = await callClaudeText(opts);
 

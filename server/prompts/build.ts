@@ -69,29 +69,107 @@ Background → text color rules:
 - **Mid-tone branded background** (e.g., warm cream, sage tint, muted secondary brand color) → use a dark text color (\`text-gray-800\`, \`text-stone-900\`) unless the brand color is genuinely dark
 - **Branded full-bleed section** (full primary brand color background) → check the brand color's lightness: dark brand color → white text, light/pastel brand color → dark text
 
-**Links specifically** (this is the most common failure):
+**HEADING COLOR RULE — the most common failure mode you must avoid:**
+
+Headings (h1, h2, h3, h4) NEVER use the same color token as their containing section's background. This is the bug that ships in nearly every generated site. Headings are often the most visible element on a page, which means contrast failures here are catastrophic.
+
+❌ DO NOT do this:
+\`\`\`html
+<section class="bg-primary"><h1 class="text-primary">Title</h1></section>
+<!-- bg-primary + text-primary = invisible heading -->
+
+<section style="background: var(--color-secondary)">
+  <h2 class="text-secondary">Title</h2>
+</section>
+<!-- same CSS variable on bg and text = invisible -->
+
+<section class="bg-cream"><h2 class="text-cream">Title</h2></section>
+<!-- "cream on cream" = invisible -->
+\`\`\`
+
+✓ DO this instead:
+\`\`\`html
+<section class="bg-primary"><h1 class="text-white">Title</h1></section>
+<!-- brand bg + white text = high contrast -->
+
+<section class="bg-[#FAF7F2]"><h2 class="text-gray-900">Title</h2></section>
+<!-- light bg + dark text -->
+
+<section class="bg-brand-dark"><h2 class="text-white">Title</h2></section>
+<!-- dark bg + white text -->
+\`\`\`
+
+When the section background is a brand color, headings should be white, off-white, or a strongly-contrasting neutral. Save the brand color for accents and CTAs that sit on NEUTRAL backgrounds (not on themselves).
+
+**LINK RULE** (the second most common failure):
 - Links must be visibly different from body text in their default state — use a brand color, an underline, or a distinct weight
 - Default link color must contrast with the section background it sits on, not the page background
 - Hover states must ALSO remain legible — don't swap to a color that disappears against the background
 - **NEVER make a link \`text-white\` on a light background and only reveal it on hover.** That's an invisible link, which is the same as no link.
 
-**Hero sections with background images — overlay is REQUIRED, not optional:**
+**HERO RULE — overlay is REQUIRED and text color is fixed:**
 
-Any hero that places text on top of a photographic background MUST include a dark gradient overlay between the image and the text. White text on an unfiltered photo is unreadable. This is non-negotiable. Use this pattern:
+Any hero that places text on top of a photographic background MUST include a dark gradient overlay between the image and the text, AND the text on top MUST be white or near-white. Both rules apply together.
 
+✓ Use this pattern:
 \`\`\`html
 <section class="relative h-screen">
   <img src="..." class="absolute inset-0 w-full h-full object-cover" alt="...">
   <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/70"></div>
   <div class="relative z-10 ...">
-    <!-- text content goes here, text-white is fine because the overlay protects it -->
+    <h1 class="text-white">...</h1>
+    <p class="text-white/90">...</p>
   </div>
 </section>
 \`\`\`
 
-The overlay opacity range \`from-black/40 to black/70\` is the safe zone — strong enough that any photo underneath gets darkened enough for white text to read clearly. Adjust if the brand wants a colored overlay (e.g., \`from-primary/60\` instead of \`from-black/50\`) but never skip it.
+The overlay opacity range \`from-black/40 to black/70\` is the safe zone — strong enough that any photo underneath gets darkened enough for white text to read clearly.
 
-**Mental check before finishing each section:** "If I were viewing only this section in isolation, can I read every link, every body line, and every CTA label?"
+❌ DO NOT do this:
+\`\`\`html
+<div class="absolute inset-0 bg-gradient-to-b from-primary/60 to-primary/80"></div>
+<div class="relative z-10"><h1 class="text-primary">Hero</h1></div>
+<!-- primary-tinted overlay + primary-colored text = the text disappears
+     into its own colored overlay -->
+\`\`\`
+
+A colored overlay is fine, but ONLY if the text on top is still white or off-white, never the same brand color used in the overlay.
+
+**FOOTER RULE — the most-forgotten section:**
+
+The footer is a section, and the contrast rules apply to it just like every other section. Footers are where heading-background collisions ship most often because Claude tends to apply the rules carefully to the hero and main content, then phone in the footer. Treat the footer with the same attention.
+
+❌ DO NOT do this:
+\`\`\`html
+<footer class="bg-cream"><p class="text-white">© 2026 ...</p></footer>
+<!-- cream background + white text = invisible -->
+
+<footer class="bg-secondary"><a class="text-secondary">Privacy</a></footer>
+<!-- same brand token on bg and link = invisible -->
+\`\`\`
+
+✓ DO this instead:
+\`\`\`html
+<footer class="bg-brand-dark text-white"><p>© 2026 ...</p></footer>
+<!-- dark footer + white text -->
+
+<footer class="bg-[#FAF7F2] text-gray-700"><p>© 2026 ...</p></footer>
+<!-- light footer + dark text -->
+\`\`\`
+
+Apply the same background → text rules from above. The footer's body text, link colors, photographer credits, and copyright line all need to be readable against the footer's chosen background. **Walk through the PRE-EMIT AUDIT below for the footer too — don't skip it.**
+
+**PRE-EMIT AUDIT — run this mental check on every section AND the footer before finishing the page:**
+
+1. What is this section's background color/class? (write it down mentally)
+2. What color is the H1/H2/H3 in this section?
+3. Are the heading and background the same color or the same brand token? **If yes, FIX IT before continuing.**
+4. What color are the body links in this section?
+5. Would the link be visible without hovering it? **If no, FIX IT.**
+6. If this is a hero with a background image: is there an overlay? Is the text white? **If no, FIX IT.**
+7. **For the footer specifically**: is the footer's background color different from its text color? Are the photographer credit links readable? **If no, FIX IT.**
+
+**Mental check:** "If I were viewing only this section in isolation with no context, can I read every heading, every link, and every CTA label?" If the answer isn't "yes, instantly," the section is broken.
 
 Match the design to the brand. A neighborhood pet groomer should feel warm and local. A B2B SaaS should feel confident and precise. A wedding photographer should feel refined. Read the industry and tone keywords from the enriched data and the voice guidelines from the creative brief before you start building.
 
