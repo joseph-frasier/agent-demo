@@ -13,6 +13,7 @@ TECHNICAL REQUIREMENTS
 - Google Fonts via CDN link in <head>
 - Mobile-first responsive design with tablet and desktop breakpoints
 - Sticky navigation bar with working cross-page links and smooth scroll
+- The nav bar MUST be legible at all scroll positions. If the nav starts transparent (e.g., over a hero image), add a small inline \`<script>\` that listens for \`scroll\` and toggles a class when \`window.scrollY > 50\`. The scrolled state should add a semi-opaque background (e.g., \`background-color: rgba(0,0,0,0.85)\` or a brand-appropriate dark/light tint) and \`backdrop-filter: blur(8px)\` so text stays readable over any content beneath it. Use \`transition: background-color 0.3s, backdrop-filter 0.3s\` for a smooth effect. If the nav already has an opaque background color, this is not needed.
 - Footer on every page with business info and copyright
 - Every page must be fully functional and visually consistent with the others
 - Logo URL (use this exact path): ${opts.logoUrl}
@@ -44,16 +45,13 @@ Define CSS custom properties in a <style> block using the provided design tokens
 LOGO DISPLAY RULES
 ═══════════════════════════════════════════════════════════════
 
-The logo lockup itself — the part that reads as a single visual unit — must follow these rules. The surrounding nav bar can include other elements next to it (like a tagline as a separate text element), but the logo lockup proper is just the wordmark.
+The logo lockup — the part that reads as a single visual unit — must follow these rules. The surrounding nav bar can include other elements next to it (like a tagline as a separate text element), but the logo lockup proper is the SVG image plus optional business name text.
 
-- **The logo lockup is the business name only.** Do not place the tagline INSIDE the logo (e.g., directly underneath the wordmark as part of the same lockup). The tagline can appear NEXT TO the logo in the nav bar as a separate, smaller text element if it fits — that's fine.
-- **Default to the full business name** as the logo text.
-- **If the full name is too long for the available space** (more than ~20 characters, or wider than the nav allows), use a sensible abbreviation: an acronym from the first letters of each significant word, OR the first word, OR a stylized monogram. Pick what reads cleanest. Examples:
-  - "Lone Star Pet Grooming" → "Lone Star" or "LSPG"
-  - "Bright Horizons Wellness Center" → "Bright Horizons" or "BHW"
-  - "The Corner Bookshop" → "Corner Books" or "CB"
-- **Treat the logo as text-set typography**, not an image. Use the brand's heading font, an appropriate weight, and tight letter-spacing if it suits the aesthetic. The provided logo URL above is a placeholder — you do not have to use the SVG file. A well-set wordmark in the brand font is preferable.
-- **If you include the tagline in the nav bar**, render it as a separate element next to or below the logo wordmark, in a noticeably smaller size and a muted color, so it reads as supporting text rather than part of the logo itself. A vertical pipe \`|\` separator or a small gap between logo and tagline works well.
+- **Always render the logo as an \`<img>\` tag** using the exact logo URL provided above (\`${opts.logoUrl}\`). Set a sensible height (e.g., \`h-8\` to \`h-10\` / 32–40px) and \`alt\` text matching the business name. Example: \`<img src="${opts.logoUrl}" alt="Business Name" class="h-8 w-auto">\`
+- **Pair the logo image with the business name** as a text element next to it, using the brand's heading font. Together they form the lockup. If space is tight, the text can be hidden on mobile (\`hidden md:inline\`) while the logo image always shows.
+- **Do not place the tagline INSIDE the logo lockup.** The tagline can appear NEXT TO the lockup in the nav bar as a separate, smaller text element if it fits — that's fine.
+- **If you include the tagline in the nav bar**, render it as a separate element next to or below the logo lockup, in a noticeably smaller size and a muted color, so it reads as supporting text rather than part of the logo itself. A vertical pipe \`|\` separator or a small gap works well.
+- **Use the logo image on every page** in the nav bar. It must be consistent across all pages.
 
 ═══════════════════════════════════════════════════════════════
 LEGIBILITY & CONTRAST — TEXT MUST BE READABLE

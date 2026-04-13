@@ -353,7 +353,7 @@ export default function HomePage() {
             title="AI Enrichment & Agent Processing"
             phaseNumber={2}
             currentPhase={phase}
-            thresholdPhase="enriching"
+            thresholdPhase="processing_agents"
             liveToggle={
               <PhaseToggle
                 isLive={isLive(state, "enrich")}
