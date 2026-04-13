@@ -336,17 +336,9 @@ export default function HomePage() {
           phaseNumber={1}
           currentPhase={phase}
           thresholdPhase="intake"
-          liveToggle={
-            <PhaseToggle
-              isLive={isLive(state, "intake")}
-              onToggle={() =>
-                dispatch({ type: "TOGGLE_PHASE_LIVE", payload: "intake" })
-              }
-            />
-          }
         >
           {phase === "intake" ? (
-            <IntakeForm onSubmit={handleIntakeSubmit} />
+            <IntakeForm onSubmit={handleIntakeSubmit} isLive={state.settings.masterLive} />
           ) : intake ? (
             <PayloadCard data={intake} />
           ) : null}
@@ -360,14 +352,6 @@ export default function HomePage() {
             phaseNumber={2}
             currentPhase={phase}
             thresholdPhase="processing_agents"
-            liveToggle={
-              <PhaseToggle
-                isLive={isLive(state, "enrich")}
-                onToggle={() =>
-                  dispatch({ type: "TOGGLE_PHASE_LIVE", payload: "enrich" })
-                }
-              />
-            }
           >
             {/* Loading spinner while enriching */}
             {phase === "enriching" && (
@@ -513,14 +497,6 @@ export default function HomePage() {
             phaseNumber={4}
             currentPhase={phase}
             thresholdPhase="building"
-            liveToggle={
-              <PhaseToggle
-                isLive={isLive(state, "build")}
-                onToggle={() =>
-                  dispatch({ type: "TOGGLE_PHASE_LIVE", payload: "build" })
-                }
-              />
-            }
           >
             {phase === "building" && (
               <div className="flex items-center gap-3 text-white/60 py-6">

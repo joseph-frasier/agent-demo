@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IntakeData } from "@/lib/types";
 import { DEMO_COMPANIES } from "@/lib/demo-companies";
+import { getCachedPipeline } from "@/lib/cache";
 
 const INCLUDED_PAGES = ["Home", "Services", "About", "Contact"] as const;
 const BUDGET_TIERS = ["Starter ($750)", "Standard ($1,500)", "Premium ($3,000)"];
@@ -24,10 +25,22 @@ function Field({
 
 export default function IntakeForm({
   onSubmit,
+  isLive = true,
 }: {
   onSubmit: (data: IntakeData) => void;
+  isLive?: boolean;
 }) {
-  const [data, setData] = useState<IntakeData>(DEMO_COMPANIES[0]);
+  const companies = isLive
+    ? DEMO_COMPANIES
+    : DEMO_COMPANIES.filter((c) => getCachedPipeline(c.businessName));
+  const [data, setData] = useState<IntakeData>(companies[0]);
+
+  // Reset selection when the company list changes (live toggle flipped)
+  useEffect(() => {
+    if (!companies.find((c) => c.businessName === data.businessName)) {
+      setData(companies[0]);
+    }
+  }, [isLive]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function set<K extends keyof IntakeData>(key: K, value: IntakeData[K]) {
     setData((prev) => ({ ...prev, [key]: value }));
@@ -46,7 +59,7 @@ export default function IntakeForm({
           Choose a Demo Client
         </label>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5">
-          {DEMO_COMPANIES.map((company) => {
+          {companies.map((company) => {
             const isSelected = company.businessName === data.businessName;
             return (
               <button
