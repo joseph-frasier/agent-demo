@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wilderness Courses & Outdoor Programs | Ridgeline Education</title>
+  <meta name="description" content="Wilderness survival, youth camps, guided backpacking, team retreats, and first aid certification in Arizona. Expert outdoor education programs for all levels.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: 'var(--color-primary)',
+            secondary: 'var(--color-secondary)',
+            accent: 'var(--color-accent)',
+          },
+          fontFamily: {
+            heading: ['var(--font-heading)', 'sans-serif'],
+            body: ['var(--font-body)', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --color-primary: #3B6E45;
+      --color-secondary: #F2EAD8;
+      --color-accent: #D97E3C;
+      --color-neutral: #2C3E36;
+      --color-background: #FDFCFA;
+      --color-accent-light: #7FA085;
+      --color-neutral-light: #8B9A92;
+      --font-heading: 'Montserrat', sans-serif;
+      --font-body: 'Open Sans', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-content > * {
+      animation: fadeInUp 0.8s ease-out forwards;
+      opacity: 0;
+    }
+
+    .hero-content > *:nth-child(1) { animation-delay: 0.2s; }
+    .hero-content > *:nth-child(2) { animation-delay: 0.4s; }
+  </style>
+</head>
+<body class="font-body text-[#2C3E36] bg-[#FDFCFA]">
+  
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full z-50 bg-[#2C3E36] shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <img src="demo-logo.svg" alt="Ridgeline Outdoor Education" class="h-10 w-auto transition-transform duration-300 group-hover:scale-105">
+        <span class="font-heading text-xl font-bold text-white hidden sm:inline">Ridgeline Outdoor Education</span>
+      </a>
+      <div class="flex items-center gap-8">
+        <a href="index.html" class="text-white font-medium hover:text-[#D97E3C] transition-colors duration-200">Home</a>
+        <a href="services.html" class="text-[#D97E3C] font-medium">Programs</a>
+        <a href="about.html" class="text-white font-medium hover:text-[#D97E3C] transition-colors duration-200">About</a>
+        <a href="contact.html" class="bg-[#D97E3C] text-white px-5 py-2 rounded-md font-semibold hover:bg-[#C06D2E] transition-all duration-200 hover:shadow-lg">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative h-[60vh] flex items-center justify-center mt-20">
+    <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=1600&h=900&fit=crop" alt="Hikers traversing a mountain ridge at sunrise" class="absolute inset-0 w-full h-full object-cover">
+    <div class="absolute inset-0 bg-gradient-to-br from-[#3B6E45]/80 to-[#2C3E36]/80"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center hero-content">
+      <h1 class="font-heading text-5xl md:text-6xl font-bold text-white mb-6">Wilderness Education for Every Journey</h1>
+      <p class="text-xl text-white/95 max-w-3xl mx-auto leading-relaxed">Ridgeline Outdoor Education offers comprehensive programs designed to meet you where you are and take you further. Our courses combine expert instruction, hands-on practice, and the transformative power of Northern Arizona's wilderness to build competence, confidence, and community.</p>
+    </div>
+  </section>
+
+  <!-- Wilderness Survival -->
+  <section id="survival" class="py-24 bg-[#FDFCFA]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
+        <div class="lg:sticky lg:top-32">
+          <div class="text-[#D97E3C] font-heading font-bold text-sm mb-3">01 / WILDERNESS SKILLS</div>
+          <h2 class="font-heading text-4xl md:text-5xl font-bold text-[#2C3E36] mb-6">Wilderness Survival Courses</h2>
+          <div class="w-24 h-1 bg-[#D97E3C] mb-8"></div>
+          <div class="aspect-[4/3] rounded-lg overflow-hidden shadow-xl">
+            <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&h=600&fit=crop" alt="Building a campfire in the wilderness" class="w-full h-full object-cover">
+          </div>
+        </div>
+        <div class="space-y-6">
+          <p class="text-lg text-[#2C3E36] leading-relaxed">Learn to thrive in backcountry environments through comprehensive survival training that covers the essential skills every wilderness traveler should possess. Our courses teach shelter construction using natural materials, fire making in various conditions, water sourcing and purification, navigation with map, compass and natural indicators, wild plant identification and foraging, and emergency preparedness protocols.</p>
+          <p class="text-lg text-[#2C3E36] leading-relaxed">You'll practice these skills under the guidance of experienced wilderness educators who emphasize understanding principles over memorizing techniques. Whether you're preparing for extended backcountry trips or simply want the confidence that comes from knowing you could handle yourself in remote settings, these courses provide thorough, practical training grounded in respect for nature's power and generosity.</p>
+          <div class="bg-[#F2EAD8] p-6 rounded-lg">
+            <h3 class="font-heading text-xl font-bold text-[#2C3E36] mb-3">What You'll Learn</h3>
+            <ul class="space-y-2 text-[#2C3E36]">
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Shelter building using natural materials</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Fire making techniques for various conditions</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Navigation with map, compass, and natural indicators</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Wild plant identification and foraging</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Emergency preparedness protocols</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Youth Camps -->
+  <section id="youth" class="py-24 bg-[#F2EAD8]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
+        <div class="space-y-6 order-2 lg:order-1">
+          <p class="text-lg text-[#2C3E36] leading-relaxed">Our multi-day youth camp programs create transformative experiences where young people develop outdoor skills, leadership capabilities, and lasting connections to the natural world. Campers learn practical wilderness techniques while engaging in age-appropriate adventure activities that build confidence through manageable challenges.</p>
+          <p class="text-lg text-[#2C3E36] leading-relaxed">Our experienced youth educators facilitate group dynamics that emphasize cooperation over competition, creating supportive communities where every participant belongs. Program days balance skill instruction with exploration, reflection with action, and structured activities with unstructured discovery time. We watch campers arrive uncertain and leave empowered, having learned that they're capable of more than they imagined—building shelters, navigating trails, supporting teammates, and finding comfort in wild places.</p>
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="font-heading text-xl font-bold text-[#2C3E36] mb-3">Program Highlights</h3>
+            <ul class="space-y-2 text-[#2C3E36]">
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Age-appropriate adventure activities</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Leadership and character development</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Supportive community building</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Environmental education</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="lg:sticky lg:top-32 order-1 lg:order-2">
+          <div class="text-[#D97E3C] font-heading font-bold text-sm mb-3">02 / YOUTH DEVELOPMENT</div>
+          <h2 class="font-heading text-4xl md:text-5xl font-bold text-[#2C3E36] mb-6">Youth Camps</h2>
+          <div class="w-24 h-1 bg-[#D97E3C] mb-8"></div>
+          <div class="aspect-[4/3] rounded-lg overflow-hidden shadow-xl">
+            <img src="https://images.unsplash.com/photo-1682686581580-d99b0230064e?w=800&h=600&fit=crop" alt="Young hikers on a mountain trail" class="w-full h-full object-cover">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guided Backpacking -->
+  <section id="backpacking" class="py-24 bg-[#FDFCFA]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
+        <div class="lg:sticky lg:top-32">
+          <div class="text-[#D97E3C] font-heading font-bold text-sm mb-3">03 / EXPEDITIONS</div>
+          <h2 class="font-heading text-4xl md:text-5xl font-bold text-[#2C3E36] mb-6">Guided Backpacking Expeditions</h2>
+          <div class="w-24 h-1 bg-[#D97E3C] mb-8"></div>
+          <div class="aspect-[4/3] rounded-lg overflow-hidden shadow-xl">
+            <img src="https://images.unsplash.com/photo-1764491214352-c6e98248bc41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjIxNjJ8MHwxfHNlYXJjaHwxfHxPdXRkb29yJTIwRWR1Y2F0aW9uJTIwJTI2JTIwV2lsZGVybmVzcyUyMFRyYWluaW5nfGVufDF8MHx8fDE3NzYwOTQxMTB8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Climbers gathered at the base of a large rock face." class="w-full h-full object-cover">
+          </div>
+        </div>
+        <div class="space-y-6">
+          <p class="text-lg text-[#2C3E36] leading-relaxed">Experience Northern Arizona's stunning wilderness landscapes on expert-led backpacking trips designed for various skill levels and aspirations. Our guides handle route planning, permitting, and safety oversight while teaching Leave No Trace principles and backcountry techniques throughout the journey.</p>
+          <p class="text-lg text-[#2C3E36] leading-relaxed">Expeditions range from accessible overnight trips perfect for those new to backpacking, to challenging multi-day treks through rugged terrain for experienced hikers seeking deeper wilderness immersion. Along the way, you'll learn efficient packing strategies, campsite selection, navigation skills, wilderness cooking, and the rhythms of backcountry travel. These aren't guided tours—they're educational experiences where you develop real competence while exploring some of Arizona's most beautiful wild places in the supportive company of skilled instructors and fellow adventurers.</p>
+          <div class="bg-[#F2EAD8] p-6 rounded-lg">
+            <h3 class="font-heading text-xl font-bold text-[#2C3E36] mb-3">Trip Options</h3>
+            <ul class="space-y-2 text-[#2C3E36]">
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Beginner-friendly overnight trips</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Multi-day wilderness treks</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Leave No Trace education</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Skill instruction throughout journey</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Building -->
+  <section id="team" class="py-24 bg-[#F2EAD8]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
+        <div class="space-y-6 order-2 lg:order-1">
+          <p class="text-lg text-[#2C3E36] leading-relaxed">Strengthen your organization through customized outdoor experiences that use wilderness challenges to develop leadership, improve communication, and build cohesive teams. Our facilitators work with you to understand your group's specific goals, then design programs that address those needs through carefully sequenced challenge activities, group problem-solving scenarios, and reflection exercises.</p>
+          <p class="text-lg text-[#2C3E36] leading-relaxed">The wilderness setting removes participants from familiar office environments and status hierarchies, creating space for authentic interaction and growth. Activities might include navigation challenges requiring trust and clear communication, group initiatives demanding collaborative problem-solving, or backpacking expeditions that build resilience through shared challenge. We accommodate various fitness levels and customize programs for groups from small leadership teams to larger departments, always maintaining our focus on meaningful outcomes over superficial adventure tourism.</p>
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="font-heading text-xl font-bold text-[#2C3E36] mb-3">Benefits</h3>
+            <ul class="space-y-2 text-[#2C3E36]">
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Improved team communication</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Leadership development</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Strengthened organizational culture</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Customized to your goals</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="lg:sticky lg:top-32 order-1 lg:order-2">
+          <div class="text-[#D97E3C] font-heading font-bold text-sm mb-3">04 / ORGANIZATIONS</div>
+          <h2 class="font-heading text-4xl md:text-5xl font-bold text-[#2C3E36] mb-6">Team Building Retreats</h2>
+          <div class="w-24 h-1 bg-[#D97E3C] mb-8"></div>
+          <div class="aspect-[4/3] rounded-lg overflow-hidden shadow-xl">
+            <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&h=600&fit=crop" alt="Team collaborating on an outdoor challenge" class="w-full h-full object-cover">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- First Aid Certification -->
+  <section id="firstaid" class="py-24 bg-[#FDFCFA]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
+        <div class="lg:sticky lg:top-32">
+          <div class="text-[#D97E3C] font-heading font-bold text-sm mb-3">05 / CERTIFICATION</div>
+          <h2 class="font-heading text-4xl md:text-5xl font-bold text-[#2C3E36] mb-6">Wilderness First Aid Certification</h2>
+          <div class="w-24 h-1 bg-[#D97E3C] mb-8"></div>
+          <div class="aspect-[4/3] rounded-lg overflow-hidden shadow-xl">
+            <img src="https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=800&h=600&fit=crop" alt="Wilderness first aid training scenario" class="w-full h-full object-cover">
+          </div>
+        </div>
+        <div class="space-y-6">
+          <p class="text-lg text-[#2C3E36] leading-relaxed">Prepare to manage medical emergencies in remote settings where professional help is hours away through our Wilderness First Aid and First Responder certification courses. Our curriculum combines classroom instruction covering wilderness-specific medical protocols with extensive hands-on scenario practice that simulates the challenges of backcountry emergency response.</p>
+          <p class="text-lg text-[#2C3E36] leading-relaxed">You'll learn patient assessment systems, injury stabilization techniques, environmental emergency management, evacuation decision-making, and communication strategies for remote incidents. Our instructors bring real experience from wilderness settings and create realistic training scenarios that prepare you for the stress and complexity of actual emergencies. These certifications meet industry standards required for outdoor professionals while providing recreational backcountry travelers with skills and confidence that could save lives when trails end and help is distant.</p>
+          <div class="bg-[#F2EAD8] p-6 rounded-lg">
+            <h3 class="font-heading text-xl font-bold text-[#2C3E36] mb-3">Certification Courses</h3>
+            <ul class="space-y-2 text-[#2C3E36]">
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Wilderness First Aid (WFA)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Wilderness First Responder (WFR)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Scenario-based training</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-[#D97E3C] mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Industry-standard certification</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-24 bg-gradient-to-br from-[#3B6E45] to-[#2C3E36] text-white">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="font-heading text-4xl md:text-5xl font-bold mb-6">Find Your Program</h2>
+      <p class="text-xl leading-relaxed mb-10">Each Ridgeline program offers a unique path to wilderness competence and personal growth. Browse our upcoming course dates, reach out with questions about which program fits your goals, or register today to begin your journey. The skills you learn and the person you become are waiting on the trail ahead.</p>
+      <a href="contact.html" class="inline-block bg-[#D97E3C] text-white px-8 py-4 rounded-md text-lg font-semibold hover:bg-[#C06D2E] transition-all duration-300 hover:shadow-2xl hover:scale-105">Contact Us to Register</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#2C3E36] text-white py-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-3 gap-12 mb-8">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <img src="demo-logo.svg" alt="Ridgeline Outdoor Education" class="h-10 w-auto">
+            <span class="font-heading text-xl font-bold">Ridgeline Outdoor Education</span>
+          </div>
+          <p class="text-white/80 text-sm mb-2">Go further. Come back changed.</p>
+          <p class="text-white/80 text-sm">Northern Arizona</p>
+        </div>
+        <div>
+          <h3 class="font-heading text-lg font-bold mb-4">Quick Links</h3>
+          <ul class="space-y-2 text-white/80">
+            <li><a href="index.html" class="hover:text-[#D97E3C] transition-colors duration-200">Home</a></li>
+            <li><a href="services.html" class="hover:text-[#D97E3C] transition-colors duration-200">Programs</a></li>
+            <li><a href="about.html" class="hover:text-[#D97E3C] transition-colors duration-200">About</a></li>
+            <li><a href="contact.html" class="hover:text-[#D97E3C] transition-colors duration-200">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-heading text-lg font-bold mb-4">Contact</h3>
+          <p class="text-white/80 mb-2">Tom Yazzie</p>
+          <p class="text-white/80 mb-2"><a href="tel:9285540076" class="hover:text-[#D97E3C] transition-colors duration-200">(928) 554-0076</a></p>
+          <p class="text-white/80"><a href="mailto:tom@ridgelineoutdoor.org" class="hover:text-[#D97E3C] transition-colors duration-200">tom@ridgelineoutdoor.org</a></p>
+        </div>
+      </div>
+      <div class="border-t border-white/20 pt-8 text-sm text-white/70">
+        <p class="mb-2">&copy; 2026 Ridgeline Outdoor Education. All rights reserved.</p>
+        <p class="text-xs">Photography by <a href="https://unsplash.com/@aalat" class="hover:text-[#D97E3C] transition-colors duration-200">alaa turkman</a> on Unsplash</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

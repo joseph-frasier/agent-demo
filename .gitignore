@@ -4,6 +4,8 @@ node_modules/
 dist/
 server/generated/*
 !server/generated/.gitkeep
+!server/generated/ridgeline-std/
+!server/generated/nimbus-bold/
 .superpowers/
 *.tsbuildinfo
 server/cache/*.json

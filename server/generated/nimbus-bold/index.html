@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nimbus Cloud Solutions | Enterprise Cloud Infrastructure & Migration</title>
+  <meta name="description" content="Enterprise cloud migration, DevOps automation & Kubernetes management with 99.99% uptime SLAs. Zero-downtime methodology for AWS, Azure, GCP infrastructure.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: 'var(--color-primary)',
+          secondary: 'var(--color-secondary)',
+          accent: 'var(--color-accent)',
+        },
+        fontFamily: {
+          heading: ['var(--font-heading)', 'sans-serif'],
+          body: ['var(--font-body)', 'sans-serif'],
+        }
+      }
+    }
+  }
+  </script>
+  <style>
+    :root {
+      --color-primary: #1B3DE8;
+      --color-secondary: #E8EFFE;
+      --color-accent: #0A1F8F;
+      --color-accent-light: #4D6FF5;
+      --color-neutral-dark: #1A1F2E;
+      --color-neutral: #4A5568;
+      --color-neutral-light: #E2E8F0;
+      --color-success: #10B981;
+      --font-heading: 'Inter', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes shimmer {
+      0% {
+        background-position: -200% center;
+      }
+      100% {
+        background-position: 200% center;
+      }
+    }
+    
+    .animate-fade-in-up {
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+    
+    .animate-fade-in-left {
+      animation: fadeInLeft 0.8s ease-out forwards;
+    }
+    
+    .animate-fade-in-right {
+      animation: fadeInRight 0.8s ease-out forwards;
+    }
+    
+    .delay-100 {
+      animation-delay: 0.1s;
+    }
+    
+    .delay-200 {
+      animation-delay: 0.2s;
+    }
+    
+    .delay-300 {
+      animation-delay: 0.3s;
+    }
+    
+    .delay-400 {
+      animation-delay: 0.4s;
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #7EB5FF 0%, #FFFFFF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .gradient-border {
+      position: relative;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+    }
+    
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(27, 61, 232, 0.5), rgba(77, 111, 245, 0.3));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+    
+    .shimmer-button {
+      background: linear-gradient(90deg, #1B3DE8 0%, #4D6FF5 50%, #1B3DE8 100%);
+      background-size: 200% 100%;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    
+    .text-glow {
+      text-shadow: 0 0 20px rgba(77, 111, 245, 0.5), 0 0 40px rgba(27, 61, 232, 0.3);
+    }
+    
+    .nav-scrolled {
+      background-color: rgba(26, 31, 46, 0.92);
+      backdrop-filter: blur(12px);
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .underline-sweep {
+      position: relative;
+    }
+    
+    .underline-sweep::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1B3DE8, #4D6FF5);
+      transition: width 0.3s ease;
+    }
+    
+    .underline-sweep:hover::after {
+      width: 100%;
+    }
+  </style>
+</head>
+<body class="font-body text-white bg-[#0A0D1A]">
+  <nav id="main-nav" class="fixed w-full z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <img src="demo-logo.svg" alt="Nimbus Cloud Solutions" class="h-9 w-auto transition-transform group-hover:scale-105">
+        <span class="font-heading font-bold text-xl text-white hidden md:inline">Nimbus Cloud Solutions</span>
+      </a>
+      <div class="flex items-center gap-8">
+        <div class="hidden md:flex items-center gap-6">
+          <a href="index.html" class="text-white/90 hover:text-white underline-sweep transition-colors text-sm font-medium">Home</a>
+          <a href="services.html" class="text-white/90 hover:text-white underline-sweep transition-colors text-sm font-medium">Services</a>
+          <a href="about.html" class="text-white/90 hover:text-white underline-sweep transition-colors text-sm font-medium">About</a>
+          <a href="contact.html" class="text-white/90 hover:text-white underline-sweep transition-colors text-sm font-medium">Contact</a>
+        </div>
+        <a href="contact.html" class="bg-gradient-to-r from-primary to-accent-light text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 hover:scale-105">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[#0A0D1A] via-[#1B3DE8]/20 to-[#0A1F8F]"></div>
+    <div class="absolute inset-0 bg-gradient-radial from-[#4D6FF5]/10 via-transparent to-transparent opacity-50"></div>
+    <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0); background-size: 40px 40px;"></div>
+    
+    <div class="relative z-10 max-w-7xl mx-auto px-6 py-32 text-center">
+      <div class="opacity-0 animate-fade-in-up">
+        <h1 class="font-heading font-black text-white text-glow mb-6" style="font-size: clamp(3rem, 8vw, 6.5rem); line-height: 1.05; letter-spacing: -0.02em;">
+          Infrastructure that<br>scales with ambition.
+        </h1>
+      </div>
+      <div class="opacity-0 animate-fade-in-up delay-200 max-w-4xl mx-auto">
+        <p class="text-xl md:text-2xl text-white/80 mb-10 leading-relaxed">
+          Enterprise cloud solutions engineered for zero-downtime migration, intelligent automation, and 99.99% uptime. Transform legacy infrastructure into competitive advantage.
+        </p>
+      </div>
+      <div class="opacity-0 animate-fade-in-up delay-300 flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="contact.html" class="shimmer-button text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-xl hover:shadow-2xl hover:shadow-primary/40 transition-all duration-300 hover:scale-105 inline-block">
+          Schedule Infrastructure Assessment
+        </a>
+        <a href="services.html" class="glass-card text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white/10 transition-all duration-300 inline-block">
+          Explore Services
+        </a>
+      </div>
+      <div class="opacity-0 animate-fade-in-up delay-400 mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+        <div class="glass-card rounded-xl p-6">
+          <div class="text-4xl font-black gradient-text mb-2">99.99%</div>
+          <div class="text-sm text-white/70">Uptime SLA</div>
+        </div>
+        <div class="glass-card rounded-xl p-6">
+          <div class="text-4xl font-black gradient-text mb-2">80%</div>
+          <div class="text-sm text-white/70">Faster Deployments</div>
+        </div>
+        <div class="glass-card rounded-xl p-6">
+          <div class="text-4xl font-black gradient-text mb-2">Zero</div>
+          <div class="text-sm text-white/70">Downtime Migration</div>
+        </div>
+        <div class="glass-card rounded-xl p-6">
+          <div class="text-4xl font-black gradient-text mb-2">24/7</div>
+          <div class="text-sm text-white/70">Monitoring</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="relative py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-16">
+        <div class="text-sm font-bold text-primary mb-3 tracking-wider uppercase">01 / Core Capabilities</div>
+        <h2 class="font-heading font-bold text-[#1A1F2E] mb-6" style="font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; letter-spacing: -0.01em;">
+          Enterprise Cloud Infrastructure,<br>Engineered for Results
+        </h2>
+        <p class="text-xl text-[#4A5568] max-w-4xl leading-relaxed">
+          From complex cloud migrations to Kubernetes orchestration and comprehensive security compliance, Nimbus delivers the technical depth and strategic planning that enterprise infrastructure demands.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#E8EFFE] to-white p-8 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full"></div>
+          <div class="relative">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-accent-light flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+            </div>
+            <h3 class="text-2xl font-bold text-[#1A1F2E] mb-3">Zero-Downtime Migration</h3>
+            <p class="text-[#4A5568] leading-relaxed mb-4">
+              Our proven migration methodology eliminates downtime through phased execution and comprehensive risk mitigation, ensuring seamless transitions to AWS, Azure, or Google Cloud Platform.
+            </p>
+            <a href="services.html" class="inline-flex items-center text-primary font-semibold group-hover:gap-2 transition-all">
+              Learn More
+              <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#E8EFFE] to-white p-8 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full"></div>
+          <div class="relative">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-accent-light flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            </div>
+            <h3 class="text-2xl font-bold text-[#1A1F2E] mb-3">DevOps Automation</h3>
+            <p class="text-[#4A5568] leading-relaxed mb-4">
+              We design and implement CI/CD pipelines, infrastructure as code, and automated testing workflows that reduce deployment times by up to 80% while improving reliability.
+            </p>
+            <a href="services.html" class="inline-flex items-center text-primary font-semibold group-hover:gap-2 transition-all">
+              Learn More
+              <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#E8EFFE] to-white p-8 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full"></div>
+          <div class="relative">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-accent-light flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            </div>
+            <h3 class="text-2xl font-bold text-[#1A1F2E] mb-3">Kubernetes Management</h3>
+            <p class="text-[#4A5568] leading-relaxed mb-4">
+              From cluster design and deployment to ongoing optimization and scaling strategies, we ensure your containerized applications run efficiently at any scale.
+            </p>
+            <a href="services.html" class="inline-flex items-center text-primary font-semibold group-hover:gap-2 transition-all">
+              Learn More
+              <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#E8EFFE] to-white p-8 hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full"></div>
+          <div class="relative">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-accent-light flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            </div>
+            <h3 class="text-2xl font-bold text-[#1A1F2E] mb-3">Security & Compliance</h3>
+            <p class="text-[#4A5568] leading-relaxed mb-4">
+              We implement zero-trust architectures, conduct vulnerability assessments, and ensure adherence to SOC 2, HIPAA, GDPR, and industry-specific regulatory requirements.
+            </p>
+            <a href="services.html" class="inline-flex items-center text-primary font-semibold group-hover:gap-2 transition-all">
+              Learn More
+              <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="relative py-24 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[#0A1F8F] via-[#1B3DE8] to-[#4D6FF5]"></div>
+    <div class="absolute inset-0 opacity-20" style="background-image: url('https://images.unsplash.com/photo-1667372283536-a832e74401c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjIxNjJ8MHwxfHNlYXJjaHwxfHxCMkIlMjBTYWFTJTIwJTJGJTIwQ2xvdWQlMjBJbmZyYXN0cnVjdHVyZXxlbnwxfDB8fHwxNzc2MDk1NTYyfDA&ixlib=rb-4.1.0&q=80&w=1080'); background-size: cover; background-position: center;"></div>
+    
+    <div class="relative z-10 max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <div class="text-sm font-bold text-white/70 mb-3 tracking-wider uppercase">02 / Why Nimbus</div>
+          <h2 class="font-heading font-bold text-white mb-6 text-glow" style="font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; letter-spacing: -0.01em;">
+            Why Technical Leaders Choose Nimbus
+          </h2>
+          <p class="text-lg text-white/90 leading-relaxed mb-6">
+            Infrastructure decisions have cascading implications across engineering velocity, operational costs, security posture, and business continuity. That's why CTOs and VPs of Engineering partner with Nimbus for cloud transformations that cannot afford failure.
+          </p>
+          <p class="text-lg text-white/90 leading-relaxed mb-8">
+            Our zero-downtime migration methodology has successfully transitioned mission-critical applications for enterprises where even minutes of outage translate to significant revenue impact and customer trust erosion. We architect solutions with deep expertise across AWS, Azure, and Google Cloud Platform ecosystems.
+          </p>
+          <a href="about.html" class="inline-flex items-center glass-card text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/20 transition-all duration-300 group">
+            Learn About Our Approach
+            <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          </a>
+        </div>
+        <div class="grid grid-cols-2 gap-6">
+          <div class="glass-card rounded-2xl p-8 hover:bg-white/10 transition-all duration-300">
+            <div class="text-5xl font-black gradient-text mb-3">3</div>
+            <div class="text-white/90 text-sm">Major Cloud Platforms</div>
+          </div>
+          <div class="glass-card rounded-2xl p-8 hover:bg-white/10 transition-all duration-300 mt-8">
+            <div class="text-5xl font-black gradient-text mb-3">24/7</div>
+            <div class="text-white/90 text-sm">Expert Monitoring</div>
+          </div>
+          <div class="glass-card rounded-2xl p-8 hover:bg-white/10 transition-all duration-300">
+            <div class="text-5xl font-black gradient-text mb-3">0</div>
+            <div class="text-white/90 text-sm">Downtime Promise</div>
+          </div>
+          <div class="glass-card rounded-2xl p-8 hover:bg-white/10 transition-all duration-300 mt-8">
+            <div class="text-5xl font-black gradient-text mb-3">80%</div>
+            <div class="text-white/90 text-sm">Faster Delivery</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24 bg-[#FAF9F8]">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <div class="text-sm font-bold text-primary mb-3 tracking-wider uppercase">03 / Client Trust</div>
+        <h2 class="font-heading font-bold text-[#1A1F2E] mb-6" style="font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1;">
+          Trusted by Enterprise Teams
+        </h2>
+      </div>
+      
+      <div class="relative">
+        <div class="absolute -left-4 top-0 text-8xl font-black text-primary/10 leading-none">"</div>
+        <blockquote class="relative bg-white rounded-2xl p-12 shadow-xl border border-[#E2E8F0]">
+          <p class="text-2xl text-[#1A1F2E] leading-relaxed mb-8 italic">
+            Our clients range from Series B startups scaling rapidly to established enterprises modernizing legacy infrastructure. They choose Nimbus because migration and optimization projects require both technical precision and strategic business understanding.
+          </p>
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="font-bold text-[#1A1F2E]">Engineering teams appreciate our hands-on expertise</div>
+              <div class="text-sm text-[#4A5568] mt-1">C-suite executives value our clear communication around risk mitigation, cost optimization, and compliance requirements.</div>
+            </div>
+          </div>
+        </blockquote>
+      </div>
+      
+      <div class="mt-12 text-center">
+        <p class="text-lg text-[#4A5568] max-w-3xl mx-auto">
+          The common thread is organizations where infrastructure reliability directly impacts revenue, customer experience, or regulatory standing—contexts where expertise, methodology, and accountability matter more than price alone.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="relative py-32 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-tr from-[#0A0D1A] via-[#1B3DE8] to-[#0A1F8F]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(77,111,245,0.2),transparent_50%)]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(27,61,232,0.2),transparent_50%)]"></div>
+    
+    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+      <div class="text-sm font-bold text-white/70 mb-4 tracking-wider uppercase">04 / Get Started</div>
+      <h2 class="font-heading font-bold text-white mb-6 text-glow" style="font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1;">
+        Start With a Comprehensive<br>Infrastructure Assessment
+      </h2>
+      <p class="text-xl text-white/80 mb-10 leading-relaxed max-w-3xl mx-auto">
+        Every successful cloud transformation begins with understanding current state architecture, identifying optimization opportunities, and mapping a strategic roadmap aligned with business objectives.
+      </p>
+      <a href="contact.html" class="shimmer-button text-white px-10 py-5 rounded-xl font-bold text-lg shadow-2xl hover:shadow-primary/50 transition-all duration-300 hover:scale-105 inline-block">
+        Schedule Your Assessment
+      </a>
+      <p class="text-sm text-white/60 mt-6">
+        Discover how Nimbus methodologies apply to your specific infrastructure challenges and growth goals.
+      </p>
+    </div>
+  </section>
+
+  <footer class="bg-[#1A1F2E] text-white py-16">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-12 mb-12">
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-3 mb-4">
+            <img src="demo-logo.svg" alt="Nimbus Cloud Solutions" class="h-8 w-auto">
+            <span class="font-heading font-bold text-xl">Nimbus Cloud Solutions</span>
+          </div>
+          <p class="text-white/70 mb-4 leading-relaxed">
+            Enterprise cloud infrastructure engineered for scale, security, and reliability.
+          </p>
+          <p class="text-white/70 text-sm">
+            San Francisco, CA<br>
+            <a href="tel:+14156007742" class="hover:text-primary transition-colors">(415) 600-7742</a><br>
+            <a href="mailto:priya@nimbuscloud.io" class="hover:text-primary transition-colors">priya@nimbuscloud.io</a>
+          </p>
+        </div>
+        
+        <div>
+          <h3 class="font-semibold text-white mb-4">Services</h3>
+          <ul class="space-y-2">
+            <li><a href="services.html" class="text-white/70 hover:text-primary transition-colors">Cloud Migration</a></li>
+            <li><a href="services.html" class="text-white/70 hover:text-primary transition-colors">DevOps Automation</a></li>
+            <li><a href="services.html" class="text-white/70 hover:text-primary transition-colors">Kubernetes Management</a></li>
+            <li><a href="services.html" class="text-white/70 hover:text-primary transition-colors">Security & Compliance</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="font-semibold text-white mb-4">Company</h3>
+          <ul class="space-y-2">
+            <li><a href="about.html" class="text-white/70 hover:text-primary transition-colors">About</a></li>
+            <li><a href="contact.html" class="text-white/70 hover:text-primary transition-colors">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-white/10 pt-8">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-white/60 text-sm">© 2026 Nimbus Cloud Solutions. All rights reserved.</p>
+          <p class="text-white/50 text-xs">
+            Photography by <a href="https://unsplash.com/@growtika" class="hover:text-primary transition-colors">Growtika</a>, <a href="https://unsplash.com/@thimo" class="hover:text-primary transition-colors">Thimo Pedersen</a> on Unsplash
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('main-nav');
+    let lastScroll = 0;
+    
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      
+      if (currentScroll > 50) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+      
+      lastScroll = currentScroll;
+    });
+  </script>
+</body>
+</html>

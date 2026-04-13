@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Services: Migration, DevOps, Kubernetes & Security | Nimbus</title>
+  <meta name="description" content="Comprehensive cloud services including zero-downtime migration, DevOps automation, Kubernetes management, security compliance, and 24/7 monitoring for enterprises.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: 'var(--color-primary)',
+          secondary: 'var(--color-secondary)',
+          accent: 'var(--color-accent)',
+        },
+        fontFamily: {
+          heading: ['var(--font-heading)', 'sans-serif'],
+          body: ['var(--font-body)', 'sans-serif'],
+        }
+      }
+    }
+  }
+  </script>
+  <style>
+    :root {
+      --color-primary: #1B3DE8;
+      --color-secondary: #E8EFFE;
+      --color-accent: #0A1F8F;
+      --color-accent-light: #4D6FF5;
+      --color-neutral-dark: #1A1F2E;
+      --color-neutral: #4A5568;
+      --color-neutral-light: #E2E8F0;
+      --color-success: #10B981;
+      --font-heading: 'Inter', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #1B3DE8 0%, #4D6FF5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .text-glow {
+      text-shadow: 0 0 20px rgba(77, 111, 245, 0.5), 0 0 40px rgba(27, 61, 232, 0.3);
+    }
+    
+    .nav-scrolled {
+      background-color: rgba(26, 31, 46, 0.92);
+      backdrop-filter: blur(12px);
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .underline-sweep {
+      position: relative;
+    }
+    
+    .underline-sweep::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1B3DE8, #4D6FF5);
+      transition: width 0.3s ease;
+    }
+    
+    .underline-sweep:hover::after {
+      width: 100%;
+    }
+    
+    .shimmer-button {
+      background: linear-gradient(90deg, #1B3DE8 0%, #4D6FF5 50%, #1B3DE8 100%);
+      background-size: 200% 100%;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    
+    @keyframes shimmer {
+      0% {
+        background-position: -200% center;
+      }
+      100% {
+        background-position: 200% center;
+      }
+    }
+    
+    .service-number {
+      font-size: 8rem;
+      font-weight: 900;
+      line-height: 1;
+      opacity: 0.05;
+      position: absolute;
+      top: -2rem;
+      right: 2rem;
+      user-select: none;
+    }
+  </style>
+</head>
+<body class="font-body text-white bg-[#0A0D1A]">
+  <nav id="main-nav" class="fixed w-full z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <img src="demo-logo.svg" alt="Nimbus Cloud Solutions" class="h-9 w-auto transition-transform group-hover:scale-105">
+        <span class="font-heading font-bold text-xl text-white hidden md:inline">Nimbus Cloud Solutions</span>
+      </a>
+      <div class="flex items-center gap-8">
+        <div class="hidden md:flex items-center gap-6">
+          <a href="index.html" class="text-white/90 hover:text-white underline-sweep transition-colors text-sm font-medium">Home</a>
+          <a href="services.html" class="text-white hover:text-white underline-sweep transition-colors text-sm font-medium">Services</a>
+          <a href="about.html" class="text-white/90 hover:text-white underline-sweep transition-colors text-sm font-medium">About</a>
+          <a href="contact.html" class="text-white/90 hover:text-white underline-sweep transition-colors text-sm font-medium">Contact</a>
+        </div>
+        <a href="contact.html" class="bg-gradient-to-r from-primary to-accent-light text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 hover:scale-105">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="relative pt-32 pb-24 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[#0A0D1A] via-[#1B3DE8]/20 to-[#0A1F8F]"></div>
+    <div class="absolute inset-0 bg-gradient-radial from-[#4D6FF5]/10 via-transparent to-transparent opacity-50"></div>
+    
+    <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+      <h1 class="font-heading font-black text-white text-glow mb-6" style="font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.05; letter-spacing: -0.02em;">
+        Cloud Infrastructure Solutions<br>Built for Enterprise Scale
+      </h1>
+      <p class="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed">
+        Modern cloud infrastructure requires more than migration and management—it demands strategic architecture that anticipates growth, prevents failures, and accelerates business capabilities.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white to-[#E8EFFE] p-12 md:p-16 shadow-2xl border border-[#E2E8F0]">
+        <div class="service-number text-primary">01</div>
+        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 class="font-heading font-bold text-[#1A1F2E] mb-6" style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.1;">
+              Cloud Migration
+            </h2>
+            <p class="text-lg text-[#4A5568] leading-relaxed mb-6">
+              Seamlessly transition legacy infrastructure to modern cloud platforms with our proven zero-downtime migration methodology. We begin with comprehensive assessment of your existing environment, identifying dependencies, performance baselines, and potential migration risks.
+            </p>
+            <p class="text-lg text-[#4A5568] leading-relaxed mb-6">
+              Our phased execution approach migrates workloads systematically, validating functionality at each stage while maintaining full production availability. This methodology minimizes business disruption while maximizing cloud ROI through right-sized resource allocation and architecture optimization.
+            </p>
+            <div class="flex flex-wrap gap-3 mb-6">
+              <span class="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-semibold">AWS Migration</span>
+              <span class="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-semibold">Azure Migration</span>
+              <span class="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-semibold">Google Cloud</span>
+            </div>
+          </div>
+          <div class="relative h-80 rounded-2xl overflow-hidden shadow-xl">
+            <img src="https://images.unsplash.com/photo-1667372283536-a832e74401c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjIxNjJ8MHwxfHNlYXJjaHwxfHxCMkIlMjBTYWFTJTIwJTJGJTIwQ2xvdWQlMjBJbmZyYXN0cnVjdHVyZXxlbnwxfDB8fHwxNzc2MDk1NTYyfDA&ixlib=rb-4.1.0&q=80&w=1080" alt="a blue and white logo" class="w-full h-full object-cover">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-[#FAF9F8]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="relative overflow-hidden rounded-3xl bg-white p-12 md:p-16 shadow-2xl">
+        <div class="service-number text-primary">02</div>
+        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+          <div class="order-2 md:order-1 relative h-80 rounded-2xl overflow-hidden shadow-xl">
+            <img src="https://images.unsplash.com/photo-1667984390527-850f63192709?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjIxNjJ8MHwxfHNlYXJjaHwyfHxCMkIlMjBTYWFTJTIwJTJGJTIwQ2xvdWQlMjBJbmZyYXN0cnVjdHVyZXxlbnwxfDB8fHwxNzc2MDk1NTYyfDA&ixlib=rb-4.1.0&q=80&w=1080" alt="diagram" class="w-full h-full object-cover">
+          </div>
+          <div class="order-1 md:order-2">
+            <h2 class="font-heading font-bold text-[#1A1F2E] mb-6" style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.1;">
+              DevOps Automation
+            </h2>
+            <p class="text-lg text-[#4A5568] leading-relaxed mb-6">
+              Accelerate software delivery pipelines with intelligent automation frameworks designed for enterprise velocity and reliability. We implement comprehensive CI/CD pipelines that automate building, testing, and deployment processes, reducing deployment times by up to 80% while improving consistency.
+            </p>
+            <p class="text-lg text-[#4A5568] leading-relaxed mb-6">
+              Our infrastructure as code implementations using Terraform, CloudFormation, or Azure Resource Manager templates ensure environment consistency and enable rapid scaling. These frameworks fundamentally transform development team velocity, enabling rapid iteration without sacrificing stability.
+            </p>
+            <div class="flex flex-wrap gap-3">
+              <span class="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-semibold">CI/CD Pipelines</span>
+              <span class="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-semibold">Infrastructure as Code</span>
+              <span class="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-semibold">Automated Testing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white to-[#E8EFFE] p-12 md:p-16 shadow-2xl border border-[#E2E8F0]">
+        <div class="service-number text-primary">03</div>
+        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 class="font-heading font-bold text-[#1A1F2E] mb-6" style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.1;">
+              Kubernetes Management
+            </h2>
+            <p class="text-lg text-[#4A5568] leading-relaxed mb-6">
+              Harness the full power of container orchestration with expert Kubernetes implementation and ongoing management. Our Kubernetes solutions span initial cluster design optimized for your workload characteristics, production deployment with high availability and disaster recovery, and ongoing optimization for performance and cost efficiency.
+            </p>
+            <p class="text-lg text-[#4A5568] leading-relaxed mb-6">
+              We implement microservices architectures that leverage Kubernetes' orchestration capabilities for independent scaling, rapid deployment, and resilient operations. Whether containerizing existing applications or architecting new cloud-native systems, our expertise ensures efficient operation at any scale.
+            </p>
+            <div class="flex flex-wrap gap-3">
+              <span class="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-semibold">Container Orchestration</span>
+              <span class="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-semibold">Microservices</span>
+              <span class="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-semibold">Auto-scaling</span>
+            </div>
+          </div>
+          <div class="relative h-80 rounded-2xl overflow-hidden shadow-xl">
+            <img src="https://images.unsplash.com/photo-1667372283545-1261fb5c427a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjIxNjJ8MHwxfHNlYXJjaHw2fHxCMkIlMjBTYWFTJTIwJTJGJTIwQ2xvdWQlMjBJbmZyYXN0cnVjdHVyZXxlbnwxfDB8fHwxNzc2MDk1NTYyfDA&ixlib=rb-4.1.0&q=80&w=1080" alt="a close-up of a device" class="w-full h-full object-cover">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-[#FAF9F8]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="relative overflow-hidden rounded-3xl bg-white p-12 md:p-16 shadow-2xl">
+        <div class="service-number text-primary">04</div>
+        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+          <div class="order-2 md:order-1 relative h-80 rounded-2xl overflow-hidden shadow-xl">
+            <img src="https://images.unsplash.com/photo-1601926495045-d066ccae8085?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjIxNjJ8MHwxfHNlYXJjaHw1fHxCMkIlMjBTYWFTJTIwJTJGJTIwQ2xvdWQlMjBJbmZyYXN0cnVjdHVyZXxlbnwxfDB8fHwxNzc2MDk1NTYyfDA&ixlib=rb-4.1.0&q=80&w=1080" alt="a close up of a glass building with clouds in the background" class="w-full h-full object-cover">
+          </div>
+          <div class="order-1 md:order-2">
+            <h2 class="font-heading font-bold text-[#1A1F2E] mb-6" style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.1;">
+              Security & Compliance
+            </h2>
+            <p class="text-lg text-[#4A5568] leading-relaxed mb-6">
+              Protect cloud infrastructure with enterprise-grade security frameworks and compliance automation built for regulated industries. We implement zero-trust security architectures that verify every access request regardless of source, conduct comprehensive vulnerability assessments, and ensure systematic adherence to regulatory requirements.
+            </p>
+            <p class="text-lg text-[#4A5568] leading-relaxed mb-6">
+              Our approach integrates security directly into infrastructure design and DevOps workflows rather than treating it as a separate audit function. Automated compliance monitoring continuously validates security controls and generates audit-ready documentation.
+            </p>
+            <div class="flex flex-wrap gap-3">
+              <span class="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-semibold">SOC 2</span>
+              <span class="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-semibold">HIPAA</span>
+              <span class="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-semibold">GDPR</span>
+              <span class="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-semibold">Zero Trust</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white to-[#E8EFFE] p-12 md:p-16 shadow-2xl border border-[#E2E8F0]">
+        <div class="service-number text-primary">05</div>
+        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 class="font-heading font-bold text-[#1A1F2E] mb-6" style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.1;">
+              24/7 Infrastructure Monitoring
+            </h2>
+            <p class="text-lg text-[#4A5568] leading-relaxed mb-6">
+              Maintain peak performance and reliability with round-the-clock infrastructure monitoring and rapid incident response backed by 99.99% uptime SLAs. Our proactive monitoring systems track performance metrics, resource utilization, and application health across your entire cloud environment.
+            </p>
+            <p class="text-lg text-[#4A5568] leading-relaxed mb-6">
+              Intelligent alerting escalates genuine incidents to our dedicated support teams while filtering routine fluctuations. When incidents occur, experienced cloud engineers provide immediate troubleshooting and resolution. This comprehensive monitoring approach transforms infrastructure reliability from hopeful aspiration into contractual commitment.
+            </p>
+            <div class="flex items-center gap-6 mt-8">
+              <div class="text-center">
+                <div class="text-4xl font-black text-primary mb-2">99.99%</div>
+                <div class="text-sm text-[#4A5568]">Uptime Guarantee</div>
+              </div>
+              <div class="w-px h-16 bg-[#E2E8F0]"></div>
+              <div class="text-center">
+                <div class="text-4xl font-black text-primary mb-2">24/7</div>
+                <div class="text-sm text-[#4A5568]">Expert Support</div>
+              </div>
+            </div>
+          </div>
+          <div class="relative h-80 rounded-2xl overflow-hidden shadow-xl">
+            <img src="https://images.unsplash.com/photo-1667984390553-7f439e6ae401?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjIxNjJ8MHwxfHNlYXJjaHwzfHxCMkIlMjBTYWFTJTIwJTJGJTIwQ2xvdWQlMjBJbmZyYXN0cnVjdHVyZXxlbnwxfDB8fHwxNzc2MDk1NTYyfDA&ixlib=rb-4.1.0&q=80&w=1080" alt="a computer generated image of a computer" class="w-full h-full object-cover">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="relative py-32 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-tr from-[#0A0D1A] via-[#1B3DE8] to-[#0A1F8F]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(77,111,245,0.2),transparent_50%)]"></div>
+    
+    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+      <h2 class="font-heading font-bold text-white mb-6 text-glow" style="font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1;">
+        Discuss Your Infrastructure Requirements
+      </h2>
+      <p class="text-xl text-white/80 mb-10 leading-relaxed max-w-3xl mx-auto">
+        Every organization faces unique infrastructure challenges based on application architecture, growth trajectory, regulatory environment, and technical team capabilities. Connect with our cloud infrastructure specialists.
+      </p>
+      <a href="contact.html" class="shimmer-button text-white px-10 py-5 rounded-xl font-bold text-lg shadow-2xl hover:shadow-primary/50 transition-all duration-300 hover:scale-105 inline-block">
+        Schedule Consultation
+      </a>
+    </div>
+  </section>
+
+  <footer class="bg-[#1A1F2E] text-white py-16">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-12 mb-12">
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-3 mb-4">
+            <img src="demo-logo.svg" alt="Nimbus Cloud Solutions" class="h-8 w-auto">
+            <span class="font-heading font-bold text-xl">Nimbus Cloud Solutions</span>
+          </div>
+          <p class="text-white/70 mb-4 leading-relaxed">
+            Enterprise cloud infrastructure engineered for scale, security, and reliability.
+          </p>
+          <p class="text-white/70 text-sm">
+            San Francisco, CA<br>
+            <a href="tel:+14156007742" class="hover:text-primary transition-colors">(415) 600-7742</a><br>
+            <a href="mailto:priya@nimbuscloud.io" class="hover:text-primary transition-colors">priya@nimbuscloud.io</a>
+          </p>
+        </div>
+        
+        <div>
+          <h3 class="font-semibold text-white mb-4">Services</h3>
+          <ul class="space-y-2">
+            <li><a href="services.html" class="text-white/70 hover:text-primary transition-colors">Cloud Migration</a></li>
+            <li><a href="services.html" class="text-white/70 hover:text-primary transition-colors">DevOps Automation</a></li>
+            <li><a href="services.html" class="text-white/70 hover:text-primary transition-colors">Kubernetes Management</a></li>
+            <li><a href="services.html" class="text-white/70 hover:text-primary transition-colors">Security & Compliance</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="font-semibold text-white mb-4">Company</h3>
+          <ul class="space-y-2">
+            <li><a href="about.html" class="text-white/70 hover:text-primary transition-colors">About</a></li>
+            <li><a href="contact.html" class="text-white/70 hover:text-primary transition-colors">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-white/10 pt-8">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-white/60 text-sm">© 2026 Nimbus Cloud Solutions. All rights reserved.</p>
+          <p class="text-white/50 text-xs">
+            Photography by <a href="https://unsplash.com/@growtika" class="hover:text-primary transition-colors">Growtika</a>, <a href="https://unsplash.com/@thimo" class="hover:text-primary transition-colors">Thimo Pedersen</a> on Unsplash
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('main-nav');
+    
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+</body>
+</html>

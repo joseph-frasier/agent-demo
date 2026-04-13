@@ -18,6 +18,7 @@ import {
   fallbackProject,
   fallbackBuild,
 } from "@/lib/fallback-data";
+import { getCachedPipeline } from "@/lib/cache";
 import type { PhaseStatus } from "@/lib/types";
 
 import { PipelineStepper } from "@/components/PipelineStepper";
@@ -129,11 +130,18 @@ export default function HomePage() {
     dispatch({ type: "SUBMIT_INTAKE", payload: data });
 
     try {
+      const cached = getCachedPipeline(data.businessName);
+
       // Phase 2a: Enrich
       const enriched = isLive(state, "enrich")
         ? await fetchEnrich(data)
-        : fallbackEnriched;
+        : cached?.enriched ?? fallbackEnriched;
       dispatch({ type: "SET_ENRICHED", payload: enriched });
+
+      // Brief pause so the stepper shows enrichment before agents start
+      if (!isLive(state, "enrich")) {
+        await new Promise((r) => setTimeout(r, 800));
+      }
 
       // Phase 2b: Agents — fan out four calls, dispatch each as it settles
       dispatch({ type: "SET_PHASE", payload: "processing_agents" });
@@ -162,22 +170,18 @@ export default function HomePage() {
         );
         await Promise.all([crmP, creativeP, designP, assetsP]);
       } else {
-        dispatch({
-          type: "SET_AGENT_RESULT",
-          payload: { agent: "crm", data: fallbackAgents.crm },
-        });
-        dispatch({
-          type: "SET_AGENT_RESULT",
-          payload: { agent: "creative", data: fallbackAgents.creative },
-        });
-        dispatch({
-          type: "SET_AGENT_RESULT",
-          payload: { agent: "design", data: fallbackAgents.design },
-        });
-        dispatch({
-          type: "SET_AGENT_RESULT",
-          payload: { agent: "assets", data: fallbackAgents.assets },
-        });
+        // Stagger each agent so they tick in one by one
+        const agentData = cached?.agents ?? fallbackAgents;
+        const agents: Array<["crm" | "creative" | "design" | "assets", typeof agentData[keyof typeof agentData]]> = [
+          ["crm", agentData.crm],
+          ["creative", agentData.creative],
+          ["design", agentData.design],
+          ["assets", agentData.assets],
+        ];
+        for (const [agent, data] of agents) {
+          await new Promise((r) => setTimeout(r, 600 + Math.random() * 400));
+          dispatch({ type: "SET_AGENT_RESULT", payload: { agent, data } as never });
+        }
       }
     } catch (err) {
       dispatch({
@@ -216,11 +220,12 @@ export default function HomePage() {
         );
       } else {
         // Cached path: fake the per-page progress so the sub-cluster still
-        // animates through its states. Each page "completes" 250ms apart.
-        site = fallbackBuild;
-        const fakeNames = ["Home", "Services", "About", "Contact"];
+        // animates through its states.
+        const cached = getCachedPipeline(state.intake?.businessName ?? "");
+        site = cached?.build ?? fallbackBuild;
+        const fakeNames = site.pages.map((p) => p.name);
         for (let i = 0; i < fakeNames.length; i++) {
-          await new Promise((r) => setTimeout(r, 250));
+          await new Promise((r) => setTimeout(r, 1000 + Math.random() * 400));
           dispatch({
             type: "BUILD_PAGE_COMPLETE",
             payload: { name: fakeNames[i] },
@@ -245,13 +250,14 @@ export default function HomePage() {
     if (!state.enriched || !state.agents.creative) return;
 
     try {
+      const cached = getCachedPipeline(state.intake?.businessName ?? "");
       const project = isLive(state, "project")
         ? await fetchProjectKit({
             enriched: state.enriched,
             creative: state.agents.creative,
             design: state.agents.design,
           })
-        : fallbackProject;
+        : cached?.project ?? fallbackProject;
       dispatch({ type: "SET_PROJECT", payload: project });
     } catch (err) {
       dispatch({

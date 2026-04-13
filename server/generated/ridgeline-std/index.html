@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ridgeline Outdoor Education | Wilderness Courses Arizona</title>
+  <meta name="description" content="Wilderness survival, guided backpacking, youth camps, and team retreats in Northern Arizona. Expert outdoor education. Go further. Come back changed.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: 'var(--color-primary)',
+            secondary: 'var(--color-secondary)',
+            accent: 'var(--color-accent)',
+          },
+          fontFamily: {
+            heading: ['var(--font-heading)', 'sans-serif'],
+            body: ['var(--font-body)', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --color-primary: #3B6E45;
+      --color-secondary: #F2EAD8;
+      --color-accent: #D97E3C;
+      --color-neutral: #2C3E36;
+      --color-background: #FDFCFA;
+      --color-accent-light: #7FA085;
+      --color-neutral-light: #8B9A92;
+      --font-heading: 'Montserrat', sans-serif;
+      --font-body: 'Open Sans', sans-serif;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .hero-content > * {
+      animation: fadeInUp 0.8s ease-out forwards;
+      opacity: 0;
+    }
+
+    .hero-content > *:nth-child(1) { animation-delay: 0.2s; }
+    .hero-content > *:nth-child(2) { animation-delay: 0.4s; }
+    .hero-content > *:nth-child(3) { animation-delay: 0.6s; }
+    .hero-content > *:nth-child(4) { animation-delay: 0.8s; }
+
+    .service-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(59, 110, 69, 0.15);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body class="font-body text-[#2C3E36] bg-[#FDFCFA]">
+  
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="nav">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <img src="demo-logo.svg" alt="Ridgeline Outdoor Education" class="h-10 w-auto transition-transform duration-300 group-hover:scale-105">
+        <span class="font-heading text-xl font-bold text-white hidden sm:inline">Ridgeline Outdoor Education</span>
+      </a>
+      <div class="flex items-center gap-8">
+        <a href="index.html" class="text-white font-medium hover:text-[#D97E3C] transition-colors duration-200">Home</a>
+        <a href="services.html" class="text-white font-medium hover:text-[#D97E3C] transition-colors duration-200">Programs</a>
+        <a href="about.html" class="text-white font-medium hover:text-[#D97E3C] transition-colors duration-200">About</a>
+        <a href="contact.html" class="bg-[#D97E3C] text-white px-5 py-2 rounded-md font-semibold hover:bg-[#C06D2E] transition-all duration-200 hover:shadow-lg">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        nav.style.backgroundColor = 'rgba(44, 62, 54, 0.95)';
+        nav.style.backdropFilter = 'blur(8px)';
+      } else {
+        nav.style.backgroundColor = 'transparent';
+        nav.style.backdropFilter = 'none';
+      }
+    });
+  </script>
+
+  <!-- Hero Section -->
+  <section class="relative h-screen flex items-center justify-center">
+    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&h=1080&fit=crop" alt="Dramatic mountain peaks in golden light" class="absolute inset-0 w-full h-full object-cover">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/70"></div>
+    <div class="relative z-10 max-w-5xl mx-auto px-6 text-center hero-content">
+      <h1 class="font-heading text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">Go further.<br>Come back changed.</h1>
+      <p class="text-xl md:text-2xl text-white/95 mb-8 max-w-3xl mx-auto leading-relaxed">Wilderness education programs in Northern Arizona that build essential outdoor skills, forge resilient communities, and create transformative experiences in the backcountry.</p>
+      <a href="services.html" class="inline-block bg-[#D97E3C] text-white px-8 py-4 rounded-md text-lg font-semibold hover:bg-[#C06D2E] transition-all duration-300 hover:shadow-2xl hover:scale-105">Explore Our Programs</a>
+    </div>
+  </section>
+
+  <!-- Introduction -->
+  <section class="py-20 bg-[#FDFCFA]">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <p class="text-lg md:text-xl text-[#2C3E36] leading-relaxed">Ridgeline Outdoor Education guides individuals, youth, and teams through transformative wilderness experiences across Northern Arizona's stunning landscapes. Whether you're learning to build fire without matches, navigating alpine terrain with map and compass, or discovering leadership through group challenge, our expert educators create the conditions for real growth. We believe the wilderness is our greatest teacher, and that every person carries the capacity to thrive in wild places when given proper skills, support, and community.</p>
+    </div>
+  </section>
+
+  <!-- Programs Overview -->
+  <section class="py-24 bg-[#F2EAD8]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="font-heading text-4xl md:text-5xl font-bold text-[#2C3E36] mb-4">Programs That Transform</h2>
+        <div class="w-24 h-1 bg-[#D97E3C] mx-auto"></div>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <!-- Service Card 1 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-md service-card">
+          <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&h=400&fit=crop" alt="Wilderness campfire at dusk" class="h-48 w-full object-cover">
+          <div class="p-6">
+            <div class="text-[#D97E3C] font-heading font-bold text-sm mb-2">01</div>
+            <h3 class="font-heading text-2xl font-bold text-[#2C3E36] mb-3">Wilderness Survival</h3>
+            <p class="text-[#2C3E36] leading-relaxed mb-4">Master essential backcountry skills—shelter building, fire making, navigation, foraging—through hands-on practice guided by experienced educators.</p>
+            <a href="services.html#survival" class="text-[#D97E3C] font-semibold hover:text-[#C06D2E] transition-colors duration-200 inline-flex items-center">
+              Learn More 
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Service Card 2 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-md service-card">
+          <img src="https://images.unsplash.com/photo-1682686581580-d99b0230064e?w=600&h=400&fit=crop" alt="Youth group hiking on a mountain trail" class="h-48 w-full object-cover">
+          <div class="p-6">
+            <div class="text-[#D97E3C] font-heading font-bold text-sm mb-2">02</div>
+            <h3 class="font-heading text-2xl font-bold text-[#2C3E36] mb-3">Youth Camps</h3>
+            <p class="text-[#2C3E36] leading-relaxed mb-4">Transformative multi-day experiences where young people build confidence, outdoor skills, and lifelong connection to nature.</p>
+            <a href="services.html#youth" class="text-[#D97E3C] font-semibold hover:text-[#C06D2E] transition-colors duration-200 inline-flex items-center">
+              Learn More 
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Service Card 3 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-md service-card">
+          <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&h=400&fit=crop" alt="Backpackers on a ridge trail at sunrise" class="h-48 w-full object-cover">
+          <div class="p-6">
+            <div class="text-[#D97E3C] font-heading font-bold text-sm mb-2">03</div>
+            <h3 class="font-heading text-2xl font-bold text-[#2C3E36] mb-3">Guided Backpacking</h3>
+            <p class="text-[#2C3E36] leading-relaxed mb-4">Expert-led expeditions through stunning wilderness, emphasizing Leave No Trace principles and skill development.</p>
+            <a href="services.html#backpacking" class="text-[#D97E3C] font-semibold hover:text-[#C06D2E] transition-colors duration-200 inline-flex items-center">
+              Learn More 
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Service Card 4 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-md service-card">
+          <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop" alt="Team working together outdoors" class="h-48 w-full object-cover">
+          <div class="p-6">
+            <div class="text-[#D97E3C] font-heading font-bold text-sm mb-2">04</div>
+            <h3 class="font-heading text-2xl font-bold text-[#2C3E36] mb-3">Team Building Retreats</h3>
+            <p class="text-[#2C3E36] leading-relaxed mb-4">Customized outdoor experiences that strengthen organizational culture and develop leadership through challenge.</p>
+            <a href="services.html#team" class="text-[#D97E3C] font-semibold hover:text-[#C06D2E] transition-colors duration-200 inline-flex items-center">
+              Learn More 
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Service Card 5 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-md service-card">
+          <img src="https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=600&h=400&fit=crop" alt="First aid training in the wilderness" class="h-48 w-full object-cover">
+          <div class="p-6">
+            <div class="text-[#D97E3C] font-heading font-bold text-sm mb-2">05</div>
+            <h3 class="font-heading text-2xl font-bold text-[#2C3E36] mb-3">First Aid Certification</h3>
+            <p class="text-[#2C3E36] leading-relaxed mb-4">Wilderness First Aid and First Responder courses preparing you for medical emergencies in remote settings.</p>
+            <a href="services.html#firstaid" class="text-[#D97E3C] font-semibold hover:text-[#C06D2E] transition-colors duration-200 inline-flex items-center">
+              Learn More 
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Programs Summary Card -->
+        <div class="bg-[#3B6E45] rounded-lg overflow-hidden shadow-md p-6 flex flex-col justify-center text-white">
+          <h3 class="font-heading text-2xl font-bold mb-3">Small Groups. Deep Impact.</h3>
+          <p class="leading-relaxed mb-4">Our commitment to small group sizes ensures personalized attention, and our Leave No Trace principles mean every participant learns to tread lightly while going far.</p>
+          <a href="services.html" class="text-[#D97E3C] font-semibold hover:text-white transition-colors duration-200 inline-flex items-center">
+            View All Programs 
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="py-24 bg-[#FDFCFA]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <img src="https://images.unsplash.com/photo-1764491214352-c6e98248bc41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MjIxNjJ8MHwxfHNlYXJjaHwxfHxPdXRkb29yJTIwRWR1Y2F0aW9uJTIwJTI2JTIwV2lsZGVybmVzcyUyMFRyYWluaW5nfGVufDF8MHx8fDE3NzYwOTQxMTB8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Climbers gathered at the base of a large rock face." class="rounded-lg shadow-xl w-full h-auto">
+        </div>
+        <div>
+          <h2 class="font-heading text-4xl md:text-5xl font-bold text-[#2C3E36] mb-6">Experienced Guides, Proven Methods</h2>
+          <div class="w-24 h-1 bg-[#D97E3C] mb-8"></div>
+          <p class="text-lg text-[#2C3E36] leading-relaxed mb-6">Our wilderness educators bring decades of combined backcountry experience and deep knowledge of Arizona's high deserts, ponderosa forests, and mountain ranges. We're not thrill-seekers—we're patient teachers who understand that true outdoor competence comes from practice, reflection, and community support.</p>
+          <p class="text-lg text-[#2C3E36] leading-relaxed mb-8">Every course we lead emphasizes safety-conscious decision making, environmental stewardship, and the development of both technical skills and inner resilience. We've watched countless participants discover capabilities they didn't know they possessed, and we create space for that discovery with thoughtful curriculum design and genuine care for each person's journey.</p>
+          <a href="about.html" class="inline-flex items-center text-[#D97E3C] font-semibold text-lg hover:text-[#C06D2E] transition-colors duration-200">
+            Learn Our Story 
+            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonial Band -->
+  <section class="py-24 bg-[#2C3E36]">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="font-heading text-3xl md:text-4xl font-bold text-white mb-12">What Participants Say</h2>
+      <blockquote class="text-xl md:text-2xl text-white/95 leading-relaxed italic mb-8">
+        "Our alumni consistently report that Ridgeline programs marked turning points in their lives—not because we manufactured peak experiences, but because we provided authentic challenges in supportive environments."
+      </blockquote>
+      <p class="text-lg text-white/90 leading-relaxed">Parents tell us their children return from youth camps more confident and self-reliant. Corporate teams report improved communication months after retreats. Certification students describe feeling truly prepared for wilderness emergencies. These transformations happen when skilled instruction meets wild landscapes and human potential, creating conditions for growth that extend far beyond the trail.</p>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="py-24 bg-gradient-to-br from-[#3B6E45] to-[#2C3E36] text-white">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="font-heading text-4xl md:text-5xl font-bold mb-6">Ready to Begin Your Journey?</h2>
+      <p class="text-xl leading-relaxed mb-10">Whether you're seeking wilderness skills for your next adventure, looking for a transformative experience for your child, or wanting to strengthen your team through outdoor challenge, Ridgeline has a program designed for your goals. Browse our upcoming courses, reach out with questions, or register today. Northern Arizona's wilderness is waiting, and so is the person you'll become out there.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="services.html" class="bg-[#D97E3C] text-white px-8 py-4 rounded-md text-lg font-semibold hover:bg-[#C06D2E] transition-all duration-300 hover:shadow-2xl hover:scale-105">View Programs</a>
+        <a href="contact.html" class="bg-white text-[#3B6E45] px-8 py-4 rounded-md text-lg font-semibold hover:bg-[#F2EAD8] transition-all duration-300 hover:shadow-2xl hover:scale-105">Get in Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#2C3E36] text-white py-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-3 gap-12 mb-8">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <img src="demo-logo.svg" alt="Ridgeline Outdoor Education" class="h-10 w-auto">
+            <span class="font-heading text-xl font-bold">Ridgeline Outdoor Education</span>
+          </div>
+          <p class="text-white/80 text-sm mb-2">Go further. Come back changed.</p>
+          <p class="text-white/80 text-sm">Northern Arizona</p>
+        </div>
+        <div>
+          <h3 class="font-heading text-lg font-bold mb-4">Quick Links</h3>
+          <ul class="space-y-2 text-white/80">
+            <li><a href="index.html" class="hover:text-[#D97E3C] transition-colors duration-200">Home</a></li>
+            <li><a href="services.html" class="hover:text-[#D97E3C] transition-colors duration-200">Programs</a></li>
+            <li><a href="about.html" class="hover:text-[#D97E3C] transition-colors duration-200">About</a></li>
+            <li><a href="contact.html" class="hover:text-[#D97E3C] transition-colors duration-200">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-heading text-lg font-bold mb-4">Contact</h3>
+          <p class="text-white/80 mb-2">Tom Yazzie</p>
+          <p class="text-white/80 mb-2"><a href="tel:9285540076" class="hover:text-[#D97E3C] transition-colors duration-200">(928) 554-0076</a></p>
+          <p class="text-white/80"><a href="mailto:tom@ridgelineoutdoor.org" class="hover:text-[#D97E3C] transition-colors duration-200">tom@ridgelineoutdoor.org</a></p>
+        </div>
+      </div>
+      <div class="border-t border-white/20 pt-8 text-sm text-white/70">
+        <p class="mb-2">&copy; 2026 Ridgeline Outdoor Education. All rights reserved.</p>
+        <p class="text-xs">Photography by <a href="https://unsplash.com/@aalat" class="hover:text-[#D97E3C] transition-colors duration-200">alaa turkman</a> on Unsplash</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
