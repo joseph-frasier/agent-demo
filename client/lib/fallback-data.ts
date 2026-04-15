@@ -173,6 +173,8 @@ export const fallbackAgents: AgentsResult = {
       "Forest green evokes nature, health, and trustworthiness — perfect for a business that cares for living creatures. Warm cream provides a soft, inviting contrast that feels welcoming and clean, like a well-kept home. Together they create a palette that says 'professional yet personal.'",
   },
   design: {
+    _reasoning: "Pet grooming is tactile and trust-based. Warm handcrafted personality signals care and approachability — pill buttons and soft shadows reinforce the friendly, safe feeling.",
+    personality: "warm handcrafted",
     colors: [
       { role: "primary", hex: "#2D5F2D", name: "Forest Green", usage: "Headers, buttons, nav background" },
       { role: "secondary", hex: "#F5E6D3", name: "Warm Cream", usage: "Section backgrounds, card backgrounds" },
@@ -185,9 +187,11 @@ export const fallbackAgents: AgentsResult = {
       bodyFont: "Plus Jakarta Sans",
       headingWeight: "400",
       bodyWeight: "400",
+      typeScale: "standard",
     },
     layout: {
       maxWidth: "1280px",
+      heroArchetype: "full-bleed-image-overlay",
       sections: [
         { name: "Hero", type: "full-bleed" },
         { name: "Services", type: "grid", columns: 3 },
@@ -198,9 +202,16 @@ export const fallbackAgents: AgentsResult = {
       ],
     },
     spacing: {
-      sectionPadding: "5rem",
+      sectionPadding: "standard",
       componentGap: "2rem",
     },
+    borderRadius: {
+      button: "rounded-full",
+      card: "rounded-2xl",
+      input: "rounded-lg",
+    },
+    surfaceStyle: "shadowed",
+    backgroundTreatment: "off-white",
   },
   assets: {
     logo: { filename: "demo-logo.svg", dimensions: "400x120", size: "24KB" },

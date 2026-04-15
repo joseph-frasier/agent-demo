@@ -11,7 +11,7 @@ interface ClaudeOpts {
 export async function callClaudeText(opts: ClaudeOpts): Promise<string> {
   const message = await client.messages
     .stream({
-      model: "claude-sonnet-4-5-20250929",
+      model: "claude-sonnet-4-6",
       max_tokens: opts.maxTokens ?? 4096,
       system: opts.system,
       messages: [{ role: "user", content: opts.user }],
@@ -40,7 +40,7 @@ export async function streamClaudeText(opts: StreamClaudeOpts): Promise<string> 
   let accumulated = "";
 
   const stream = client.messages.stream({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     max_tokens: opts.maxTokens ?? 4096,
     system: opts.system,
     messages: [{ role: "user", content: opts.user }],

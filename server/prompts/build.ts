@@ -10,8 +10,9 @@ TECHNICAL REQUIREMENTS
 
 - Each page is a standalone HTML file with <!DOCTYPE html>
 - Tailwind CSS via CDN: <script src="https://cdn.tailwindcss.com"></script>
-- Google Fonts via CDN link in <head>
+- Google Fonts via CDN link in <head> — use the fonts specified in tokens.typography
 - Mobile-first responsive design with tablet and desktop breakpoints
+- Reflect the personality: use tokens.personality as the design north star for every decision
 - Sticky navigation bar with working cross-page links and smooth scroll
 - The nav bar MUST be legible at all scroll positions. If the nav starts transparent (e.g., over a hero image), add a small inline \`<script>\` that listens for \`scroll\` and toggles a class when \`window.scrollY > 50\`. The scrolled state should add a semi-opaque background (e.g., \`background-color: rgba(0,0,0,0.85)\` or a brand-appropriate dark/light tint) and \`backdrop-filter: blur(8px)\` so text stays readable over any content beneath it. Use \`transition: background-color 0.3s, backdrop-filter 0.3s\` for a smooth effect. If the nav already has an opaque background color, this is not needed.
 - Footer on every page with business info and copyright
@@ -40,6 +41,51 @@ tailwind.config = {
 </script>
 
 Define CSS custom properties in a <style> block using the provided design tokens.
+
+═══════════════════════════════════════════════════════════════
+TOKEN RENDERING GUIDE — apply these tokens exactly as specified
+═══════════════════════════════════════════════════════════════
+
+heroArchetype (tokens.layout.heroArchetype):
+  full-bleed-image-overlay  → 100vh hero, background-image with dark overlay, white text centered
+  split-image-text          → 50/50 grid, image one side, headline + CTA other side; stacked on mobile
+  centered-type-no-image    → centered headline, large type, solid primary color background, no image
+  asymmetric-collage        → offset grid layout, multiple overlapping image elements, bold typography
+  minimal-statement         → single large headline, generous whitespace, minimal color, no image
+
+surfaceStyle (tokens.surfaceStyle):
+  flat      → no shadows, no borders; color alone separates sections
+  shadowed  → shadow-md on cards, hover:shadow-lg, transition-all duration-300
+  bordered  → border border-neutral-200 on cards, no shadows
+  no-cards  → no card wrapper elements; sections separated by spacing and background color only
+
+backgroundTreatment (tokens.backgroundTreatment):
+  white      → bg-white throughout
+  off-white  → bg-neutral-50 page background, bg-white for card surfaces
+  dark       → bg-neutral-900 page background, use light text throughout, invert nav colors
+  tinted     → use tokens.colors[role="background"].hex as the page background color
+
+sectionPadding (tokens.spacing.sectionPadding):
+  tight    → py-12
+  standard → py-20
+  dramatic → py-32
+
+typeScale (tokens.typography.typeScale):
+  tight    → h1: text-4xl, h2: text-xl, modest weight contrast
+  standard → h1: text-5xl, h2: text-2xl, clear hierarchy
+  dramatic → h1: text-7xl md:text-8xl, heavy heading weight, light body weight, editorial contrast
+
+borderRadius — apply consistently:
+  tokens.borderRadius.button → all <button> and anchor-styled CTA elements
+  tokens.borderRadius.card   → all card wrapper elements
+  tokens.borderRadius.input  → all <input>, <textarea>, <select> elements
+
+componentGap (tokens.spacing.componentGap) → use as gap in grid and flex layouts
+
+GRACEFUL DEGRADATION — if any token field is absent, fall back to:
+  personality="clean professional", heroArchetype="full-bleed-image-overlay",
+  surfaceStyle="shadowed", backgroundTreatment="white", sectionPadding="standard",
+  all borderRadius="rounded-md", typeScale="standard"
 
 ═══════════════════════════════════════════════════════════════
 LOGO DISPLAY RULES
