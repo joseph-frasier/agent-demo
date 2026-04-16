@@ -12,7 +12,7 @@ function Card({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-brand-card border border-brand-border rounded-xl p-6 flex flex-col gap-4">
+    <div className="bg-brand-card border border-brand-border rounded-xl p-4 sm:p-6 flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h3 className="text-white font-semibold text-base">{title}</h3>
         {status && (
@@ -157,8 +157,8 @@ export default function DeploymentCards({
 
       {/* ── DNS Zone ── */}
       <Card title="DNS Zone" status="Javelina MCP">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+          <table className="w-full text-sm min-w-[480px]">
             <thead>
               <tr className="text-white/40 text-xs uppercase tracking-widest">
                 <th className="text-left pb-2 pr-4">Type</th>
@@ -222,7 +222,7 @@ export default function DeploymentCards({
       </Card>
 
       {/* ── Pipeline Complete ── */}
-      <div className="bg-brand-card border border-brand-accent rounded-xl p-8 flex flex-col items-center gap-4 text-center">
+      <div className="bg-brand-card border border-brand-accent rounded-xl p-6 sm:p-8 flex flex-col items-center gap-4 text-center">
         <span className="text-brand-accent text-3xl font-bold">✓</span>
         <h3 className="text-white font-bold text-xl">Pipeline Complete</h3>
         <div className="flex flex-col gap-1">

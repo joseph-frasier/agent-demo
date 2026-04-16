@@ -13,10 +13,10 @@ export default function SitePreview({ site }: { site: GeneratedSite }) {
   return (
     <div className="flex flex-col gap-4 animate-fade-in-up">
       {/* Toolbar */}
-      <div className="bg-brand-card border border-brand-border rounded-xl p-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-brand-blue animate-pulse-dot inline-block" />
-          <span className="text-white font-semibold text-sm">Preview: Generated Website</span>
+      <div className="bg-brand-card border border-brand-border rounded-xl p-3 sm:p-4 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="w-2.5 h-2.5 rounded-full bg-brand-blue animate-pulse-dot inline-block shrink-0" />
+          <span className="text-white font-semibold text-sm truncate">Preview: Generated Website</span>
         </div>
         {!isFallback && currentPage && (
           <a
@@ -37,7 +37,7 @@ export default function SitePreview({ site }: { site: GeneratedSite }) {
             <button
               key={page.filename}
               onClick={() => setActivePage(index)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+              className={`px-3 py-2 sm:py-1.5 rounded-lg text-sm font-medium border transition-colors cursor-pointer min-h-[44px] sm:min-h-0 ${
                 index === activePage
                   ? "bg-brand-accent text-brand-dark border-brand-accent"
                   : "bg-brand-card border-brand-border text-white/70 hover:text-white"
@@ -51,20 +51,19 @@ export default function SitePreview({ site }: { site: GeneratedSite }) {
 
       {/* Iframe / Fallback */}
       {isFallback ? (
-        <div className="bg-brand-card border border-brand-border rounded-xl flex items-center justify-center h-[600px]">
+        <div className="bg-brand-card border border-brand-border rounded-xl flex items-center justify-center h-[300px] sm:h-[600px]">
           <p className="text-white/50 text-sm">Website preview not available in cached mode</p>
         </div>
       ) : (
         <iframe
           src={iframeUrl}
           title={currentPage?.name ?? "Preview"}
-          className="w-full rounded-xl border border-brand-border bg-white"
-          style={{ height: "600px" }}
+          className="w-full rounded-xl border border-brand-border bg-white h-[400px] sm:h-[600px]"
         />
       )}
 
       {/* Metadata */}
-      <div className="bg-brand-card border border-brand-border rounded-xl p-4 flex flex-wrap gap-6">
+      <div className="bg-brand-card border border-brand-border rounded-xl p-3 sm:p-4 flex flex-wrap gap-4 sm:gap-6">
         <div className="flex flex-col gap-0.5">
           <span className="text-white/40 text-xs uppercase tracking-widest">Pages</span>
           <span className="text-white text-sm font-medium">{site.metadata.pageCount}</span>
