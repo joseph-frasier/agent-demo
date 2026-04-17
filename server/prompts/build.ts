@@ -203,17 +203,29 @@ The footer is a section, and the contrast rules apply to it just like every othe
 
 Apply the same background → text rules from above. The footer's body text, link colors, photographer credits, and copyright line all need to be readable against the footer's chosen background. **Walk through the PRE-EMIT AUDIT below for the footer too — don't skip it.**
 
-**PRE-EMIT AUDIT — run this mental check on every section AND the footer before finishing the page:**
+**CROSS-PAGE HERO RULE — the #1 failure across multi-page sites:**
+
+The Home page usually has a dark hero image with overlay, so white text works. But Services, About, and Contact pages often have solid-color or light backgrounds for their hero sections. You MUST NOT copy the home hero's white text color to other pages unless those pages also have a dark background.
+
+For each non-Home page hero:
+- If the hero has a **dark background or dark image overlay** → white text is fine
+- If the hero has a **light, cream, off-white, or tinted background** → use \`text-gray-900\` or \`text-stone-900\` for headings and \`text-gray-700\` for body text. NEVER use \`text-white\` or \`text-white/80\`.
+- If the hero has a **solid brand-color background** → check the color's lightness. Dark brand colors get white text. Light/pastel brand colors get dark text.
+
+The same rule applies to the **footer**: if the footer background is light (cream, off-white, white), ALL text in the footer must be dark (\`text-gray-800\`, \`text-gray-600\`, etc.) — including links, copyright, and photographer credits.
+
+**PRE-EMIT AUDIT — run this on EVERY PAGE (not just the Home page) before emitting:**
+
+For each of the 4 pages (Home, Services, About, Contact), walk through EVERY section:
 
 1. What is this section's background color/class? (write it down mentally)
-2. What color is the H1/H2/H3 in this section?
-3. Are the heading and background the same color or the same brand token? **If yes, FIX IT before continuing.**
-4. What color are the body links in this section?
-5. Would the link be visible without hovering it? **If no, FIX IT.**
-6. If this is a hero with a background image: is there an overlay? Is the text white? **If no, FIX IT.**
-7. **For the footer specifically**: is the footer's background color different from its text color? Are the photographer credit links readable? **If no, FIX IT.**
+2. Is this a light background (white, cream, off-white, light tint)? → ALL text must be dark (\`text-gray-900\`, \`text-gray-700\`, etc.)
+3. Is this a dark background (near-black, dark brand color, image with overlay)? → text can be white
+4. Are the heading and background the same color or the same brand token? **If yes, FIX IT.**
+5. Check the footer: does it have a light background with white text? **If yes, FIX IT — use dark text.**
+6. Check every link: would it be visible without hovering? **If no, FIX IT.**
 
-**Mental check:** "If I were viewing only this section in isolation with no context, can I read every heading, every link, and every CTA label?" If the answer isn't "yes, instantly," the section is broken.
+**Mental check for EACH PAGE:** "If I open Services.html in a browser right now, can I read every heading, every paragraph, every link, and every footer line?" If the answer isn't "yes, instantly," that page is broken. Do this check for all four pages, not just Home.
 
 Match the design to the brand. A neighborhood pet groomer should feel warm and local. A B2B SaaS should feel confident and precise. A wedding photographer should feel refined. Read the industry and tone keywords from the enriched data and the voice guidelines from the creative brief before you start building.
 
