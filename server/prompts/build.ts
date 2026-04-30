@@ -201,29 +201,61 @@ The overlay opacity range \`from-black/40 to black/70\` is the safe zone — str
 
 A colored overlay is fine, but ONLY if the text on top is still white or off-white, never the same brand color used in the overlay.
 
-**FOOTER RULE — the most-forgotten section:**
+**FOOTER RULE — NON-NEGOTIABLE, ZERO EXCEPTIONS:**
 
-The footer is a section, and the contrast rules apply to it just like every other section. Footers are where heading-background collisions ship most often because Claude tends to apply the rules carefully to the hero and main content, then phone in the footer. Treat the footer with the same attention.
+The footer is THE most common place generated sites ship invisible text. It gets the most scrutiny here. Read every word.
 
-❌ DO NOT do this:
+**DEFAULT: use a dark footer.** Unless the brand explicitly calls for a light footer (e.g., a bright/pastel brand where a dark footer would clash), use a dark background. Dark footers are safe — you know the text will be readable. Light footers require you to audit every single text element to ensure it's dark. When in doubt, go dark.
+
+**Mandatory footer template — copy this structure, adapt the colors:**
 \`\`\`html
-<footer class="bg-cream"><p class="text-white">© 2026 ...</p></footer>
-<!-- cream background + white text = invisible -->
-
-<footer class="bg-secondary"><a class="text-secondary">Privacy</a></footer>
-<!-- same brand token on bg and link = invisible -->
+<footer style="background-color: #1a1a1a;" class="text-white py-12">
+  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div>
+      <img src="LOGO_URL" alt="Business Name" class="h-8 w-auto mb-4">
+      <p class="text-gray-400 text-sm">Tagline or short description.</p>
+    </div>
+    <div>
+      <h4 class="font-semibold text-white mb-3">Quick Links</h4>
+      <ul class="space-y-2 text-sm text-gray-400">
+        <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+        <li><a href="services.html" class="hover:text-white transition-colors">Services</a></li>
+        <li><a href="about.html" class="hover:text-white transition-colors">About</a></li>
+        <li><a href="contact.html" class="hover:text-white transition-colors">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-semibold text-white mb-3">Contact</h4>
+      <p class="text-gray-400 text-sm">Phone, email, address here.</p>
+    </div>
+  </div>
+  <div class="max-w-6xl mx-auto px-6 mt-10 pt-6 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center gap-4">
+    <p class="text-gray-500 text-xs">© 2026 Business Name. All rights reserved.</p>
+    <p class="text-gray-500 text-xs">Photography by <a href="..." class="underline hover:text-gray-300">Photographer</a> on Unsplash</p>
+  </div>
+</footer>
 \`\`\`
 
-✓ DO this instead:
-\`\`\`html
-<footer class="bg-brand-dark text-white"><p>© 2026 ...</p></footer>
-<!-- dark footer + white text -->
+**If you choose a light footer** (e.g., cream or off-white), every single text element must be explicitly dark — heading, body, links, copyright, photo credit. Use \`text-gray-900\` for headings, \`text-gray-700\` for body, \`text-gray-600\` for secondary. **NEVER use \`text-white\` on a light footer background.** Not once.
 
-<footer class="bg-[#FAF7F2] text-gray-700"><p>© 2026 ...</p></footer>
-<!-- light footer + dark text -->
+❌ THE #1 FOOTER FAILURE — do not ship this:
+\`\`\`html
+<footer class="bg-[#FAF7F2]">
+  <p class="text-white">© 2026 ...</p>        <!-- INVISIBLE — white on cream -->
+  <a class="text-white/80">Contact</a>         <!-- INVISIBLE — white on cream -->
+  <h4 class="text-white">Quick Links</h4>      <!-- INVISIBLE — white on cream -->
+</footer>
 \`\`\`
 
-Apply the same background → text rules from above. The footer's body text, link colors, photographer credits, and copyright line all need to be readable against the footer's chosen background. **Walk through the PRE-EMIT AUDIT below for the footer too — don't skip it.**
+**FOOTER PRE-EMIT CHECKLIST — run this before emitting EACH page:**
+1. What is the footer background color? (name it explicitly)
+2. Is it a dark background? → all \`text-white\` and \`text-gray-400\` are fine
+3. Is it a light background? → hunt down and replace EVERY \`text-white\` with \`text-gray-900\` or darker
+4. Are footer links visually distinct from body text (underline, color, or weight difference)? If not, add it.
+5. Is the photographer credit line visible? Check its color against the footer background.
+6. Is the copyright line visible? Same check.
+
+If you cannot answer "yes, every line is readable" for every page's footer, do not emit — fix first.
 
 **CROSS-PAGE HERO RULE — the #1 failure across multi-page sites:**
 
@@ -244,8 +276,15 @@ For each of the 4 pages (Home, Services, About, Contact), walk through EVERY sec
 2. Is this a light background (white, cream, off-white, light tint)? → ALL text must be dark (\`text-gray-900\`, \`text-gray-700\`, etc.)
 3. Is this a dark background (near-black, dark brand color, image with overlay)? → text can be white
 4. Are the heading and background the same color or the same brand token? **If yes, FIX IT.**
-5. Check the footer: does it have a light background with white text? **If yes, FIX IT — use dark text.**
-6. Check every link: would it be visible without hovering? **If no, FIX IT.**
+5. Check every link: would it be visible without hovering? **If no, FIX IT.**
+
+**FOOTER AUDIT — mandatory final check before each page is emitted:**
+- State the footer background color out loud (e.g., "#1a1a1a" or "cream #FAF7F2")
+- Scan every text class in the footer: \`text-white\`, \`text-gray-*\`, inline styles, everything
+- If the footer is light and you see ANY \`text-white\` — that text is invisible. Replace it.
+- If the footer is dark and you see \`text-gray-900\` — that text may be hard to read. Replace with \`text-gray-300\` or lighter.
+- Check the photographer credit line. Check the copyright line. Check every nav link. All must be readable.
+- **Do not emit the page until you can say: "I can read every word in this footer."**
 
 **Mental check for EACH PAGE:** "If I open Services.html in a browser right now, can I read every heading, every paragraph, every link, and every footer line?" If the answer isn't "yes, instantly," that page is broken. Do this check for all four pages, not just Home.
 
