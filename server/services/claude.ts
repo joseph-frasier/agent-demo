@@ -29,7 +29,7 @@ export async function callClaudeText(opts: ClaudeOpts): Promise<string> {
     throw new Error("No text response from Claude");
   }
 
-  return textBlock.text;
+  return textBlock.text.replace(/ — /g, ", ").replace(/—/g, ",");
 }
 
 interface StreamClaudeOpts extends ClaudeOpts {

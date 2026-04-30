@@ -14,7 +14,10 @@ TECHNICAL REQUIREMENTS
 - Mobile-first responsive design with tablet and desktop breakpoints
 - Reflect the personality: use tokens.personality as the design north star for every decision
 - Sticky navigation bar with working cross-page links and smooth scroll
-- The nav bar MUST be legible at all scroll positions. If the nav starts transparent (e.g., over a hero image), add a small inline \`<script>\` that listens for \`scroll\` and toggles a class when \`window.scrollY > 50\`. The scrolled state should add a semi-opaque background (e.g., \`background-color: rgba(0,0,0,0.85)\` or a brand-appropriate dark/light tint) and \`backdrop-filter: blur(8px)\` so text stays readable over any content beneath it. Use \`transition: background-color 0.3s, backdrop-filter 0.3s\` for a smooth effect. If the nav already has an opaque background color, this is not needed.
+- The nav bar MUST be legible at ALL scroll positions — including at the very top of the page (scrollY = 0). Two rules that must both hold:
+  1. **Initial state text color**: Choose the nav text color based on what is BEHIND the nav at scrollY=0. If the nav sits over a dark hero image with an overlay, use \`text-white\`. If the nav has a light/white/opaque background at the top, use \`text-gray-900\`. **NEVER use \`text-white\` on a nav with a light or white background — the text will be invisible.**
+  2. **Scroll transition**: Add a small inline \`<script>\` that listens for \`scroll\` and toggles a class when \`window.scrollY > 50\`. The scrolled state should add a semi-opaque background (e.g., \`background-color: rgba(0,0,0,0.85)\` or a brand-appropriate dark/light tint) and \`backdrop-filter: blur(8px)\` so text stays readable over any content beneath it. Use \`transition: background 0.3s ease, backdrop-filter 0.3s ease\` for a smooth effect. Also update text color in the scrolled state if needed (e.g., switching from white to dark as the background lightens).
+  - **Common failure pattern to avoid**: nav with \`bg-white\` or no background + \`text-white\` nav links = invisible links at page top. Fix: if the nav has a light background, nav text must be dark. If the nav is transparent over a dark hero, nav text can be white BUT only if the hero area actually has a dark overlay behind the nav.
 - Footer on every page with business info and copyright
 - Every page must be fully functional and visually consistent with the others
 - Logo URL (use this exact path): ${opts.logoUrl}
@@ -155,7 +158,14 @@ When the section background is a brand color, headings should be white, off-whit
 
 Any hero that places text on top of a photographic background MUST include a dark gradient overlay between the image and the text, AND the text on top MUST be white or near-white. Both rules apply together.
 
-✓ Use this pattern:
+**SPLIT HERO LAYOUT RULE (split-image-text archetype):**
+When using a side-by-side text + image layout, the text column MUST never be obscured by the image. Apply these rules:
+- The image must be strictly contained to its column — use \`overflow-hidden\` on the image container and never let the image bleed into the text column
+- The text column must have \`position: relative; z-index: 10\` so it always renders above any absolutely-positioned elements
+- Never use \`position: absolute\` on the hero image in a split layout — use a normal flex/grid column with \`object-cover\` inside a bounded container
+- The full-bleed-image-overlay archetype uses absolute positioning; the split-image-text archetype does NOT — do not mix the two patterns
+
+✓ Use this pattern for full-bleed overlay heroes:
 \`\`\`html
 <section class="relative h-screen">
   <img src="..." class="absolute inset-0 w-full h-full object-cover" alt="...">
@@ -163,6 +173,18 @@ Any hero that places text on top of a photographic background MUST include a dar
   <div class="relative z-10 ...">
     <h1 class="text-white">...</h1>
     <p class="text-white/90">...</p>
+  </div>
+</section>
+\`\`\`
+
+✓ Use this pattern for split heroes:
+\`\`\`html
+<section class="grid grid-cols-1 md:grid-cols-2 min-h-screen">
+  <div class="relative z-10 flex flex-col justify-center px-12 py-24">
+    <h1 class="text-gray-900">...</h1>
+  </div>
+  <div class="overflow-hidden">
+    <img src="..." class="w-full h-full object-cover" alt="...">
   </div>
 </section>
 \`\`\`
@@ -377,6 +399,45 @@ MOTION
 - At least one surprising micro-interaction somewhere on the home page
 
 Keep it subtle. Motion should reward attention, not demand it.
+
+═══════════════════════════════════════════════════════════════
+DESIGN LAWS — CRAFT THAT SEPARATES REAL SITES FROM AI OUTPUT
+═══════════════════════════════════════════════════════════════
+
+**The AI slop test:** If someone can look at this site and say "AI made that" without hesitation, it has failed. The rules below prevent the most common failure modes.
+
+**Color strategy — pick ONE before touching any class:**
+- Restrained: tinted neutrals + one accent used sparingly (<10% of surface). Use for clean/professional/medical/legal brands.
+- Committed: one saturated brand color carries 30–60% of the surface. Use for identity-driven brands with bold personality.
+- Full palette: 3–4 named color roles, each used deliberately. Use for brands with complex visual systems.
+Never collapse every design to "restrained" by reflex. A bold brand deserves committed color — don't neuter it.
+
+**Typography hierarchy — non-negotiable:**
+- At least 1.25× scale ratio between heading levels. Flat type hierarchies make every section feel the same.
+- Cap body paragraph line length at 65–75ch. Unbounded text columns are hard to read.
+- Pair a display/heading font with a different body font rather than using one font for everything.
+
+**Layout — avoid the lazy defaults:**
+- Do not wrap every piece of content in a card. Cards are one layout tool, not the default. Use them only when grouping genuinely distinct items.
+- Nested cards are always wrong.
+- Vary spacing intentionally — not every section should have the same padding. Some sections should breathe more, some should feel tighter.
+- Don't center-align every section. Left-aligned body text reads better and feels more grounded.
+
+**Motion — do it right or don't do it:**
+- Never animate layout properties (width, height, top, left, margin, padding). Animate transform and opacity only.
+- Use ease-out curves (ease-out or cubic-bezier deceleration). No bounce, no elastic.
+- Keep transitions 150–400ms. Longer than 400ms feels sluggish.
+
+**Absolute bans — if you are about to write any of these, rewrite the element:**
+- **Side-stripe borders**: \`border-left\` or \`border-right\` greater than 1px as a colored accent on cards or list items. Rewrite with a background tint, full border, leading icon/number, or remove entirely.
+- **Gradient text**: \`background-clip: text\` with a gradient. Use a solid color instead. Emphasis via weight or size.
+- **Glassmorphism as decoration**: blurry frosted-glass cards used without purpose. Only use blur effects when they communicate depth in a meaningful way.
+- **The hero-metric template**: big number, small label, supporting stats, gradient accent — the SaaS cliché. Find a different way to show proof.
+- **Em dashes**: use commas, colons, semicolons, or periods instead.
+- **Category-reflex palettes**: "cloud/tech = dark blue with cyan glow", "legal = navy + gold", "wellness = sage + cream". Read the actual brand tokens and personality. Let those drive the color — not the industry stereotype.
+
+**Sectional variety test — run this before emitting:**
+Read back each page's sections in order. If more than two consecutive sections share the same background color, layout pattern, or type alignment, break the rhythm. Vary the background, flip the layout, change the alignment. Monotony is a failure.
 
 ═══════════════════════════════════════════════════════════════
 OUTPUT FORMAT — THIS IS CRITICAL
