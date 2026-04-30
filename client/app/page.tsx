@@ -50,6 +50,25 @@ const PHASE_ORDER: Record<PhaseStatus, number> = {
   deployment_ready: 8,
 };
 
+// ── Mobile step mapping (9 internal phases → 5 user-facing steps) ────────────
+
+const MOBILE_STEPS = [
+  { label: "Intake", minPhase: 0 },
+  { label: "Enrich", minPhase: 1 },
+  { label: "Approve", minPhase: 5 },
+  { label: "Build", minPhase: 6 },
+  { label: "Deploy", minPhase: 8 },
+] as const;
+
+function getMobileStepIndex(phase: PhaseStatus): number {
+  const idx = PHASE_ORDER[phase];
+  if (idx >= 8) return 4;
+  if (idx >= 6) return 3;
+  if (idx >= 5) return 2;
+  if (idx >= 1) return 1;
+  return 0;
+}
+
 // ── PhaseSection internal component ───────────────────────────────────────────
 
 interface PhaseSectionProps {
@@ -91,7 +110,7 @@ function PhaseSection({
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       className="mb-12 scroll-mt-8"
     >
-      <div className="flex items-center gap-3 mb-6">
+      <div className="hidden md:flex items-center gap-3 mb-6">
         <span
           className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold shrink-0 ${
             status === "complete"
@@ -282,8 +301,20 @@ export default function HomePage() {
 
   return (
     <div className="flex min-h-screen bg-brand-dark text-white">
-      {/* ── Left Sidebar ── */}
-      <aside className="w-72 shrink-0 border-r border-brand-border flex flex-col gap-8 p-6 sticky top-0 h-screen self-start">
+      {/* ── Mobile top bar (logo only) ── */}
+      <div className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between border-b border-brand-border bg-brand-dark/95 backdrop-blur-sm px-4 py-2.5 md:hidden">
+        <div className="flex items-center gap-2">
+          <img src="/irongrove-logo.png" alt="Irongrove" className="h-7 w-auto" />
+          <span className="text-[10px] text-white/40 uppercase tracking-widest">Pipeline</span>
+        </div>
+        <PhaseToggle
+          isLive={state.settings.masterLive}
+          onToggle={() => dispatch({ type: "TOGGLE_MASTER_LIVE" })}
+        />
+      </div>
+
+      {/* ── Left Sidebar (desktop only) ── */}
+      <aside className="hidden md:flex w-72 shrink-0 border-r border-brand-border flex-col gap-8 p-6 sticky top-0 h-screen self-start">
         <div className="flex flex-col items-center gap-2">
           <img
             src="/irongrove-logo.png"
@@ -315,7 +346,7 @@ export default function HomePage() {
       </aside>
 
       {/* ── Main Content ── */}
-      <main className="flex-1 min-w-0 p-8">
+      <main className="flex-1 min-w-0 px-4 py-4 pt-[56px] md:px-8 md:py-8 md:pt-8">
         {/* Error banner */}
         {error && (
           <div className="mb-6 flex items-center justify-between rounded-xl border border-brand-error/30 bg-brand-error/10 px-4 py-3">
@@ -328,6 +359,26 @@ export default function HomePage() {
             </button>
           </div>
         )}
+
+        {/* ── Mobile inline progress stepper ── */}
+        <div className="flex items-center gap-1.5 mt-6 mb-5 md:hidden">
+          {MOBILE_STEPS.map((step, i) => {
+            const currentStep = getMobileStepIndex(phase);
+            const status = i < currentStep ? "done" : i === currentStep ? "active" : "upcoming";
+            return (
+              <div key={step.label} className="flex flex-col items-center gap-1 flex-1">
+                <div className={`h-1 w-full rounded-full transition-colors duration-500 ${
+                  status === "done" ? "bg-brand-accent" : status === "active" ? "bg-brand-blue" : "bg-white/10"
+                }`} />
+                <span className={`text-[9px] uppercase tracking-wider leading-none ${
+                  status === "done" ? "text-brand-accent/70" : status === "active" ? "text-brand-blue font-semibold" : "text-white/25"
+                }`}>
+                  {step.label}
+                </span>
+              </div>
+            );
+          })}
+        </div>
 
         {/* ── Phase 1: Client Intake ── */}
         <PhaseSection

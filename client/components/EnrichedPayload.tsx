@@ -154,7 +154,7 @@ export default function EnrichedPayload({
     <div className="animate-fade-in-up flex flex-col gap-6">
       {/* ── Stats hero ── */}
       <div className="rounded-xl bg-brand-card border border-brand-border p-6">
-        <div className="grid grid-cols-3 gap-4 mb-5">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-5">
           <div className="flex flex-col items-center gap-1 py-3 rounded-lg bg-white/5">
             <span className="text-2xl font-bold text-white">
               <AnimatedCounter target={wordsIn} />
@@ -323,7 +323,7 @@ export default function EnrichedPayload({
           badge={`${enriched.businessDetails.uniqueSellingPoints.length} USPs`}
         >
           <div className="space-y-3">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <span className="text-xs font-medium text-white/40">
                   Years in Business

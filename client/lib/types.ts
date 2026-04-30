@@ -102,30 +102,53 @@ export type CreativeBrief = {
 };
 
 export type DesignTokens = {
+  _reasoning: string; // 1–2 sentences explaining personality choice; stripped by build agent
+
+  personality: string; // e.g. "warm handcrafted", "austere editorial", "playful maximalist"
+
   colors: Array<{
-    role: string;
+    role: "primary" | "secondary" | "accent" | "neutral" | "background";
     hex: string;
     name: string;
     usage: string;
   }>;
+
   typography: {
     headingFont: string;
     bodyFont: string;
     headingWeight: string;
     bodyWeight: string;
+    typeScale: "tight" | "standard" | "dramatic";
   };
+
   layout: {
     maxWidth: string;
+    heroArchetype:
+      | "full-bleed-image-overlay"
+      | "split-image-text"
+      | "centered-type-no-image"
+      | "asymmetric-collage"
+      | "minimal-statement";
     sections: Array<{
       name: string;
-      type: string;
+      type: "full-bleed" | "contained" | "split" | "grid";
       columns?: number;
     }>;
   };
+
   spacing: {
-    sectionPadding: string;
+    sectionPadding: "tight" | "standard" | "dramatic";
     componentGap: string;
   };
+
+  borderRadius: {
+    button: string; // e.g. "rounded-none", "rounded-md", "rounded-full"
+    card: string;   // e.g. "rounded-none", "rounded-xl"
+    input: string;  // e.g. "rounded-none", "rounded-lg"
+  };
+
+  surfaceStyle: "flat" | "shadowed" | "bordered" | "no-cards";
+  backgroundTreatment: "white" | "off-white" | "dark" | "tinted";
 };
 
 export type AssetManifest = {

@@ -10,10 +10,14 @@ TECHNICAL REQUIREMENTS
 
 - Each page is a standalone HTML file with <!DOCTYPE html>
 - Tailwind CSS via CDN: <script src="https://cdn.tailwindcss.com"></script>
-- Google Fonts via CDN link in <head>
+- Google Fonts via CDN link in <head> — use the fonts specified in tokens.typography
 - Mobile-first responsive design with tablet and desktop breakpoints
+- Reflect the personality: use tokens.personality as the design north star for every decision
 - Sticky navigation bar with working cross-page links and smooth scroll
-- The nav bar MUST be legible at all scroll positions. If the nav starts transparent (e.g., over a hero image), add a small inline \`<script>\` that listens for \`scroll\` and toggles a class when \`window.scrollY > 50\`. The scrolled state should add a semi-opaque background (e.g., \`background-color: rgba(0,0,0,0.85)\` or a brand-appropriate dark/light tint) and \`backdrop-filter: blur(8px)\` so text stays readable over any content beneath it. Use \`transition: background-color 0.3s, backdrop-filter 0.3s\` for a smooth effect. If the nav already has an opaque background color, this is not needed.
+- The nav bar MUST be legible at ALL scroll positions — including at the very top of the page (scrollY = 0). Two rules that must both hold:
+  1. **Initial state text color**: Choose the nav text color based on what is BEHIND the nav at scrollY=0. If the nav sits over a dark hero image with an overlay, use \`text-white\`. If the nav has a light/white/opaque background at the top, use \`text-gray-900\`. **NEVER use \`text-white\` on a nav with a light or white background — the text will be invisible.**
+  2. **Scroll transition**: Add a small inline \`<script>\` that listens for \`scroll\` and toggles a class when \`window.scrollY > 50\`. The scrolled state should add a semi-opaque background (e.g., \`background-color: rgba(0,0,0,0.85)\` or a brand-appropriate dark/light tint) and \`backdrop-filter: blur(8px)\` so text stays readable over any content beneath it. Use \`transition: background 0.3s ease, backdrop-filter 0.3s ease\` for a smooth effect. Also update text color in the scrolled state if needed (e.g., switching from white to dark as the background lightens).
+  - **Common failure pattern to avoid**: nav with \`bg-white\` or no background + \`text-white\` nav links = invisible links at page top. Fix: if the nav has a light background, nav text must be dark. If the nav is transparent over a dark hero, nav text can be white BUT only if the hero area actually has a dark overlay behind the nav.
 - Footer on every page with business info and copyright
 - Every page must be fully functional and visually consistent with the others
 - Logo URL (use this exact path): ${opts.logoUrl}
@@ -40,6 +44,51 @@ tailwind.config = {
 </script>
 
 Define CSS custom properties in a <style> block using the provided design tokens.
+
+═══════════════════════════════════════════════════════════════
+TOKEN RENDERING GUIDE — apply these tokens exactly as specified
+═══════════════════════════════════════════════════════════════
+
+heroArchetype (tokens.layout.heroArchetype):
+  full-bleed-image-overlay  → 100vh hero, background-image with dark overlay, white text centered
+  split-image-text          → 50/50 grid, image one side, headline + CTA other side; stacked on mobile
+  centered-type-no-image    → centered headline, large type, solid primary color background, no image
+  asymmetric-collage        → offset grid layout, multiple overlapping image elements, bold typography
+  minimal-statement         → single large headline, generous whitespace, minimal color, no image
+
+surfaceStyle (tokens.surfaceStyle):
+  flat      → no shadows, no borders; color alone separates sections
+  shadowed  → shadow-md on cards, hover:shadow-lg, transition-all duration-300
+  bordered  → border border-neutral-200 on cards, no shadows
+  no-cards  → no card wrapper elements; sections separated by spacing and background color only
+
+backgroundTreatment (tokens.backgroundTreatment):
+  white      → bg-white throughout
+  off-white  → bg-neutral-50 page background, bg-white for card surfaces
+  dark       → bg-neutral-900 page background, use light text throughout, invert nav colors
+  tinted     → use tokens.colors[role="background"].hex as the page background color
+
+sectionPadding (tokens.spacing.sectionPadding):
+  tight    → py-12
+  standard → py-20
+  dramatic → py-32
+
+typeScale (tokens.typography.typeScale):
+  tight    → h1: text-4xl, h2: text-xl, modest weight contrast
+  standard → h1: text-5xl, h2: text-2xl, clear hierarchy
+  dramatic → h1: text-7xl md:text-8xl, heavy heading weight, light body weight, editorial contrast
+
+borderRadius — apply consistently:
+  tokens.borderRadius.button → all <button> and anchor-styled CTA elements
+  tokens.borderRadius.card   → all card wrapper elements
+  tokens.borderRadius.input  → all <input>, <textarea>, <select> elements
+
+componentGap (tokens.spacing.componentGap) → use as gap in grid and flex layouts
+
+GRACEFUL DEGRADATION — if any token field is absent, fall back to:
+  personality="clean professional", heroArchetype="full-bleed-image-overlay",
+  surfaceStyle="shadowed", backgroundTreatment="white", sectionPadding="standard",
+  all borderRadius="rounded-md", typeScale="standard"
 
 ═══════════════════════════════════════════════════════════════
 LOGO DISPLAY RULES
@@ -109,7 +158,14 @@ When the section background is a brand color, headings should be white, off-whit
 
 Any hero that places text on top of a photographic background MUST include a dark gradient overlay between the image and the text, AND the text on top MUST be white or near-white. Both rules apply together.
 
-✓ Use this pattern:
+**SPLIT HERO LAYOUT RULE (split-image-text archetype):**
+When using a side-by-side text + image layout, the text column MUST never be obscured by the image. Apply these rules:
+- The image must be strictly contained to its column — use \`overflow-hidden\` on the image container and never let the image bleed into the text column
+- The text column must have \`position: relative; z-index: 10\` so it always renders above any absolutely-positioned elements
+- Never use \`position: absolute\` on the hero image in a split layout — use a normal flex/grid column with \`object-cover\` inside a bounded container
+- The full-bleed-image-overlay archetype uses absolute positioning; the split-image-text archetype does NOT — do not mix the two patterns
+
+✓ Use this pattern for full-bleed overlay heroes:
 \`\`\`html
 <section class="relative h-screen">
   <img src="..." class="absolute inset-0 w-full h-full object-cover" alt="...">
@@ -117,6 +173,18 @@ Any hero that places text on top of a photographic background MUST include a dar
   <div class="relative z-10 ...">
     <h1 class="text-white">...</h1>
     <p class="text-white/90">...</p>
+  </div>
+</section>
+\`\`\`
+
+✓ Use this pattern for split heroes:
+\`\`\`html
+<section class="grid grid-cols-1 md:grid-cols-2 min-h-screen">
+  <div class="relative z-10 flex flex-col justify-center px-12 py-24">
+    <h1 class="text-gray-900">...</h1>
+  </div>
+  <div class="overflow-hidden">
+    <img src="..." class="w-full h-full object-cover" alt="...">
   </div>
 </section>
 \`\`\`
@@ -133,41 +201,92 @@ The overlay opacity range \`from-black/40 to black/70\` is the safe zone — str
 
 A colored overlay is fine, but ONLY if the text on top is still white or off-white, never the same brand color used in the overlay.
 
-**FOOTER RULE — the most-forgotten section:**
+**FOOTER RULE — NON-NEGOTIABLE, ZERO EXCEPTIONS:**
 
-The footer is a section, and the contrast rules apply to it just like every other section. Footers are where heading-background collisions ship most often because Claude tends to apply the rules carefully to the hero and main content, then phone in the footer. Treat the footer with the same attention.
+The footer is THE most common place generated sites ship invisible text. It gets the most scrutiny here. Read every word.
 
-❌ DO NOT do this:
+**DEFAULT: use a dark footer.** Unless the brand explicitly calls for a light footer (e.g., a bright/pastel brand where a dark footer would clash), use a dark background. Dark footers are safe — you know the text will be readable. Light footers require you to audit every single text element to ensure it's dark. When in doubt, go dark.
+
+**Mandatory footer template — copy this structure, adapt the colors:**
 \`\`\`html
-<footer class="bg-cream"><p class="text-white">© 2026 ...</p></footer>
-<!-- cream background + white text = invisible -->
-
-<footer class="bg-secondary"><a class="text-secondary">Privacy</a></footer>
-<!-- same brand token on bg and link = invisible -->
+<footer style="background-color: #1a1a1a;" class="text-white py-12">
+  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div>
+      <img src="LOGO_URL" alt="Business Name" class="h-8 w-auto mb-4">
+      <p class="text-gray-400 text-sm">Tagline or short description.</p>
+    </div>
+    <div>
+      <h4 class="font-semibold text-white mb-3">Quick Links</h4>
+      <ul class="space-y-2 text-sm text-gray-400">
+        <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+        <li><a href="services.html" class="hover:text-white transition-colors">Services</a></li>
+        <li><a href="about.html" class="hover:text-white transition-colors">About</a></li>
+        <li><a href="contact.html" class="hover:text-white transition-colors">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-semibold text-white mb-3">Contact</h4>
+      <p class="text-gray-400 text-sm">Phone, email, address here.</p>
+    </div>
+  </div>
+  <div class="max-w-6xl mx-auto px-6 mt-10 pt-6 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center gap-4">
+    <p class="text-gray-500 text-xs">© 2026 Business Name. All rights reserved.</p>
+    <p class="text-gray-500 text-xs">Photography by <a href="..." class="underline hover:text-gray-300">Photographer</a> on Unsplash</p>
+  </div>
+</footer>
 \`\`\`
 
-✓ DO this instead:
-\`\`\`html
-<footer class="bg-brand-dark text-white"><p>© 2026 ...</p></footer>
-<!-- dark footer + white text -->
+**If you choose a light footer** (e.g., cream or off-white), every single text element must be explicitly dark — heading, body, links, copyright, photo credit. Use \`text-gray-900\` for headings, \`text-gray-700\` for body, \`text-gray-600\` for secondary. **NEVER use \`text-white\` on a light footer background.** Not once.
 
-<footer class="bg-[#FAF7F2] text-gray-700"><p>© 2026 ...</p></footer>
-<!-- light footer + dark text -->
+❌ THE #1 FOOTER FAILURE — do not ship this:
+\`\`\`html
+<footer class="bg-[#FAF7F2]">
+  <p class="text-white">© 2026 ...</p>        <!-- INVISIBLE — white on cream -->
+  <a class="text-white/80">Contact</a>         <!-- INVISIBLE — white on cream -->
+  <h4 class="text-white">Quick Links</h4>      <!-- INVISIBLE — white on cream -->
+</footer>
 \`\`\`
 
-Apply the same background → text rules from above. The footer's body text, link colors, photographer credits, and copyright line all need to be readable against the footer's chosen background. **Walk through the PRE-EMIT AUDIT below for the footer too — don't skip it.**
+**FOOTER PRE-EMIT CHECKLIST — run this before emitting EACH page:**
+1. What is the footer background color? (name it explicitly)
+2. Is it a dark background? → all \`text-white\` and \`text-gray-400\` are fine
+3. Is it a light background? → hunt down and replace EVERY \`text-white\` with \`text-gray-900\` or darker
+4. Are footer links visually distinct from body text (underline, color, or weight difference)? If not, add it.
+5. Is the photographer credit line visible? Check its color against the footer background.
+6. Is the copyright line visible? Same check.
 
-**PRE-EMIT AUDIT — run this mental check on every section AND the footer before finishing the page:**
+If you cannot answer "yes, every line is readable" for every page's footer, do not emit — fix first.
+
+**CROSS-PAGE HERO RULE — the #1 failure across multi-page sites:**
+
+The Home page usually has a dark hero image with overlay, so white text works. But Services, About, and Contact pages often have solid-color or light backgrounds for their hero sections. You MUST NOT copy the home hero's white text color to other pages unless those pages also have a dark background.
+
+For each non-Home page hero:
+- If the hero has a **dark background or dark image overlay** → white text is fine
+- If the hero has a **light, cream, off-white, or tinted background** → use \`text-gray-900\` or \`text-stone-900\` for headings and \`text-gray-700\` for body text. NEVER use \`text-white\` or \`text-white/80\`.
+- If the hero has a **solid brand-color background** → check the color's lightness. Dark brand colors get white text. Light/pastel brand colors get dark text.
+
+The same rule applies to the **footer**: if the footer background is light (cream, off-white, white), ALL text in the footer must be dark (\`text-gray-800\`, \`text-gray-600\`, etc.) — including links, copyright, and photographer credits.
+
+**PRE-EMIT AUDIT — run this on EVERY PAGE (not just the Home page) before emitting:**
+
+For each of the 4 pages (Home, Services, About, Contact), walk through EVERY section:
 
 1. What is this section's background color/class? (write it down mentally)
-2. What color is the H1/H2/H3 in this section?
-3. Are the heading and background the same color or the same brand token? **If yes, FIX IT before continuing.**
-4. What color are the body links in this section?
-5. Would the link be visible without hovering it? **If no, FIX IT.**
-6. If this is a hero with a background image: is there an overlay? Is the text white? **If no, FIX IT.**
-7. **For the footer specifically**: is the footer's background color different from its text color? Are the photographer credit links readable? **If no, FIX IT.**
+2. Is this a light background (white, cream, off-white, light tint)? → ALL text must be dark (\`text-gray-900\`, \`text-gray-700\`, etc.)
+3. Is this a dark background (near-black, dark brand color, image with overlay)? → text can be white
+4. Are the heading and background the same color or the same brand token? **If yes, FIX IT.**
+5. Check every link: would it be visible without hovering? **If no, FIX IT.**
 
-**Mental check:** "If I were viewing only this section in isolation with no context, can I read every heading, every link, and every CTA label?" If the answer isn't "yes, instantly," the section is broken.
+**FOOTER AUDIT — mandatory final check before each page is emitted:**
+- State the footer background color out loud (e.g., "#1a1a1a" or "cream #FAF7F2")
+- Scan every text class in the footer: \`text-white\`, \`text-gray-*\`, inline styles, everything
+- If the footer is light and you see ANY \`text-white\` — that text is invisible. Replace it.
+- If the footer is dark and you see \`text-gray-900\` — that text may be hard to read. Replace with \`text-gray-300\` or lighter.
+- Check the photographer credit line. Check the copyright line. Check every nav link. All must be readable.
+- **Do not emit the page until you can say: "I can read every word in this footer."**
+
+**Mental check for EACH PAGE:** "If I open Services.html in a browser right now, can I read every heading, every paragraph, every link, and every footer line?" If the answer isn't "yes, instantly," that page is broken. Do this check for all four pages, not just Home.
 
 Match the design to the brand. A neighborhood pet groomer should feel warm and local. A B2B SaaS should feel confident and precise. A wedding photographer should feel refined. Read the industry and tone keywords from the enriched data and the voice guidelines from the creative brief before you start building.
 
@@ -319,6 +438,45 @@ MOTION
 - At least one surprising micro-interaction somewhere on the home page
 
 Keep it subtle. Motion should reward attention, not demand it.
+
+═══════════════════════════════════════════════════════════════
+DESIGN LAWS — CRAFT THAT SEPARATES REAL SITES FROM AI OUTPUT
+═══════════════════════════════════════════════════════════════
+
+**The AI slop test:** If someone can look at this site and say "AI made that" without hesitation, it has failed. The rules below prevent the most common failure modes.
+
+**Color strategy — pick ONE before touching any class:**
+- Restrained: tinted neutrals + one accent used sparingly (<10% of surface). Use for clean/professional/medical/legal brands.
+- Committed: one saturated brand color carries 30–60% of the surface. Use for identity-driven brands with bold personality.
+- Full palette: 3–4 named color roles, each used deliberately. Use for brands with complex visual systems.
+Never collapse every design to "restrained" by reflex. A bold brand deserves committed color — don't neuter it.
+
+**Typography hierarchy — non-negotiable:**
+- At least 1.25× scale ratio between heading levels. Flat type hierarchies make every section feel the same.
+- Cap body paragraph line length at 65–75ch. Unbounded text columns are hard to read.
+- Pair a display/heading font with a different body font rather than using one font for everything.
+
+**Layout — avoid the lazy defaults:**
+- Do not wrap every piece of content in a card. Cards are one layout tool, not the default. Use them only when grouping genuinely distinct items.
+- Nested cards are always wrong.
+- Vary spacing intentionally — not every section should have the same padding. Some sections should breathe more, some should feel tighter.
+- Don't center-align every section. Left-aligned body text reads better and feels more grounded.
+
+**Motion — do it right or don't do it:**
+- Never animate layout properties (width, height, top, left, margin, padding). Animate transform and opacity only.
+- Use ease-out curves (ease-out or cubic-bezier deceleration). No bounce, no elastic.
+- Keep transitions 150–400ms. Longer than 400ms feels sluggish.
+
+**Absolute bans — if you are about to write any of these, rewrite the element:**
+- **Side-stripe borders**: \`border-left\` or \`border-right\` greater than 1px as a colored accent on cards or list items. Rewrite with a background tint, full border, leading icon/number, or remove entirely.
+- **Gradient text**: \`background-clip: text\` with a gradient. Use a solid color instead. Emphasis via weight or size.
+- **Glassmorphism as decoration**: blurry frosted-glass cards used without purpose. Only use blur effects when they communicate depth in a meaningful way.
+- **The hero-metric template**: big number, small label, supporting stats, gradient accent — the SaaS cliché. Find a different way to show proof.
+- **Em dashes**: use commas, colons, semicolons, or periods instead.
+- **Category-reflex palettes**: "cloud/tech = dark blue with cyan glow", "legal = navy + gold", "wellness = sage + cream". Read the actual brand tokens and personality. Let those drive the color — not the industry stereotype.
+
+**Sectional variety test — run this before emitting:**
+Read back each page's sections in order. If more than two consecutive sections share the same background color, layout pattern, or type alignment, break the rhythm. Vary the background, flip the layout, change the alignment. Monotony is a failure.
 
 ═══════════════════════════════════════════════════════════════
 OUTPUT FORMAT — THIS IS CRITICAL

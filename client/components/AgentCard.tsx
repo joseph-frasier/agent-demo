@@ -32,8 +32,8 @@ function StatusBadge({ status }: { status: Status }) {
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex gap-2">
-      <span className="w-28 shrink-0 text-white/40">{label}</span>
+    <div className="flex flex-col sm:flex-row sm:gap-2">
+      <span className="sm:w-28 sm:shrink-0 text-white/40">{label}</span>
       <span className="text-white/80">{value}</span>
     </div>
   );
@@ -163,7 +163,7 @@ export function DesignCardContent({ data }: DesignCardContentProps) {
           {data.colors.map((color) => (
             <div key={color.role} className="flex items-center gap-3">
               <div
-                className="h-6 w-6 rounded shrink-0 border border-white/10"
+                className="h-8 w-8 sm:h-6 sm:w-6 rounded shrink-0 border border-white/10"
                 style={{ backgroundColor: color.hex }}
               />
               <div className="min-w-0">

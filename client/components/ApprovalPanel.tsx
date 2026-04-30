@@ -67,7 +67,7 @@ export function ApprovalPanel({
       .slice(0, 20) + ".com";
 
   return (
-    <div className="bg-brand-card border border-brand-border rounded-xl p-6 animate-fade-in-up space-y-6">
+    <div className="bg-brand-card border border-brand-border rounded-xl p-4 sm:p-6 animate-fade-in-up space-y-5 sm:space-y-6">
       {/* Header */}
       <div>
         <h2 className="text-xl font-bold text-white">
@@ -245,11 +245,11 @@ export function ApprovalPanel({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex gap-3 pt-2">
+      <div className="flex flex-col sm:flex-row gap-3 pt-2">
         <button
           onClick={onApprove}
           disabled={approved}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-accent hover:opacity-90 text-brand-dark text-sm font-semibold rounded-lg transition-opacity duration-200 disabled:opacity-60 disabled:cursor-default disabled:hover:opacity-60"
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 min-h-[48px] bg-brand-accent hover:opacity-90 text-brand-dark text-sm font-semibold rounded-lg transition-opacity duration-200 disabled:opacity-60 disabled:cursor-default disabled:hover:opacity-60 cursor-pointer"
         >
           <span>✓</span>
           <span>{approved ? "Approved" : "Approve & Build"}</span>
@@ -257,7 +257,7 @@ export function ApprovalPanel({
         <button
           onClick={() => {}}
           disabled={approved}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-transparent border border-brand-border hover:bg-white/5 text-white/70 hover:text-white text-sm font-medium rounded-lg transition-colors duration-200 disabled:opacity-40 disabled:cursor-default disabled:hover:bg-transparent disabled:hover:text-white/70"
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 min-h-[48px] bg-transparent border border-brand-border hover:bg-white/5 text-white/70 hover:text-white text-sm font-medium rounded-lg transition-colors duration-200 disabled:opacity-40 disabled:cursor-default disabled:hover:bg-transparent disabled:hover:text-white/70 cursor-pointer"
         >
           <span>✎</span>
           <span>Request Revisions</span>

@@ -32,6 +32,12 @@ app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
 });
 
+// Catch-all error handler — surfaces middleware errors (e.g. body parse failures)
+app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  console.error("Express error handler:", err.message, err.stack);
+  res.status(500).json({ error: err.message });
+});
+
 app.listen(PORT, () => {
   console.log(`Express server running on http://localhost:${PORT}`);
 });
